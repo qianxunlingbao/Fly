@@ -25,6 +25,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {Icon} from '@ant-design/react-native';
 import {Router, Scene, Tabs} from "react-native-router-flux";
 import Music from './components/Music'
 import Recommend from './components/Recommend'
@@ -40,7 +41,10 @@ const App = () => {
           <Tabs key='tabbar'
             hideNavBar
           >
-            <Scene key="music" title="音乐馆" hideNavBar>
+            <Scene key="music" 
+            title="音乐馆" 
+            icon={()=><Icon name = 'home'/>}
+            hideNavBar>
               <Scene key = "Music" component={Music} />
             </Scene>
             <Scene key="recommend" title="推荐" hideNavBar>
@@ -50,8 +54,8 @@ const App = () => {
               <Scene key = "Condition" component={Condition}/>
             </Scene>
             <Scene key="my" title="我的" initial={true} 
-            navBar={()=><NavBar value = {value}/>}>
-              <Scene key = "My" component={My}/>
+            >
+              <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
             </Scene>
           </Tabs>
         </Scene>
