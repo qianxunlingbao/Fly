@@ -21,17 +21,23 @@ class My extends Component {
             recent:200,
             download:112,
             buy:0,
-            create:0,
-            collect:0,
-            menu:[1,0]
+            create:4,
+            collect:2,
+            menu:[1,0],
+            createdata:[{key:'1',title:'国漫古风',num:3},{key:'2',title:'石川绫子',num:2},{key:'3',title:'永远的七日之都',num:2},{key:'4',title:'左翼',num:2}]
                 }
     }
    
     render() {
         return (
-            <View style={styles.container}>
-                <ScrollView >
-                    <View style={styles.basicinfo}>
+            <View 
+            style={styles.container}
+            >
+                <ScrollView 
+                showsVerticalScrollIndicator={false} 
+                >
+                <View  style={{width:width,alignItems:'center'}}>
+                <View style={styles.basicinfo}>
                         <View style={styles.uphalf}>
                             <TouchableOpacity style={styles.headImg}>
                             </TouchableOpacity>
@@ -121,13 +127,32 @@ class My extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View>
+                    <View style={styles.songlist}>
                         <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity  onPress={()=>this.setState({menu:[1,0]})}>
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[0]?'black':'grey'}}>自建歌单{this.state.create}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.setState({menu:[0,1]})} >
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[1]?'black':'grey',marginLeft:20}}>收藏歌单{this.state.collect}</Text>
+                        </TouchableOpacity>
                         </View>
-                        
+                        <View style={{margintop:10}}>
+                            <FlatList
+                            data={this.state.createdata}
+                            renderItem={({item})=>
+                                <View style={styles.createlist}>
+                                    <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10}}></View>
+                                    <View style={{marginLeft:10}}>
+                                        <Text style={{fontSize:16,marginBottom:10}}>{item.title}</Text>
+                                        <Text style={{color:'grey',marginBottom:10}}>{item.num}首</Text>
+                                    </View>
+                                    <Image style={{width:1,height:25,marginLeft:'80%',position:'absolute'}} source={require('../images/right.png')}/>
+                                </View>
+                            }
+                            />
+                        </View>
                     </View>
+                </View>
                 </ScrollView>
             </View>
         )
@@ -137,7 +162,7 @@ class My extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems:"center"
+        alignItems:"center",
     },
     basicinfo:{
         backgroundColor:'white',
@@ -155,6 +180,14 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center'
 
+    },
+    createlist:{
+        width:width * 0.8,
+        height:height * 0.1,
+        marginTop:10,
+        borderRadius:height * 0.2 * 0.1,
+        flexDirection:'row',
+        alignItems:'center'
     },
     alonekind:{
         width:width * 0.8,
@@ -203,6 +236,10 @@ const styles = StyleSheet.create({
         height:height * 0.07,
         justifyContent:'center',
         marginLeft:5
+    },
+    songlist:{
+        width:width * 0.8,
+        justifyContent:"center"
     }
 })
 
