@@ -1,21 +1,24 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-} from 'react-native';
-import MusicHall from './components/MusicHall';
+import MusicHall from './components/MusicHall'; 
+import {Router, Scene} from "react-native-router-flux";
+import Search from './components/Search';
 
 const App = () => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView>
-          <MusicHall />
-        </ScrollView>
-      </SafeAreaView>
-    </>
+      <Router>
+        <Scene key="root">
+          <Scene
+            key="musicHall"
+            component={MusicHall}
+            hideNavBar
+          />
+          <Scene
+            key="search"
+            component={Search}
+            hideNavBar
+          />
+        </Scene>
+      </Router>
   );
 };
 
