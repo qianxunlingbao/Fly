@@ -26,19 +26,26 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import {Icon} from '@ant-design/react-native';
-import {Router, Scene, Tabs} from "react-native-router-flux";
+import {Router, Scene, Tabs, Lightbox} from "react-native-router-flux";
 import Music from './components/Music'
 import Recommend from './components/Recommend'
 import Condition from './components/Condition'
 import My from './components/My'
 import NavBar from './components/NavBar'
+import MoreInfo from './components/MoreInfo'
+import Manage from './components/Manage'
+import Buied from './components/Buied'
+import MyLike from './components/MyLike'
+import Local from './components/Local'
+import Recent from './components/Recent'
+
 const App = () => {
   const [value,setValue]= useState('正在热搜:李宇春新歌');
   return (
     <>
       <Router>
         <Scene key = 'root'>
-          <Tabs key='tabbar'
+        <Tabs key='tabbar'
             hideNavBar
           >
             <Scene key="music" 
@@ -56,9 +63,14 @@ const App = () => {
             <Scene key="my" title="我的" initial={true} 
             >
               <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
+              <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar/>
+              <Scene key = "like" component={MyLike}  title='我喜欢' hideTabBar/>
+              <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar/>
+              <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar/>
+              <Scene key = "buy" component={Buied}  title='已购' hideTabBar/>
             </Scene>
-          </Tabs>
-        </Scene>
+          </Tabs>          
+          </Scene>
       </Router>
     </>
   );

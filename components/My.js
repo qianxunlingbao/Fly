@@ -7,10 +7,11 @@ import {
     ScrollView 
     ,Dimensions, 
     TouchableOpacity, 
-    FlatList,
+    FlatList
 } from 'react-native'
 const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
+import { Actions,Modal} from 'react-native-router-flux';
 class My extends Component {
     constructor(){
         super();
@@ -24,10 +25,16 @@ class My extends Component {
             create:4,
             collect:2,
             menu:[1,0],
-            createdata:[{key:'1',title:'国漫古风',num:3},{key:'2',title:'石川绫子',num:2},{key:'3',title:'永远的七日之都',num:2},{key:'4',title:'左翼',num:2}]
+            createdata:[{key:'1',title:'国漫古风',num:3},
+            {key:'2',title:'石川绫子',num:2},
+            {key:'3',title:'永远的七日之都',num:2},
+            {key:'4',title:'左翼',num:2}],
+            addposition:'absolute',
+            addflex:'flex'
+
                 }
     }
-   
+    
     render() {
         return (
             <View 
@@ -73,11 +80,19 @@ class My extends Component {
                     ]}
                         numColumns={4}
                         renderItem={({item})=>
-                        <View style={{alignItems:"center",marginLeft:(width * 0.8 - 180) / 5}}>
+                        <TouchableOpacity onPress={()=>{
+                            if(item.key == 'like'){Actions.like()}
+                            if(item.key == 'recent'){Actions.recent()}
+                            if(item.key == 'download'){Actions.download()}
+                            if(item.key == 'buy'){Actions.buy()}
+                        }}>
+                            <View style={{alignItems:"center",marginLeft:(width * 0.8 - 180) / 5}}>
                             <Image style={{width:45,height:45,color:'green'}} source={item.value}/> 
                             <Text>{item.title}</Text>
                             <Text>{this.state[item.key]}</Text>
                         </View>
+                        </TouchableOpacity>
+                        
                         }
                         />
                     </View>
@@ -129,11 +144,21 @@ class My extends Component {
                     </View>
                     <View style={styles.songlist}>
                         <View style={{flexDirection:'row'}}>
-                        <TouchableOpacity  onPress={()=>this.setState({menu:[1,0]})}>
+                        <TouchableOpacity  onPress={()=>this.setState({menu:[1,0],addposition:'absolute',addflex:'flex'})}>
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[0]?'black':'grey'}}>自建歌单{this.state.create}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.setState({menu:[0,1]})} >
+                        <TouchableOpacity onPress={()=>this.setState({menu:[0,1],addposition:'relative',addflex:'none'})} >
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[1]?'black':'grey',marginLeft:20}}>收藏歌单{this.state.collect}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{width:'7%',position:this.state.addposition,left:'80%',display:this.state.addflex}} >
+                        <Image 
+                        source={require('../images/createSong.png')} 
+                        />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{width:'7%',position:'absolute',left:'90%'}}   onPress={()=>Actions.manage()}>
+                        <Image 
+                        source={require('../images/manage.png')}                       
+                        />
                         </TouchableOpacity>
                         </View>
                         <View style={{margintop:10}}>
