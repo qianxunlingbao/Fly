@@ -11,7 +11,8 @@ import {
 } from 'react-native'
 const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
-import { Actions,Modal} from 'react-native-router-flux';
+import { Actions} from 'react-native-router-flux';
+import Prompt from './Prompt'
 class My extends Component {
     constructor(){
         super();
@@ -30,16 +31,24 @@ class My extends Component {
             {key:'3',title:'永远的七日之都',num:2},
             {key:'4',title:'左翼',num:2}],
             addposition:'absolute',
-            addflex:'flex'
-
+            addflex:'flex',
+            modalVisible : false
                 }
     }
-    
+    _onPressEmpty(){
+        this.setState({
+            modalVisible : false
+        })
+    }
     render() {
         return (
             <View 
             style={styles.container}
             >
+                <Prompt 
+                modalVisible = {this.state.modalVisible}
+                callback = {this._onPressEmpty.bind(this)}
+                />
                 <ScrollView 
                 showsVerticalScrollIndicator={false} 
                 >
@@ -150,7 +159,9 @@ class My extends Component {
                         <TouchableOpacity onPress={()=>this.setState({menu:[0,1],addposition:'relative',addflex:'none'})} >
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[1]?'black':'grey',marginLeft:20}}>收藏歌单{this.state.collect}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:'7%',position:this.state.addposition,left:'80%',display:this.state.addflex}} >
+                        <TouchableOpacity 
+                        onPress = {()=>this.setState({modalVisible : true})}
+                        style={{width:'7%',position:this.state.addposition,left:'80%',display:this.state.addflex}} >
                         <Image 
                         source={require('../images/createSong.png')} 
                         />

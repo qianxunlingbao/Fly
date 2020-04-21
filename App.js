@@ -64,6 +64,7 @@ const App = () => {
             >
               <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
               <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar/>
+              <Scene key = "manage" component={Manage}  title='歌单管理' hideTabBar/>
               <Scene key = "like" component={MyLike}  title='我喜欢' hideTabBar/>
               <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar/>
               <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar/>
