@@ -220,7 +220,7 @@ export default class FirstOne extends Component {
                             }
                         </View>
                         <View style={{width:width*0.8,marginLeft:width*0.1,marginRight:width*0.1,height:height*0.3,justifyContent:'center',alignItems:'center'}}>
-                            <Video source={{uri: 'https://qianxunlingbao.github.io/Movie-test/%E8%B5%B5%E4%B8%BD%E9%A2%96-%E8%AE%B8%E5%BF%97%E5%AE%89-%E4%B9%B1%E4%B8%96%E4%BF%B1%E7%81%AD%20(%E3%80%8A%E8%9C%80%E5%B1%B1%E6%88%98%E7%BA%AA%E3%80%8B%E7%94%B5%E8%A7%86%E5%89%A7%E4%B8%BB%E9%A2%98%E6%9B%B2)(%E8%B6%85%E6%B8%85).mp4'}}   // Can be a URL or a local file.
+                            <Video source={{uri: 'https://qianxunlingbao.github.io/Movie-test/%E7%B4%AB%E9%99%8C%E5%AD%90%E5%A2%A8%E6%99%B4-%E3%80%90%E5%B0%81%E8%8C%97%E5%9B%A7%E8%8F%8C%E3%80%91%E6%89%AC%E5%B7%9E%E6%9B%B2(%E8%B6%85%E6%B8%85).mp4'}}   // Can be a URL or a local file.
                                 ref={(ref) => {
                                     this.player = ref
                                 }}                                      
