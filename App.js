@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React,{useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,8 @@ import {
   View,
   Text,
   StatusBar,
+  Dimensions,
+  TextInput
 } from 'react-native';
 
 import {
@@ -23,51 +25,54 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {Icon} from '@ant-design/react-native';
+import {Router, Scene, Tabs, Lightbox} from "react-native-router-flux";
+import Music from './components/Music'
+import Recommend from './components/Recommend'
+import Condition from './components/Condition'
+import My from './components/My'
+import NavBar from './components/NavBar'
+import MoreInfo from './components/MoreInfo'
+import Manage from './components/Manage'
+import Buied from './components/Buied'
+import MyLike from './components/MyLike'
+import Local from './components/Local'
+import Recent from './components/Recent'
 
-const App: () => React$Node = () => {
+const App = () => {
+  const [value,setValue]= useState('正在热搜:李宇春新歌');
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      <Router>
+        <Scene key = 'root'>
+        <Tabs key='tabbar'
+            hideNavBar
+          >
+            <Scene key="music" 
+            title="音乐馆" 
+            icon={()=><Icon name = 'home'/>}
+            hideNavBar>
+              <Scene key = "Music" component={Music} />
+            </Scene>
+            <Scene key="recommend" title="推荐" hideNavBar>
+              <Scene key = "Recommend" component={Recommend}/>  
+            </Scene>
+            <Scene key="condition" title="动态" hideNavBar>
+              <Scene key = "Condition" component={Condition}/>
+            </Scene>
+            <Scene key="my" title="我的" initial={true} 
+            >
+              <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
+              <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar/>
+              <Scene key = "manage" component={Manage}  title='歌单管理' hideTabBar/>
+              <Scene key = "like" component={MyLike}  title='我喜欢' hideTabBar/>
+              <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar/>
+              <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar/>
+              <Scene key = "buy" component={Buied}  title='已购' hideTabBar/>
+            </Scene>
+          </Tabs>          
+          </Scene>
+      </Router>
     </>
   );
 };
