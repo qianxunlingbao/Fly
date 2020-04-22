@@ -1,73 +1,48 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text,TouchableOpacity, View,ProgressBarAndroid,Button,Slider, Image,Dimensions,ToastAndroid } from 'react-native';
 import Sound from 'react-native-sound';
-import {Actions} from 'react-native-router-flux';
+import {
+    createStackNavigator
+} from 'react-navigation';
 const {width} = Dimensions.get('window');
-
-const whoosh = new Sound('https://music.163.com/song/media/outer/url?id=5255987.mp3',null, (e) => {
+const whoosh = new Sound('http://music.163.com/song/media/outer/url?id=1311345873.mp3',null, (e) => {
                 if (e) {
                      console.log('播放失败');
                     return;
                 }
                
             });
-let data = require('./data');
-export default class LocalPage extends Component {
-    getTitle = ()=>{
-
-        if(this.state.page==-1)this.state.page+=2;
-        
-        this.state.page++
-        this.state.page1=this.state.page;
-        fetch('http://49.235.231.110:8800/music')
-        .then((res)=>res.json())
-        .then(res=>{
-            this.isLoading = false;  //数据加载成功后，加载动画取消
-           
-            this.posts = res.data.data;
-            console.log(res.data[0].music_value)
-            this.setState({
-                data:res.data,
-                posts:res.data.data,
-                x:Math.random()*res.data
-            })  //拿到数据以后，把数据复制给posts
-        })
-        .catch(err=>{
-            console.log(err);
-        })
-        
-    }
+export default class Publish extends Component {
+   
 	constructor(props){
 		super(props);
+		var i=0;
 		this.state = {
-		volume:data.volume,
-		seconds: data.seconds, //秒数
-		totalMin: data.totalMin, //总分钟
-		totalSec: data.totalSec, //总分钟秒数
-		nowMin: data.nowMin, //当前分钟
-		nowSec: data.nowSec, //当前秒钟
-		maximumValue: data.maximumValue, //滑块最大值
-		clicknum1:data.clicknum1,
-		clicknum2:data.clicknum2,
-		photo:data.photo,
-		word:data.word,
-		clicknum3:data.clicknum3,
-		iscollect:data.iscollect,
+		volume: 0.5,
+		seconds: 0, //秒数
+		totalMin: '', //总分钟
+		totalSec: '', //总分钟秒数
+		nowMin: 0, //当前分钟
+		nowSec: 0, //当前秒钟
+		maximumValue: 0, //滑块最大值
+		clicknum1:0,
+		clicknum2:0,
+		photo:require('./loop.png'),
+		word:'已切换到顺序播放',
+		clicknum3:0,
+		iscollect:true,
 		}
 		}
 		clickheart=()=>{
 			this.state.clicknum3++
-            data.clicknum3=this.state.clicknum3
+		
 			let clicknum3 = this.state.clicknum3
-            let iscollect = this.state.iscollect
-            
+			let iscollect = this.state.iscollect
 			if(clicknum3%2==1){
-                iscollect=false
-                data.iscollect=iscollect
+				iscollect=false
 			}
 			else{
-                iscollect=true
-                data.iscollect=iscollect
+				iscollect=true
 			}
 			this.setState({
 				iscollect
@@ -76,9 +51,9 @@ export default class LocalPage extends Component {
 			
 		}
 		clickph=()=>{
+			console.log(this.state.clicknum2)
 			this.state.clicknum2++
-            let click= this.state.clicknum2
-            data.clicknum2=this.state.clicknum2
+			let click= this.state.clicknum2
 			if(click%3==0){
 				this.state.word='已切换到顺序播放'
 				this.state.photo=require('./loop.png')
@@ -123,8 +98,7 @@ export default class LocalPage extends Component {
 		})
 		}
 		componentWillUnmount(){
-        this.time && clearTimeout(this.time);
- 
+		this.time && clearTimeout(this.time);
 		}
 		// 声音+
 		_addVolume = () => {
@@ -195,33 +169,21 @@ export default class LocalPage extends Component {
 		}
 		_getNowTime = (seconds) => {
 			
-        let nowMin = this.state.nowMin,
-        
-		nowSec = this.state.nowSec,
-        totalMin=this.state.totalMin,
-        totalSec=this.state.totalSec,
-        clicknum1=this.state.clicknum1;
-        data.nowMin=nowMin
-        data.nowSec=nowSec
-        data.clicknum1=clicknum1
+		let nowMin = this.state.nowMin,
+		nowSec = this.state.nowSec;
+		
 		if(seconds >= 60){
 		nowMin = parseInt(seconds/60); //当前分钟数
 		nowSec = seconds - nowMin * 60;
 		nowSec = nowSec < 10 ? '0' + nowSec : nowSec;
 		}else{
-            nowMin = 0;
 		nowSec = seconds < 10 ? '0' + seconds : seconds;
 		}
-        if(nowMin==totalMin&&nowSec==totalSec){
-            clicknum1++;
-			this._stop();
-        }
-        
+		console.log(nowSec)
 		this.setState({
 		nowMin,
 		nowSec,
-        seconds,
-        clicknum1,
+		seconds
 		})
 		}
 		render() {
@@ -230,21 +192,15 @@ export default class LocalPage extends Component {
 		<View style={styles.container}>
 			<View style={{flex:50}}>
 				<View style={{flex:6,flexDirection:'row'}}>
-					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}}  onPress={()=>Actions.userinfor()}>
+					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}} >
 					<Image style={{width:'35%',height:'20%'}} source={require('./down.png')} />
 					</TouchableOpacity>
 					<View  style={{flex:5,justifyContent:'center', alignItems: 'center',flexDirection:'row'}}>
-						<TouchableOpacity  onPress={()=>Actions.userinfor()}>
-                        <Text>推荐</Text>
-                        </TouchableOpacity>
+						<Text>推荐</Text>
 						<Text>  |  </Text>
-                        <TouchableOpacity>
-						<Text style={{color:'#fff'}}>歌曲</Text>
-                        </TouchableOpacity>
+						<Text>歌曲</Text>
 						<Text>  |  </Text>
-                        <TouchableOpacity  onPress={()=>Actions.songword()}>
 						<Text>歌词</Text>
-                        </TouchableOpacity>
 					</View>
 					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}} >
 					<Image style={{width:'35%',height:'20%'}} source={require('./share.png')} />
@@ -330,7 +286,7 @@ export default class LocalPage extends Component {
 		</View>
 		<View style={{flex:2,justifyContent:'center'}}>
 		<TouchableOpacity  onPress={this.onPressclick} >
-		<Image style={{width:'49%',height:'100%',marginLeft:'10%'}} source={this.state.clicknum1%2?require('./suspend.png' ):require('./broadcast.png')} />
+		<Image style={{width:'46%',height:'100%',marginLeft:'10%'}} source={this.state.clicknum1%2?require('./suspend.png' ):require('./broadcast.png')} />
 		</TouchableOpacity>
 		</View>
 		<View style={{flex:1,justifyContent:'center'}}>
@@ -349,6 +305,7 @@ export default class LocalPage extends Component {
 		);
 		}
 		}
+		
 		const styles = StyleSheet.create({
 		container: {
 		flex: 10,
