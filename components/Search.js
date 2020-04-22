@@ -3,8 +3,6 @@ import { StatusBar, SafeAreaView, ScrollView,View, TextInput, Text,TouchableOpac
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Actions } from 'react-native-router-flux'
 
-const musicArray=['你若成风','像风一样','少年'];
-
 export default class Search extends Component {
     constructor(){
         super();
@@ -12,7 +10,8 @@ export default class Search extends Component {
             isshow:'none',
             value:'',
             history:[],
-            isshow_delete:0
+            isshow_delete:0,
+            musicArray:[]
         }
     }
     componentDidMount(){
@@ -28,6 +27,13 @@ export default class Search extends Component {
                 })
             }
         })
+        fetch('http://49.235.231.110:8800/music')
+            .then(res => res.json())
+            .then(res => {
+                this.setState({
+                    musicArray:res.data
+                })
+            })
     }
     change(text){
         this.setState({
@@ -99,25 +105,25 @@ export default class Search extends Component {
                             <Icon name="arrowleft" size={30} onPress={()=>Actions.musicHall()} />
                             <View style={{width:'90%',height:40,marginLeft:10,backgroundColor:'white',borderRadius:20,flexDirection:'row',alignItems:'center',paddingLeft:10}}>
                                 <Icon name="search1" size={22} color="rgb(215,215,215)" />
-                                <TextInput style={{width:'85%',height:40,fontSize:17}} placeholder="请输入要搜索的内容" placeholderTextColor="rgb(165,165,165)" onChangeText={(text)=>{this.change(text)}} value={this.state.value} />  
+                                <TextInput style={{width:'85%',height:40,fontSize:17}} placeholder="请输入要搜索的内容" placeholderTextColor="rgb(165,165,165)" onChangeText={(text)=>{this.change(text)}} value={this.state.value} selectionColor={'green'} />  
                                 <Icon name="close" size={20} style={{display:this.state.isshow}} color="gray" onPress={()=>{this.clear()}} />
                             </View>
                         </View>
                         <View style={{width:'96%',backgroundColor:'white',marginLeft:'2%',display:this.state.isshow}}>
                             {
-                                musicArray.map((item,index)=>{
-                                    if(item.indexOf(this.state.value)!==-1){
+                                this.state.musicArray.map((item,index)=>{
+                                    if(item.music_name.indexOf(this.state.value)!==-1){
                                         return (
-                                            <TouchableOpacity style={{width:'100%',height:35,flexDirection:'row',alignItems:'center',paddingLeft:15}} onPress={()=>{this.storage(musicArray[index])}}>
+                                            <TouchableOpacity style={{width:'100%',height:35,flexDirection:'row',alignItems:'center',paddingLeft:15}} onPress={()=>{this.storage(item.music_name)}}>
                                                 <Icon name="search1" size={15} color="gray" />
-                                                <Text style={{marginLeft:10}}>{item}</Text>
+                                                <Text style={{marginLeft:10}}>{item.music_name}</Text>
                                             </TouchableOpacity>
                                         )
                                     }
-                                    if(index==musicArray.length-1){
+                                    if(index==this.state.musicArray.length-1){
                                         var flag=1;
-                                        for(var i=0;i<musicArray.length;i++){
-                                            if(musicArray[i].indexOf(this.state.value)!==-1){
+                                        for(var i=0;i<this.state.musicArray.length;i++){
+                                            if(this.state.musicArray[i].music_name.indexOf(this.state.value)!==-1){
                                                 flag=0;
                                             }
                                         }
@@ -134,7 +140,7 @@ export default class Search extends Component {
                         </View>
                         <View style={{width:'92%',marginLeft:'4%'}}>
                             <View style={{width:'100%',height:50,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
-                                <Text style={{fontSize:20,fontWeight:'bold'}}>搜索历史</Text>
+                                <Text style={{fontSize:20,fontWeight:'bold',width:'20%'}}>搜索历史</Text>
                                 <Icon name="delete" size={20} style={{marginLeft:'75%',opacity:this.state.isshow_delete}} color="gray" onPress={()=>{this.clearHistory()}} />
                             </View>
                             <View style={{width:'100%',flexDirection:'row',flexWrap:'wrap'}}>
