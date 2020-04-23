@@ -111,7 +111,7 @@ export default class Home extends Component {
                     width:width*0.9,
                     height:height*0.25,
                     marginLeft:width*0.05}}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>Actions.CustomScrollView()}>
                         <Text style={{
                             color:'blue',
                             fontSize:15,

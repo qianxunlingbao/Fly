@@ -86,12 +86,18 @@ export default class FirstOne extends Component {
             dianzanIcon: 'like2',
             tianjiaguanzhu: '+关注',
             isAdd: false,
-            dianzanshu:20
+            dianzanshu:20,
+            pinglunshu:18
         }
     }
     dianzan(){
         this.setState({    
             dianzanshu: this.state.dianzanshu+1
+        })
+    }
+    pinglun(){
+        this.setState({    
+            pinglunshu: this.state.pinglunshu+1
         })
     }
     play(){
@@ -330,8 +336,8 @@ export default class FirstOne extends Component {
                                 <TouchableOpacity style={styles.dianzan} onPress={()=>this.dianzan()}>
                                     <Text>{item.dianzan}{this.state.dianzanshu}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.dianzan1}>
-                                    <Text>{item.pinglun}{item.pinglunshu} </Text>
+                                <TouchableOpacity style={styles.dianzan1} onPress={()=>Actions.CustomScrollView()}>
+                                    <Text>{item.pinglun}{this.state.pinglunshu} </Text>
                                 </TouchableOpacity>
                             </View>
                             

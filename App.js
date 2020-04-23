@@ -35,6 +35,8 @@ import SplashScreen from 'react-native-splash-screen';
 
 import Recommend from './components/Recommend';
 
+import CustomScrollView from './components/CustomScrollView';
+
 import Piano from './components/Piano';
 
 import Person from './components/Person';
@@ -208,7 +210,9 @@ const App = () => {
 				<Scene key="fabu" component={One} />	
 				<Scene key="zhuce" component={Zhuce} />	
 				<Scene key="dongtai" component={Dongtai} />	
-				<Scene key="like" component={Like} />	
+				<Scene key="like" component={Like} />
+				<Scene key="CustomScrollView" component={CustomScrollView} />
+					
 			</Modal>
 			</Overlay>
 		</Router>
