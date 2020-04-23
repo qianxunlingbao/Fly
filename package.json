@@ -14,7 +14,8 @@
     "@ant-design/react-native": "^3.2.2",
     "react": "16.9.0",
     "react-native": "0.61.5",
-    "react-native-router-flux": "4.0.6"
+    "react-native-router-flux": "4.0.6",
+    "react-native-video": "^4.4.5"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
