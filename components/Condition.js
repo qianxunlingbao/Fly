@@ -10,7 +10,7 @@ import {
     FlatList,
     TouchableOpacity
 } from 'react-native';
-import {Icon} from '@ant-design/react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import { Actions } from 'react-native-router-flux';
 
@@ -152,7 +152,7 @@ export default class FirstOne extends Component {
                             width:width*0.16,
                             marginTop:-height*0.03
                             }} 
-                            onPress={()=>Actions.dongtai()
+                            onPress={()=>Actions.dongTai()
                         }>
                             <Text style={{
                                 marginLeft:width*0.02
@@ -163,7 +163,7 @@ export default class FirstOne extends Component {
                             marginTop:-height*0.04,
                             marginLeft:width*0.9
                         }}
-                        onPress={()=>Actions.like()
+                        onPress={()=>Actions.dongTaiLike()
                     }>
                         <Text style={{
                             fontSize:25

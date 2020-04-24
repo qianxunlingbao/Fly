@@ -25,7 +25,7 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import {Icon} from '@ant-design/react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {Router, Scene, Tabs, Lightbox} from "react-native-router-flux";
 import Music from './components/Music'
 import Recommend from './components/Recommend'
@@ -38,6 +38,9 @@ import Buied from './components/Buied'
 import MyLike from './components/MyLike'
 import Local from './components/Local'
 import Recent from './components/Recent'
+import Dongtai from './components/Dongtai'
+import Fabu from './components/Fabu'
+import DongTaiLike from './components/Like'
 
 const App = () => {
   const [value,setValue]= useState('正在热搜:李宇春新歌');
@@ -59,6 +62,9 @@ const App = () => {
             </Scene>
             <Scene key="condition" title="动态" hideNavBar>
               <Scene key = "Condition" component={Condition}/>
+              <Scene key = "dongTai" component={Dongtai}/>
+              <Scene key = "faBu" component={Fabu}/>
+              <Scene key = "dongTaiLike" component={DongTaiLike}/>
             </Scene>
             <Scene key="my" title="我的" initial={true} 
             >
