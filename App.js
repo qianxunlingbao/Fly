@@ -27,7 +27,6 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Router, Scene, Tabs, Lightbox} from "react-native-router-flux";
-import Music from './components/Music'
 import Recommend from './components/Recommend'
 import Condition from './components/Condition'
 import My from './components/My'
@@ -41,6 +40,8 @@ import Recent from './components/Recent'
 import Dongtai from './components/Dongtai'
 import Fabu from './components/Fabu'
 import DongTaiLike from './components/Like'
+import Music from './components/MusicHall'
+import Search from './components/Search'
 
 const App = () => {
   const [value,setValue]= useState('正在热搜:李宇春新歌');
@@ -56,6 +57,7 @@ const App = () => {
             icon={()=><Icon name = 'home'/>}
             hideNavBar>
               <Scene key = "Music" component={Music} />
+              <Scene key = "search" component={Search} />
             </Scene>
             <Scene key="recommend" title="推荐" hideNavBar>
               <Scene key = "Recommend" component={Recommend}/>  
@@ -66,7 +68,7 @@ const App = () => {
               <Scene key = "faBu" component={Fabu}/>
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
             </Scene>
-            <Scene key="my" title="我的" initial={true} 
+            <Scene key="my" title="我的"  
             >
               <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
               <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar/>
