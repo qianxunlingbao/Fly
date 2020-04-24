@@ -247,7 +247,7 @@ export default class Home extends Component {
                                     borderRadius:25,
                                     borderColor:'black',
                                     borderWidth:1,
-                                    backgroundColor:'#eeeaaa',
+                                    backgroundColor:'#CCFFFF',
                                     width:width*0.4,
                                     marginTop:width*0.1
                                 }}            

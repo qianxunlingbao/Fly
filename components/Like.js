@@ -10,6 +10,7 @@ import {
     StatusBar,
     Image,
     StyleSheet,
+    FlatList,
     TouchableHighlight,
 } from 'react-native';
 
@@ -29,7 +30,9 @@ export default class Like extends Component {
             page: 0,
             isloading:false,
             guanzhu: '+关注',
-            isAdd:false
+            isAdd:false,
+            key: 0,
+            arr:[]
         }
     }
     componentDidMount = ()=>{
@@ -42,7 +45,16 @@ export default class Like extends Component {
                 });
             })
     }
-
+    delete(){
+        console.log(this.state.tits.length)
+        console.log(this.state.tits)
+        this.setState({
+            arr:this.state.tits,
+            key:this.state.arr.length,
+            tits:this.state.tits.splice(1,10)
+        })
+        console.log(this.state.key)
+    }
     guanzhu(){
         this.setState({
             isAdd:!this.state.isAdd,
@@ -63,7 +75,7 @@ export default class Like extends Component {
                             <TouchableOpacity onPress={()=>Actions.recommend()}><Text style={{fontSize:24}}> —> </Text></TouchableOpacity>
                         </View>
                         <View style={{width:width*0.3,height:width*0.1,marginLeft:width*0.33,marginTop:-width*0.1}}>
-                            <Text style={{textAlign:'center',fontSize:25}}>我的关注</Text>
+                            <Text style={{textAlign:'center',fontSize:30}}>我的关注</Text>
                         </View>
                         
                     </View>
@@ -75,11 +87,11 @@ export default class Like extends Component {
                         }}>
                         <View style={styles.touxiang}>
                             <Image style={styles.touxiang} 
-                                source={require('../images/huachenyu.png')} />
+                                source={require('../images/huitailang1.png')} />
                         </View>
                         <View style={styles.one}>
-                            <Text style={styles.author}>王子清</Text>
-                            <Text style={styles.name}>如果岁月可回头</Text>
+                            <Text style={styles.author}>此处固定</Text>
+                            <Text style={styles.name}>仅使用关注,不然会多个触发</Text>
                         </View>
                         <View style={styles.two}>
                             <TouchableOpacity style={styles.three} onPress={() => this.guanzhu()}>
@@ -95,8 +107,9 @@ export default class Like extends Component {
                     </View>
                                 
                     <View>
-                    {
-                        this.state.tits.map((item)=>(
+                    <FlatList
+                        data={this.state.tits}
+                        renderItem={({item})=>
                             
                             <View style={{flex:1,marginTop:width*0.05}}>
                                 <View style={{
@@ -117,15 +130,15 @@ export default class Like extends Component {
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.four}>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={() => this.delete()}>
                                             <Text style={styles.delete}>×</Text>
                                         </TouchableOpacity>    
                                     </View>
                                 </View>
                             
-                            </View>         
-                        ))
-                    }
+                            </View>
+                        }
+                    />
                     </View>
                     
                     
