@@ -1,9 +1,21 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity,Dimensions, TextInput} from 'react-native'
+import { StyleSheet, 
+    View, 
+    Text ,
+    Image ,
+    Modal, 
+    TouchableOpacity,
+    Dimensions, 
+    TextInput,
+    Button} from 'react-native'
+import Devide from './Devide'
 let {width,height} = Dimensions.get('window');
 export default class Prompt extends Component {
     constructor(){
         super();
+        this.state = {
+            listTitle : '新建歌单'
+        }
     }
     render() {
         return (
@@ -19,11 +31,22 @@ export default class Prompt extends Component {
                       <View
                       style = {styles.box}
                       >
-                          <Text style={{textAlign:"center",backgroundColor:"red"}}>新建歌单</Text>
+                          <Text style={{textAlign:"center",fontSize:20,marginTop:20}}>新建歌单</Text>
                           <TextInput 
-                          placeholder = '新建歌单' 
-                          placeholderTextColor = 'grey'
-                          ></TextInput>
+                          style = {{height:'25%',width:'80%',backgroundColor:'#eee',borderRadius:20,marginTop:5}}
+                          onChangeText = {(val) => this.setState({listTitle : value})}
+        >{this.state.listTitle}</TextInput>
+                          <Devide style={{width:'100%',height:1,backgroundColor:'#eeeeee',marginTop:10}}/>
+                          <View style={{flexDirection:'row',justifyContent:"space-around",width:'90%',height:42,alignItems:'center'}}>
+                          <TouchableOpacity>
+                              <Text>取消</Text>
+                          </TouchableOpacity>
+                          <Devide style={{width:1,height:42,backgroundColor:'#eee'}}/>
+                          <TouchableOpacity>
+                              <Text>确定</Text>
+                          </TouchableOpacity>
+                          </View>
+                          
                       </View>
                   </TouchableOpacity>
                 </View>
@@ -45,8 +68,7 @@ const styles = StyleSheet.create({
         width : '60%',
         height : '15%',
         borderRadius : height * 0.02,
-        justifyContent:"center",
-        alignItems:'center'
+        alignItems:'center',
     }
 })
 

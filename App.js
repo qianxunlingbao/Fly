@@ -42,6 +42,7 @@ import Fabu from './components/Fabu'
 import DongTaiLike from './components/Like'
 import Music from './components/MusicHall'
 import Search from './components/Search'
+import CustomScrollView from './components/CustomScrollView'
 
 const App = () => {
   const [value,setValue]= useState('正在热搜:李宇春新歌');
@@ -55,27 +56,36 @@ const App = () => {
             <Scene key="music" 
             title="音乐馆" 
             icon={()=><Icon name = 'home'/>}
-            hideNavBar>
+            hideNavBar
+           >
               <Scene key = "Music" component={Music} />
               <Scene key = "search" component={Search} />
             </Scene>
-            <Scene key="recommend" title="推荐" hideNavBar>
+            <Scene key="recommend" title="推荐" 
+            icon={()=><Icon name = 'home'/>}
+            hideNavBar
+            >
               <Scene key = "Recommend" component={Recommend}/>  
             </Scene>
-            <Scene key="condition" title="动态" hideNavBar>
+            <Scene key="condition" title="动态" 
+            icon={()=><Icon name = 'home'/>}
+            hideNavBar
+            >
               <Scene key = "Condition" component={Condition}/>
               <Scene key = "dongTai" component={Dongtai}/>
               <Scene key = "faBu" component={Fabu}/>
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
+              <Scene key="CustomScrollView" component={CustomScrollView} />
             </Scene>
             <Scene key="my" title="我的"  
+            icon={()=><Icon name = 'home'/>}
             >
               <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
-              <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar/>
-              <Scene key = "manage" component={Manage}  title='歌单管理' hideTabBar/>
-              <Scene key = "like" component={MyLike}  title='我喜欢' hideTabBar/>
-              <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar/>
-              <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar/>
+              <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar  />
+              <Scene key = "manage" component={Manage}  title='歌单管理' hideTabBar  />
+              <Scene key = "like" component={MyLike}  title='我喜欢' hideTabBar  />
+              <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar  />
+              <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar />
               <Scene key = "buy" component={Buied}  title='已购' hideTabBar/>
             </Scene>
           </Tabs>          
