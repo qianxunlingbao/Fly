@@ -6,17 +6,11 @@
  * @flow
  */
 
-import React,{useState,useEffect} from 'react';
+import React from 'react';
 import {
-  SafeAreaView,
   StyleSheet,
-  ScrollView,
-  View,
   BackHandler,
   ToastAndroid,
-  AsyncStorage,
-  Text,
-  StatusBar,
 } from 'react-native';
 import {
   Router, 
@@ -31,78 +25,18 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import SplashScreen from 'react-native-splash-screen';
-
 import Recommend from './components/Recommend';
 
 import CustomScrollView from './components/CustomScrollView';
-
-import Piano from './components/Piano';
-
-import Person from './components/Person';
 
 import Dongtai from './components/Dongtai';
 
 import Like from './components/Like';
 
-import TeOne from './components/TeOne';
-
-import FirstOne from './components/FirstOne';
-
-import One from './components/Fabu';
-
-import Home from './src/home/Home';
-
-import Goods from './src/goods/Goods';
-
-import Userinfo from './src/userinfo/Userinfo';
-
-import Login from './src/common/Login'
-
-import Zhuce from './src/common/Zhuce'
-
-import SwiperPage from './src/common/SwiperPage'
 
 console.disableYellowBox = true;
 
 const App = () => {
-	let [isLogin,setLogin] = useState(false);
-	let [isInstall,setInstall] = useState(true);
-	let now = 0;
-	let init = ()=>{
-		AsyncStorage.getItem('isInstall')
-		.then(res=>{
-			console.log('isinstall',res)
-			if(res){
-				setInstall(false);
-				SplashScreen.hide();
-			}
-		})
-		AsyncStorage.getItem('user')
-		.then(res=>{
-			let user = JSON.parse(res)
-			console.log(user)
-			if(!user){
-				SplashScreen.hide();
-			}
-			if(user&&user.token){
-				setLogin(true);
-				SplashScreen.hide();
-			}
-		})
-	}
-	useEffect(()=>{
-		init();
-	},[])
-	let afterInstall = ()=>{
-		console.log('after install')
-		setInstall(false)
-	}
-	if(isInstall){
-		return <View style={{flex:1}}>
-			<SwiperPage afterInstall={afterInstall}/>
-		</View>
-	}
   return (
     <Router
 		backAndroidHandler={()=>{
@@ -133,62 +67,6 @@ const App = () => {
 								inactiveTintColor="black"
 								tabBarStyle={{backgroundColor:'#fff'}}
 							>
-								{/* 首页 */}
-								{/*<Scene key='homePage'
-									title='首页'
-									icon={
-										({focused})=><Icon 
-											color={focused?'red':'blue'} 
-                      name="home"
-                      size={30}
-										/>
-									}
-								>
-									<Scene key='home' hideNavBar={true} component={FirstOne}/>
-								</Scene>*/}
-
-								{/* 商品分类栏 */}
-								{/*<Scene key='goodsPage'
-									hideNavBar={true}
-									title='商品分类'
-									icon={
-										({focused})=><Icon 
-											color={focused?'red':'blue'} 
-                      name="file"
-                      size={30}
-										/>
-									}
-									component={TeOne}
-								/>*/}
-								{/* 购物车栏 */}
-								{/*<Scene 
-									hideNavBar={true}
-									key='login1'
-									title='我的发布'
-									icon={({focused})=>
-										<Icon 
-											color={focused?'red':'blue'} 
-											name='file'
-											size={30}
-										/>
-									}
-									component={One}
-								/>*/}
-								
-								{/* 个人中心栏 */}
-								{/*<Scene 
-									key='userPage'
-									hideNavBar={true}
-									icon={({focused})=>
-										<Icon 
-											color={focused?'red':'blue'} 
-                      name='file'
-                      size={30}
-										/>
-									}
-									title="个人中心"
-									component={Person}
-								/>*/}
 								<Scene 
 									key='recommend'
 									hideNavBar={true}
@@ -206,9 +84,6 @@ const App = () => {
 						</Scene>
 					
 				</Lightbox>		
-				<Scene initial={!isLogin} key="login" component={Login} />
-				<Scene key="fabu" component={One} />	
-				<Scene key="zhuce" component={Zhuce} />	
 				<Scene key="dongtai" component={Dongtai} />	
 				<Scene key="like" component={Like} />
 				<Scene key="CustomScrollView" component={CustomScrollView} />
