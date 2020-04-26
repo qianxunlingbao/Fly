@@ -26,7 +26,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Router, Scene, Tabs, Lightbox} from "react-native-router-flux";
+import {Router, Scene, Tabs, Lightbox, Modal, Actions} from "react-native-router-flux";
 import Recommend from './components/Recommend'
 import Condition from './components/Condition'
 import My from './components/My'
@@ -43,32 +43,37 @@ import DongTaiLike from './components/Like'
 import Music from './components/MusicHall'
 import Search from './components/Search'
 import CustomScrollView from './components/CustomScrollView'
-
+import CustomTabBar from './components/CustomTabBar'
+import SongList from './components/SongList'
+import SongNav from './components/SongNav'
+import Publish from './components/Publish'
 const App = () => {
   const [value,setValue]= useState('正在热搜:李宇春新歌');
   return (
     <>
       <Router>
-        <Scene key = 'root'>
+        <Scene key = 'root' >
         <Tabs key='tabbar'
             hideNavBar
           >
             <Scene key="music" 
             title="音乐馆" 
-            icon={()=><Icon name = 'home'/>}
-            hideNavBar
+            icon={()=><Icon name = 'home' size = {30}/>}
+            
            >
-              <Scene key = "Music" component={Music} />
-              <Scene key = "search" component={Search} />
+              <Scene key = "Music" component={Music} hideNavBar/>
+              <Scene key = "search" component={Search} hideNavBar hideTabBar/>
+              <Scene key = "songList" component={SongList} hideTabBar  hideNavBar/>
+              <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
             </Scene>
             <Scene key="recommend" title="推荐" 
-            icon={()=><Icon name = 'home'/>}
+            icon={()=><Icon name = 'carry-out' size = {30}/>}
             hideNavBar
             >
               <Scene key = "Recommend" component={Recommend}/>  
             </Scene>
             <Scene key="condition" title="动态" 
-            icon={()=><Icon name = 'home'/>}
+            icon={()=><Icon name = 'smile' size = {30}/>}
             hideNavBar
             >
               <Scene key = "Condition" component={Condition}/>
@@ -78,7 +83,7 @@ const App = () => {
               <Scene key="CustomScrollView" component={CustomScrollView} />
             </Scene>
             <Scene key="my" title="我的"  
-            icon={()=><Icon name = 'home'/>}
+            icon={()=><Icon name = 'user' size = {30}/>}
             >
               <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
               <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar  />
@@ -96,42 +101,7 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  
 });
 
 export default App;

@@ -5719,6 +5719,11 @@ react-native-screens@^1.0.0-alpha.11:
   dependencies:
     debounce "^1.2.0"
 
+react-native-sound@^0.11.0:
+  version "0.11.0"
+  resolved "https://registry.npm.taobao.org/react-native-sound/download/react-native-sound-0.11.0.tgz#ad60b55ba8c6dc89917f381ad3713f2738de530f"
+  integrity sha1-rWC1W6jG3ImRfzga03E/JzjeUw8=
+
 react-native-swiper@^1.6.0-nightly.5:
   version "1.6.0-nightly.5"
   resolved "https://registry.npm.taobao.org/react-native-swiper/download/react-native-swiper-1.6.0-nightly.5.tgz#894319918ff22680c325b8052457ccf213a7c7cd"

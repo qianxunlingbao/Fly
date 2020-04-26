@@ -147,7 +147,7 @@ export default class Search extends Component {
                                 {
                                     this.state.history.map((item)=>{
                                         return (
-                                            <TouchableOpacity style={{backgroundColor:'white',height:26,justifyContent:'center',alignItems:'center',borderRadius:13,margin:5,padding:10}}>
+                                            <TouchableOpacity style={{backgroundColor:'white',height:26,justifyContent:'center',alignItems:'center',borderRadius:13,margin:5,padding:10}} onPress = {() => Actions.songList({search:item})}>
                                                 <Text>{item}</Text>
                                             </TouchableOpacity>
                                         )
