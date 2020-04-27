@@ -114,7 +114,7 @@ export default class Search extends Component {
                                 this.state.musicArray.map((item,index)=>{
                                     if(item.music_name.indexOf(this.state.value)!==-1){
                                         return (
-                                            <TouchableOpacity style={{width:'100%',height:35,flexDirection:'row',alignItems:'center',paddingLeft:15}} onPress={()=>{this.storage(item.music_name)}}>
+                                            <TouchableOpacity style={{width:'100%',height:35,flexDirection:'row',alignItems:'center',paddingLeft:15}} onPress={()=>{this.storage(item.music_name);Actions.songList({search:item.music_name})}}>
                                                 <Icon name="search1" size={15} color="gray" />
                                                 <Text style={{marginLeft:10}}>{item.music_name}</Text>
                                             </TouchableOpacity>

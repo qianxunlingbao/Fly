@@ -7,7 +7,8 @@ import {
     ScrollView 
     ,Dimensions, 
     TouchableOpacity, 
-    FlatList
+    FlatList,
+    AsyncStorage
 } from 'react-native'
 const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
@@ -17,28 +18,42 @@ class My extends Component {
     constructor(){
         super();
         this.state={
-            name:'网名不好起',
             recommend:'学而思VIP待领取',
             like:388,
             recent:200,
             download:112,
             buy:0,
-            create:4,
-            collect:2,
+            create:'',
+            collect:'',
             menu:[1,0],
-            createdata:[{key:'1',title:'国漫古风',num:3},
-            {key:'2',title:'石川绫子',num:2},
-            {key:'3',title:'永远的七日之都',num:2},
-            {key:'4',title:'左翼',num:2}],
+            createdata:[],
             addposition:'absolute',
             addflex:'flex',
             modalVisible : false
                 }
     }
-    _onPressEmpty(){
+    _onPressEmpty = (data) => {
+        console.log(data);
         this.setState({
-            modalVisible : false
+            modalVisible : false,
         })
+    }
+    componentDidMount = () => {
+        AsyncStorage.getItem('login').then(
+            async (val) => {
+                this.setState({login : val});
+
+                }
+        )
+        AsyncStorage.getItem('name').then(
+            (val) => {
+                this.setState({name :val})
+            }
+        )
+
+    }
+    componentWillMount = () => {
+
     }
     render() {
         return (
@@ -47,21 +62,30 @@ class My extends Component {
             >
                 <Prompt 
                 modalVisible = {this.state.modalVisible}
-                callback = {this._onPressEmpty.bind(this)}
+                callback = {this._onPressEmpty}
                 />
                 <ScrollView 
                 showsVerticalScrollIndicator={false} 
                 >
                 <View  style={{width:width,alignItems:'center'}}>
                 <View style={styles.basicinfo}>
-                        <View style={styles.uphalf}>
-                            <TouchableOpacity style={styles.headImg}>
+                {
+                        this.props.unlogin 
+                        ?<View style={styles.uphalf1}>
+                            <TouchableOpacity onPress={()=>Actions.login()} style = {{width:'60%',height:'40%',backgroundColor:'green',borderRadius:50,justifyContent:"center",alignItems:"center"}}>
+                                <Text style={{fontSize:18,color:'white'}}>立即登录</Text>
                             </TouchableOpacity>
-                            <Text style={{marginLeft:20,fontSize:20}}>{this.state.name}</Text>
-                            <Image style={{width:25,height:25,marginLeft:10}} source={require('../images/diamond.png')}/>
-                            <Image style={{width:25,height:25}} source={require('../images/ear.png')}/>
-                            <Image style={{width:25,height:25,marginLeft:width*0.8*0.3}} source={require('../images/email.png')}/>
-                        </View>
+                        </View> 
+                        :<View style={styles.uphalf}>
+                        <TouchableOpacity style={styles.headImg}>
+                        </TouchableOpacity>
+                        <Text style={{marginLeft:20,fontSize:20}}>{this.state.name}</Text>
+                        <Image style={{width:25,height:25,marginLeft:10}} source={require('../images/diamond.png')}/>
+                        <Image style={{width:25,height:25}} source={require('../images/ear.png')}/>
+                        <Image style={{width:25,height:25,marginLeft:width*0.8*0.3}} source={require('../images/email.png')}/>
+                        </View> 
+                    }
+                
                         <Devider style={styles.deviderstyle}/>
                         <View style={styles.downhalf}>
                             <View style={styles.half}>
@@ -151,7 +175,42 @@ class My extends Component {
                             </TouchableOpacity>
                         </View>
                     </View>
-                    <View style={styles.songlist}>
+                    {
+                        this.props.unlogin? 
+                        <View style={styles.songlist}>
+                            <View style={{flexDirection:'row'}}>
+                        <TouchableOpacity  onPress={()=>this.setState({menu:[1,0],addposition:'absolute',addflex:'flex'})}>
+                        <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[0]?'black':'grey'}}>自建歌单</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>this.setState({menu:[0,1],addposition:'relative',addflex:'none'})} >
+                        <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[1]?'black':'grey',marginLeft:20}}>收藏歌单</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+                        onPress = {()=>this.setState({modalVisible : true})}
+                        style={{width:'7%',position:this.state.addposition,left:'80%',display:this.state.addflex}} >
+                        <Image 
+                        source={require('../images/createSong.png')} 
+                        />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{width:'7%',position:'absolute',left:'90%'}}   onPress={()=>Actions.manage()}>
+                        <Image 
+                        source={require('../images/manage.png')}                       
+                        />
+                        </TouchableOpacity>
+                        </View>
+                            {
+                                this.state.addflex == 'flex' 
+                                ?
+                                <View style = {{height:height * 0.3,justifyContent:"center",alignItems:"center"}}>
+                                    <Text style = {{textAlign:"center",fontSize:20}}>尚未创建歌单，请登录后创建</Text>
+                                </View>
+                                :
+                                <View style = {{height:height * 0.3,justifyContent:"center",alignItems:"center"}}>
+                                    <Text style = {{textAlign:"center",fontSize:20}}>没有收藏歌单</Text>
+                                </View>
+                            }
+                        </View>
+                        : <View style={styles.songlist}>
                         <View style={{flexDirection:'row'}}>
                         <TouchableOpacity  onPress={()=>this.setState({menu:[1,0],addposition:'absolute',addflex:'flex'})}>
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[0]?'black':'grey'}}>自建歌单{this.state.create}</Text>
@@ -188,6 +247,8 @@ class My extends Component {
                             />
                         </View>
                     </View>
+                    }
+                   
                 </View>
                 </ScrollView>
             </View>
@@ -245,6 +306,13 @@ const styles = StyleSheet.create({
         height:height * 0.099,
         flexDirection:'row',
         alignItems:"center"
+    },
+    uphalf1:{
+        width:width * 0.8,
+        height:height * 0.099,
+        flexDirection:'row',
+        alignItems:"center",
+        justifyContent:'center'
     },
     downhalf:{
         width:width * 0.8,

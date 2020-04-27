@@ -7,15 +7,18 @@ import { StyleSheet,
     TouchableOpacity,
     Dimensions, 
     TextInput,
-    Button} from 'react-native'
+    Button,
+    AsyncStorage} from 'react-native'
 import Devide from './Devide'
 let {width,height} = Dimensions.get('window');
 export default class Prompt extends Component {
     constructor(){
         super();
         this.state = {
-            listTitle : '新建歌单'
+            listTitle : '新建歌单',
         }
+    }
+    componentWillMount(){
     }
     render() {
         return (
@@ -38,11 +41,11 @@ export default class Prompt extends Component {
         >{this.state.listTitle}</TextInput>
                           <Devide style={{width:'100%',height:1,backgroundColor:'#eeeeee',marginTop:10}}/>
                           <View style={{flexDirection:'row',justifyContent:"space-around",width:'90%',height:42,alignItems:'center'}}>
-                          <TouchableOpacity>
+                          <TouchableOpacity onPress={()=>{this.props.callback('0000')}}>
                               <Text>取消</Text>
                           </TouchableOpacity>
                           <Devide style={{width:1,height:42,backgroundColor:'#eee'}}/>
-                          <TouchableOpacity>
+                          <TouchableOpacity onPress={()=>{this.props.callback('0000')}}>
                               <Text>确定</Text>
                           </TouchableOpacity>
                           </View>

@@ -47,6 +47,9 @@ import CustomTabBar from './components/CustomTabBar'
 import SongList from './components/SongList'
 import SongNav from './components/SongNav'
 import Publish from './components/Publish'
+import Login from './components/Login'
+import Register from './components/Register'
+import Songword from './components/Songword'
 const App = () => {
   const [value,setValue]= useState('正在热搜:李宇春新歌');
   return (
@@ -65,6 +68,7 @@ const App = () => {
               <Scene key = "search" component={Search} hideNavBar hideTabBar/>
               <Scene key = "songList" component={SongList} hideTabBar  hideNavBar/>
               <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
+              <Scene key = "songword" component={Songword} hideTabBar  hideNavBar/>
             </Scene>
             <Scene key="recommend" title="推荐" 
             icon={()=><Icon name = 'carry-out' size = {30}/>}
@@ -92,8 +96,11 @@ const App = () => {
               <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar  />
               <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar />
               <Scene key = "buy" component={Buied}  title='已购' hideTabBar/>
+              <Scene key = 'login' component = {Login} hideNavBar hideTabBar/>      
+          <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
+
             </Scene>
-          </Tabs>          
+          </Tabs>    
           </Scene>
       </Router>
     </>

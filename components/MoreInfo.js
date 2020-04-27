@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text ,Image, TouchableOpacity, AsyncStorage } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 class MoreInfo extends Component {
 
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.out}>
+                <TouchableOpacity style={styles.out} onPress = {()=>{Actions.My({unlogin : true});}}>
                     <Text style={{textAlign:'center',color:'red',fontSize:16}}>退出登录</Text>
                 </TouchableOpacity>
             </View>
