@@ -15,7 +15,6 @@ export default class Prompt extends Component {
     constructor(){
         super();
         this.state = {
-            listTitle : '新建歌单',
         }
     }
     componentWillMount(){
@@ -37,15 +36,15 @@ export default class Prompt extends Component {
                           <Text style={{textAlign:"center",fontSize:20,marginTop:20}}>新建歌单</Text>
                           <TextInput 
                           style = {{height:'25%',width:'80%',backgroundColor:'#eee',borderRadius:20,marginTop:5}}
-                          onChangeText = {(val) => this.setState({listTitle : value})}
-        >{this.state.listTitle}</TextInput>
+                          onChangeText = {(val) => this.props.changecallback(val)}
+        >{this.props.listTitle}</TextInput>
                           <Devide style={{width:'100%',height:1,backgroundColor:'#eeeeee',marginTop:10}}/>
                           <View style={{flexDirection:'row',justifyContent:"space-around",width:'90%',height:42,alignItems:'center'}}>
                           <TouchableOpacity onPress={()=>{this.props.callback('0000')}}>
                               <Text>取消</Text>
                           </TouchableOpacity>
                           <Devide style={{width:1,height:42,backgroundColor:'#eee'}}/>
-                          <TouchableOpacity onPress={()=>{this.props.callback('0000')}}>
+                          <TouchableOpacity onPress={()=>{this.props.callback()}}>
                               <Text>确定</Text>
                           </TouchableOpacity>
                           </View>

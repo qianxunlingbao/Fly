@@ -26,7 +26,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Router, Scene, Tabs, Lightbox, Modal, Actions} from "react-native-router-flux";
+import {Router, Scene, Tabs, Lightbox, Modal, Actions,BackHandler} from "react-native-router-flux";
 import Recommend from './components/Recommend'
 import Condition from './components/Condition'
 import My from './components/My'
@@ -54,7 +54,23 @@ const App = () => {
   const [value,setValue]= useState('正在热搜:李宇春新歌');
   return (
     <>
-      <Router>
+      <Router
+      backAndroidHandler={()=>{
+        if(Actions.currentScene != 'home'){
+          Actions.pop();
+          return true;
+        }else{
+          if(new Date().getTime()-now<2000){
+            BackHandler.exitApp();
+          }else{
+            ToastAndroid.show('确定要退出吗',100);
+            now = new Date().getTime();
+            return true;
+          }
+        }
+        
+      }}
+      >
         <Scene key = 'root' >
         <Tabs key='tabbar'
             hideNavBar

@@ -19,9 +19,9 @@ class My extends Component {
         super();
         this.state={
             recommend:'学而思VIP待领取',
-            like:388,
-            recent:200,
-            download:112,
+            like:0,
+            recent:0,
+            download:0,
             buy:0,
             create:'',
             collect:'',
@@ -29,14 +29,33 @@ class My extends Component {
             createdata:[],
             addposition:'absolute',
             addflex:'flex',
-            modalVisible : false
+            modalVisible : false,
+            listTitle : '新建歌单',
+
                 }
     }
-    _onPressEmpty = (data) => {
-        console.log(data);
+    _onPressEmpty = () => {
         this.setState({
             modalVisible : false,
         })
+        this.setState({
+            create : this.state.create - '0' + 1,
+        },()=>{
+            this.setState(
+                {
+                    createdata :[...this.state.createdata,{key:this.state.create,title : this.state.listTitle,num : 0}]
+                },
+                ()=>AsyncStorage.setItem('songmenu',JSON.stringify(this.state.createdata))
+
+            )
+        })
+    }
+    _changeListtitle = (data) => {
+        this.setState({
+            listTitle : data
+        })
+        setTimeout(()=>console.log(this.state.listTitle),1000) ;
+
     }
     componentDidMount = () => {
         AsyncStorage.getItem('login').then(
@@ -50,7 +69,11 @@ class My extends Component {
                 this.setState({name :val})
             }
         )
-
+        AsyncStorage.getItem('songmenu').then(
+            (val) => {
+                console.log(val);
+            }
+        )
     }
     componentWillMount = () => {
 
@@ -62,7 +85,9 @@ class My extends Component {
             >
                 <Prompt 
                 modalVisible = {this.state.modalVisible}
+                listTitle = {this.state.listTitle}
                 callback = {this._onPressEmpty}
+                changecallback = {this._changeListtitle}
                 />
                 <ScrollView 
                 showsVerticalScrollIndicator={false} 
