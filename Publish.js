@@ -334,6 +334,7 @@ export default class Doc extends Component{
             nowSec = seconds - nowMin * 60;
             nowSec = nowSec < 10 ? '0' + nowSec : nowSec;
         } else {
+            nowMin=0
             nowSec = seconds < 10 ? '0' + seconds : seconds;
         }
         this.setState({
