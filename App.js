@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {
   StyleSheet,
   BackHandler,
@@ -29,14 +29,23 @@ import Recommend from './components/Recommend';
 
 import CustomScrollView from './components/CustomScrollView';
 
+import OverLike from './components/OverLike';
+
 import Dongtai from './components/Dongtai';
 
 import Like from './components/Like';
+
+import SplashScreen from 'react-native-splash-screen';
+
+import RedAlert from './components/RedAlert';
 
 
 console.disableYellowBox = true;
 
 const App = () => {
+	useEffect(()=>{
+		SplashScreen.hide();
+	},[])
   return (
     <Router
 		backAndroidHandler={()=>{
@@ -87,6 +96,8 @@ const App = () => {
 				<Scene key="dongtai" component={Dongtai} />	
 				<Scene key="like" component={Like} />
 				<Scene key="CustomScrollView" component={CustomScrollView} />
+				<Scene key="RedAlert" component={RedAlert} />
+				<Scene key="OverLike" component={OverLike} />
 					
 			</Modal>
 			</Overlay>

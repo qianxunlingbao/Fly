@@ -53,12 +53,25 @@ export default class CustomScrollView extends Component {
     render(){
         return(
             <View style={styles.container}>
+                
                 <ScrollView 
                     showsVerticalScrollIndicator={false}
                     onScrollEndDrag={(e)=>this.exportOnScrollEndDrag(e)}
                     onMomentumScrollEnd={(e)=>this.exportonMomentumScrollEnd(e)}
                     ref = {(ref)=>{this.outsideScroll = ref}}
                 >
+                    <View style={{
+                        height:height*0.05,
+                        justifyContent:'center',
+                        alignItems:'center',
+                        backgroundColor:'#AAAAAA',
+                        width:width*0.91,
+                        borderWidth:1,
+                        borderRadius:25,
+                        marginBottom:width*0.06
+                    }}>
+                        <Text style={{fontSize:25}}>评论</Text>
+                    </View>
                     <View style={{height:this.ViewHeight,width:Utils.size.width}}>
                         {this.state.data.map((item,index)=>{
                             return(
