@@ -88,8 +88,7 @@ export default class Doc extends Component{
 				let music_author=responseJson.data[index].music_author;
 				this.state.music_author=music_author;
                 this.setState({
-                    pic_small: songinfo.pic_small, //小图
-                    pic_big: songinfo.pic_big,  //大图
+
                     music_name: music_name,     //歌曲名
                     music_author: music_author,   //歌手
                     file_link: bitrate,   //播放链接
@@ -123,7 +122,7 @@ export default class Doc extends Component{
                     let song_id = responseJson.data[i].music_id
                     song_idAry.push(song_id)
 				}
-				console.log(song_idAry)
+		
                 this.setState({
                     songs: song_idAry
                 }, () => {
@@ -199,7 +198,7 @@ export default class Doc extends Component{
     }
     // 播放/暂停
     playAction = () => {
-        console.log(this.state.music_name,'bo')
+    
         let pauseStatus = !this.state.pause;
         this.setState({
             pause: !this.state.pause
@@ -348,6 +347,7 @@ export default class Doc extends Component{
     }
 
 		render() {
+         
 		let time = this.state;
 		return (
 			<View style={styles.container}>
@@ -365,7 +365,9 @@ export default class Doc extends Component{
 						<Text style={{color:'#fff'}}>歌曲</Text>
                         </TouchableOpacity>
 						<Text>  |  </Text>
-                        <TouchableOpacity  onPress={()=>Actions.songword()}>
+                        <TouchableOpacity  onPress={()=>Actions.songword({data:[
+                            this.state.pause,this.state.music_name,this.state.nowMin,this.state.nowSec
+                            ]})}>
 						<Text>歌词</Text>
                         </TouchableOpacity>
 					</View>
@@ -376,7 +378,7 @@ export default class Doc extends Component{
 				<View style={{flex:30,justifyContent:'center',}}>
 					<View style={{flex:1,marginLeft:'5%'}}>
 						<Image style={{width:'95%',height:'100%',
-						 borderRadius:width*0.05}} source={require('./2.png')} />
+						 borderRadius:width*0.05}} source={require('./2.jpg')} />
 					</View>
 				</View>
 				<View style={{flex:8,flexDirection:'row',marginTop:'3%'}} >
