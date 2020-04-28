@@ -14,9 +14,6 @@ import {
     TouchableHighlight,
 } from 'react-native';
 
-import Button from 'react-native-button';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Actions } from 'react-native-router-flux';
 
 const {width,scale,height} = Dimensions.get('window');

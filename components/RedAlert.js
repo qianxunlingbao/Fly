@@ -10,18 +10,6 @@ import {
     FlatList,
     TouchableOpacity
 } from 'react-native';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-import Swiper from 'react-native-swiper';
-
-import Video from 'react-native-video';
-
-import Button from 'react-native-button';
-
-import {MessageBarManager} from 'react-native-message-bar'
-
-import AnimatedTabs from 'react-native-animated-tabs';
 import { Actions } from 'react-native-router-flux';
 
 const {width,scale,height} = Dimensions.get('window');
@@ -106,7 +94,7 @@ const goods = [
         dianzan: '点赞',
         dianzanshu: 34,
         pinglun: '评论',
-        images: require('../assets/12.png'),
+        images: require('../images/12.png'),
         pinglunshu: 20,
         img: require('../images/punch.png'),
         url: {uri: 'https://qianxunlingbao.github.io/Movie-test/%E8%B5%B5%E4%B8%BD%E9%A2%96-%E8%AE%B8%E5%BF%97%E5%AE%89-%E4%B9%B1%E4%B8%96%E4%BF%B1%E7%81%AD%20(%E3%80%8A%E8%9C%80%E5%B1%B1%E6%88%98%E7%BA%AA%E3%80%8B%E7%94%B5%E8%A7%86%E5%89%A7%E4%B8%BB%E9%A2%98%E6%9B%B2)(%E8%B6%85%E6%B8%85).mp4'}
@@ -189,7 +177,7 @@ export default class RedAlert extends Component {
                             width:width*0.3,
                             marginTop:-height*0.03
                             }} 
-                            onPress={()=>Actions.recommend()
+                            onPress={()=>Actions.Condition()
                         }>
                             <Text style={{
                                 position:'absolute',
