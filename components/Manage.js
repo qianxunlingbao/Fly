@@ -31,7 +31,7 @@ class Manage extends Component {
             <View style={styles.container}>
                 <FlatList
                             data={this.state.data}
-                            renderItem={({item})=>
+                            renderItem={({item,index})=>
                                 <View style={styles.createlist}>
                                     <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10,justifyContent:"center",alignItems:"center"}}>
                                     <Image style={{width:'100%',height:'100%',borderRadius:10}} source = {{uri:`http://49.235.231.110:8802/musicimage/${index + 1}.JPG`}}/>
