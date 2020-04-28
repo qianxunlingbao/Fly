@@ -38,7 +38,6 @@ import MyLike from './components/MyLike'
 import Local from './components/Local'
 import Recent from './components/Recent'
 import Dongtai from './components/Dongtai'
-import Fabu from './components/Fabu'
 import DongTaiLike from './components/Like'
 import Music from './components/MusicHall'
 import Search from './components/Search'
@@ -101,7 +100,6 @@ const App = () => {
             >
               <Scene key = "Condition" component={Condition}/>
               <Scene key = "dongTai" component={Dongtai}/>
-              <Scene key = "faBu" component={Fabu}/>
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
               <Scene key="CustomScrollView" component={CustomScrollView} />
               <Scene key="RedAlert" component={RedAlert} />
