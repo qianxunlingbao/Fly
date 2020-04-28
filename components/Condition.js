@@ -150,6 +150,13 @@ export default class FirstOne extends Component {
             tianjiaguanzhu: this.state.isAdd ? '+关注' : '已关注'
         })
     }
+    componentWillUnmount(){
+        this.setState({
+            paused:true,
+            playIcon: this.state.paused ? 'pause' : 'play',
+            muted:!this.state.muted
+        })
+    }
     render() {
         return (
             <>            
@@ -200,7 +207,7 @@ export default class FirstOne extends Component {
                             marginTop:-height*0.04,
                             marginLeft:width*0.9
                         }}
-                        onPress={()=>Actions.like()
+                        onPress={()=>Actions.dongTaiLike()
                     }>
                         <Image style={{
                             width:width*0.052,

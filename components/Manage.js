@@ -33,7 +33,9 @@ class Manage extends Component {
                             data={this.state.data}
                             renderItem={({item})=>
                                 <View style={styles.createlist}>
-                                    <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10}}></View>
+                                    <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10,justifyContent:"center",alignItems:"center"}}>
+                                    <Image style={{width:'100%',height:'100%',borderRadius:10}} source = {{uri:`http://49.235.231.110:8802/musicimage/${index + 1}.JPG`}}/>
+                                    </View>
                                     <View style={{marginLeft:10}}>
                                         <Text style={{fontSize:16,marginBottom:10}}>{item.title}</Text>
                                         <Text style={{color:'grey',marginBottom:10}}>{item.num}首</Text>

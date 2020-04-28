@@ -101,31 +101,47 @@ export default class Doc extends Component{
 						maximumValue: totalTime,
 					})
 	
-				})
+                })
                 this.onGetLyric(this.state.songs[index].music_id);
     }
-    onGetMusicLists = () => {
-		var that = this;
-		if(whoosh){
-			whoosh.stop();
-			whoosh.release();
-		}
-	  let songArry = [...this.state.songs];
+     onGetMusicLists = async () => {
+        var that = this;
+        await AsyncStorage.getItem('playlist').then(
+            (value) => {
+                that.setState({
+                    songs : value == null ? [] : JSON.parse(value) 
+                })
+            })
+      let songArry = [...this.state.songs];
 	  function chongfu(additem){
 		return additem.music_id != that.props.data.music_id;
 	  }
 	  if(songArry.every(chongfu)){
+        if(whoosh){
+			whoosh.stop();
+			whoosh.release();
+		}
 		  that.setState({
 			  songs : [...that.state.songs,that.props.data]
-		  },()=>{console.log('songs',that.state.songs);AsyncStorage.setItem('playlist',JSON.stringify(that.state.songs));that.loadSongInfo(that.state.songs.length - 1)})
+          },()=>{AsyncStorage.setItem('playlist',JSON.stringify(that.state.songs));that.loadSongInfo(that.state.songs.length - 1)})
+          that.setState({
+              currentIndex:that.state.songs.length - 1
+          })
 	  }else{
 		  for(var i = 0; i < songArry.length;i++){
 			  if(songArry[i].music_id == that.props.data.music_id){
-				  that.loadSongInfo(i);
+                  if(whoosh == null){
+                    that.loadSongInfo(i);
+                  }else{
+                      console.log(this.state.nowMin)
+                  }
+                  that.setState({
+                    currentIndex:i
+                })
 				  break;
 			  }
 		  }
-	  }
+      }
     }
     onGetLyric = (songId) => {
      /*   //加载歌词
@@ -169,13 +185,6 @@ export default class Doc extends Component{
     }
 
     componentDidMount() {
-        AsyncStorage.getItem('playlist').then(
-            (value) => {
-                this.setState({
-                    songs : JSON.stringify(value) == null ? [] : JSON.stringify(value)
-                })
-            }
-        )
         //先从总列表中获取到song_id保存
 		this.onGetMusicLists();
         /*this.spin()   //   启动旋转*/
@@ -185,7 +194,7 @@ export default class Doc extends Component{
     nextAction = (index) => {
         this.recover()
         lyrObj = [];
-        if (index == 10) {
+        if (index == this.state.songs.length - 1) {
             index = 0 //如果是最后一首就回到第一首
 		}
 		if (index == -1) {
@@ -194,8 +203,7 @@ export default class Doc extends Component{
         this.setState({
             currentIndex: index,  //更新数据
         })
-        this.loadSongInfo(index)  //加载数据
-       
+        this.loadSongInfo(index)  //加载数据       
     }
     // 播放/暂停
     playAction = () => {
@@ -381,7 +389,7 @@ export default class Doc extends Component{
 				<View style={{flex:30,justifyContent:'center',}}>
 					<View style={{flex:1,marginLeft:'5%'}}>
 						<Image style={{width:'95%',height:'100%',
-						 borderRadius:width*0.05}} source={require('../images/2.png')} />
+						 borderRadius:width*0.05}} source={{uri:`http://49.235.231.110:8802/musicimage/${this.props.data.music_id}.JPG`}} />
 					</View>
 				</View>
 				<View style={{flex:8,flexDirection:'row',marginTop:'3%'}} >
@@ -472,7 +480,7 @@ export default class Doc extends Component{
 		</View>
 		</View>
 		</View>
-        <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
+        <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs} currentIndex = {this.state.currentIndex}/>
 
         </View>
 	

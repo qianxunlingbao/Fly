@@ -13,12 +13,7 @@ import {
     FlatList,
     TouchableHighlight,
 } from 'react-native';
-
-import Button from 'react-native-button';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Actions } from 'react-native-router-flux';
-
 const {width,scale,height} = Dimensions.get('window');
 
 export default class Like extends Component {
@@ -73,7 +68,7 @@ export default class Like extends Component {
                     <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
                         <View style={{width:width*0.1,height:width*0.1}}>
                             <TouchableOpacity 
-                                onPress={()=>Actions.recommend()}
+                                onPress={()=>Actions.Condition()}
                             >
                                 <Image style={{width:width*0.1,height:width*0.1}} source={require('../images/fanhui.png')} />
                             </TouchableOpacity>

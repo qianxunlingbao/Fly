@@ -70,7 +70,7 @@ export default class OverLike extends Component {
                     <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
                         <View style={{width:width*0.1,height:width*0.1}}>
                             <TouchableOpacity 
-                                onPress={()=>Actions.recommend()}
+                                onPress={()=>Actions.Condition()}
                             >
                                 <Image style={{width:width*0.1,height:width*0.1}} source={require('../images/fanhui.png')} />
                             </TouchableOpacity>
@@ -84,7 +84,7 @@ export default class OverLike extends Component {
                                     marginTop:-width*0.1,
                                     height:width*0.1
                                 }
-                            } onPress={()=>Actions.recommend()}>
+                            } onPress={()=>Actions.Condition()}>
                                 <Text style={{textAlign:'center',marginTop:width*0.017,fontSize:30}}>已关注</Text>
                             </TouchableOpacity>
                         </View>
