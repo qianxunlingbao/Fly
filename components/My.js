@@ -54,24 +54,24 @@ class My extends Component {
         this.setState({
             listTitle : data
         })
-        setTimeout(()=>console.log(this.state.listTitle),1000) ;
-
     }
     componentDidMount = () => {
         AsyncStorage.getItem('login').then(
-            async (val) => {
-                this.setState({login : val});
-
+             (val) => {
+                this.setState({login : JSON.parse(val) == null ?true :JSON.parse(val)});
                 }
         )
         AsyncStorage.getItem('name').then(
             (val) => {
-                this.setState({name :val})
+                this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
             }
         )
         AsyncStorage.getItem('songmenu').then(
             (val) => {
-                console.log(val);
+                this.setState({
+                    createdata : JSON.parse(val) ==null ?'':JSON.parse(val),
+                    create : JSON.parse(val) ==null ?'':JSON.parse(val).length
+                })
             }
         )
     }
@@ -95,7 +95,7 @@ class My extends Component {
                 <View  style={{width:width,alignItems:'center'}}>
                 <View style={styles.basicinfo}>
                 {
-                        this.props.unlogin 
+                        this.state.login 
                         ?<View style={styles.uphalf1}>
                             <TouchableOpacity onPress={()=>Actions.login()} style = {{width:'60%',height:'40%',backgroundColor:'green',borderRadius:50,justifyContent:"center",alignItems:"center"}}>
                                 <Text style={{fontSize:18,color:'white'}}>立即登录</Text>
@@ -201,7 +201,7 @@ class My extends Component {
                         </View>
                     </View>
                     {
-                        this.props.unlogin? 
+                        this.state.login? 
                         <View style={styles.songlist}>
                             <View style={{flexDirection:'row'}}>
                         <TouchableOpacity  onPress={()=>this.setState({menu:[1,0],addposition:'absolute',addflex:'flex'})}>
@@ -250,7 +250,7 @@ class My extends Component {
                         source={require('../images/createSong.png')} 
                         />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:'7%',position:'absolute',left:'90%'}}   onPress={()=>Actions.manage()}>
+                        <TouchableOpacity style={{width:'7%',position:'absolute',left:'90%'}}   onPress={()=>Actions.manage({data:this.state.createdata})}>
                         <Image 
                         source={require('../images/manage.png')}                       
                         />
@@ -261,12 +261,14 @@ class My extends Component {
                             data={this.state.createdata}
                             renderItem={({item})=>
                                 <View style={styles.createlist}>
+                                    <TouchableOpacity style={styles.createlist} onPress = {() => Actions.addsong({num:item.num})}>
                                     <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10}}></View>
                                     <View style={{marginLeft:10}}>
                                         <Text style={{fontSize:16,marginBottom:10}}>{item.title}</Text>
                                         <Text style={{color:'grey',marginBottom:10}}>{item.num}首</Text>
                                     </View>
                                     <Image style={{width:1,height:25,marginLeft:'80%',position:'absolute'}} source={require('../images/right.png')}/>
+                                    </TouchableOpacity>
                                 </View>
                             }
                             />

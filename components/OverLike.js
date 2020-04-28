@@ -14,14 +14,11 @@ import {
     TouchableHighlight,
 } from 'react-native';
 
-import Button from 'react-native-button';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Actions } from 'react-native-router-flux';
 
 const {width,scale,height} = Dimensions.get('window');
 
-export default class Like extends Component {
+export default class OverLike extends Component {
     constructor(){
         super();
         this.state = {
@@ -79,7 +76,7 @@ export default class Like extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.30,marginTop:-width*0.09}}>
-                            <Text style={{fontSize:30}}>推荐  |  </Text>
+                            <Text style={{fontSize:30,color:'#AAAAAA'}}>推荐  |  </Text>
                             <TouchableOpacity style={
                                 {
                                     width:width*0.2,
@@ -87,8 +84,8 @@ export default class Like extends Component {
                                     marginTop:-width*0.1,
                                     height:width*0.1
                                 }
-                            } onPress={()=>Actions.OverLike()}>
-                                <Text style={{textAlign:'center',marginTop:width*0.017,color:'#AAAAAA',fontSize:30}}>已关注</Text>
+                            } onPress={()=>Actions.recommend()}>
+                                <Text style={{textAlign:'center',marginTop:width*0.017,fontSize:30}}>已关注</Text>
                             </TouchableOpacity>
                         </View>
                         
@@ -99,25 +96,7 @@ export default class Like extends Component {
                             marginLeft:width*0.05,
                             marginTop:width*0.05
                         }}>
-                        <View style={styles.touxiang}>
-                            <Image style={styles.touxiang} 
-                                source={require('../images/huitailang1.png')} />
-                        </View>
-                        <View style={styles.one}>
-                            <Text style={styles.author}>此处固定</Text>
-                            <Text style={styles.name}>仅使用关注,不然会多个触发</Text>
-                        </View>
-                        <View style={styles.two}>
-                            <TouchableOpacity style={styles.three} onPress={() => this.guanzhu()}>
-                                <Text style={styles.guanzhu}>{this.state.guanzhu}</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.four}>
-                            <TouchableOpacity>
-                                <Text style={styles.delete}>×</Text>
-                            </TouchableOpacity>
-                            
-                        </View>
+                       <Text>关注页</Text>
                     </View>
                                 
                     <View>
@@ -140,7 +119,7 @@ export default class Like extends Component {
                                     </View>
                                     <View style={styles.two}>
                                         <TouchableOpacity style={styles.three} >
-                                            <Text style={styles.guanzhu}>+关注</Text>
+                                            <Text style={styles.guanzhu}>已关注</Text>
                                         </TouchableOpacity>
                                     </View>
                                     <View style={styles.four}>

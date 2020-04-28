@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image, Dimensions,TouchableOpacity,Alert,FlatList } from 'react-native'
+import { StyleSheet, View, Text ,Image, Dimensions,TouchableOpacity,Alert,FlatList, AsyncStorage } from 'react-native'
 const {width,height} = Dimensions.get('window');
 class Manage extends Component {
     constructor(){
         super();
         this.state = {
-            createdata:[{key:'1',title:'国漫古风',num:3},
-            {key:'2',title:'石川绫子',num:2},
-            {key:'3',title:'永远的七日之都',num:2},
-            {key:'4',title:'左翼',num:2}],
+            data :[]
         }
+    }
+    componentDidMount(){
+        AsyncStorage.getItem('songmenu').then(
+            (val) => {
+                this.setState({
+                    data : JSON.parse(val)
+                })
+            }
+        )
     }
     showAlert(){
         Alert.alert('删除歌单','确定删除选中的歌单',
@@ -24,7 +30,7 @@ class Manage extends Component {
         return (
             <View style={styles.container}>
                 <FlatList
-                            data={this.state.createdata}
+                            data={this.state.data}
                             renderItem={({item})=>
                                 <View style={styles.createlist}>
                                     <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10}}></View>

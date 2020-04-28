@@ -6,7 +6,7 @@ class MoreInfo extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity style={styles.out} onPress = {()=>{Actions.My({unlogin : true});}}>
+                <TouchableOpacity style={styles.out} onPress = {()=>{AsyncStorage.setItem('login',JSON.stringify(true));Actions.My()}}>
                     <Text style={{textAlign:'center',color:'red',fontSize:16}}>退出登录</Text>
                 </TouchableOpacity>
             </View>

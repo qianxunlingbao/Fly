@@ -12,11 +12,13 @@ import {
     ActivityIndicator,
     Animated,
     Easing,
-    Alert
+    Alert,
+    AsyncStorage,
 } from 'react-native';
 import {Actions} from 'react-native-router-flux';
 // import { Slider } from 'react-native-elements'
 import Sound from 'react-native-sound'
+import PlayList from './PlayList';
 
 
 let lyrObj = []   // 存放歌词
@@ -56,7 +58,8 @@ export default class Doc extends Component{
 			iscollect:true,
 			clicknum2:0,
 			music_name:'',
-			music_author:'',
+            music_author:'',
+            playlistvisible:false,
             isplayBtn: "http://qiniu.guang.lerzen.com/zhanting.png"  //播放/暂停按钮背景图
         }
     }
@@ -114,7 +117,7 @@ export default class Doc extends Component{
 	  if(songArry.every(chongfu)){
 		  that.setState({
 			  songs : [...that.state.songs,that.props.data]
-		  },()=>that.loadSongInfo(that.state.songs.length - 1))
+		  },()=>{console.log('songs',that.state.songs);AsyncStorage.setItem('playlist',JSON.stringify(that.state.songs));that.loadSongInfo(that.state.songs.length - 1)})
 	  }else{
 		  for(var i = 0; i < songArry.length;i++){
 			  if(songArry[i].music_id == that.props.data.music_id){
@@ -166,6 +169,13 @@ export default class Doc extends Component{
     }
 
     componentDidMount() {
+        AsyncStorage.getItem('playlist').then(
+            (value) => {
+                this.setState({
+                    songs : JSON.stringify(value) == null ? [] : JSON.stringify(value)
+                })
+            }
+        )
         //先从总列表中获取到song_id保存
 		this.onGetMusicLists();
         /*this.spin()   //   启动旋转*/
@@ -336,6 +346,11 @@ export default class Doc extends Component{
             currentTime: seconds
         })
     }
+    _backplay = ()=>{
+        this.setState({
+            playlistvisible :false
+        })
+    }
 
 		render() {
 		let time = this.state;
@@ -449,13 +464,17 @@ export default class Doc extends Component{
 		</TouchableOpacity>
 		</View>
 		<View style={{flex:1,justifyContent:'center'}}>
-		<TouchableOpacity  >
+		<TouchableOpacity  onPress = {()=>this.setState({
+            playlistvisible : true
+        })}>
 		<Image style={{width:0.1*width,height:0.1*width}} source={require('../images/list.png' )} />
 		</TouchableOpacity>
 		</View>
 		</View>
 		</View>
-		</View>
+        <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
+
+        </View>
 	
 
 		);

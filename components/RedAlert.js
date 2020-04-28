@@ -10,9 +10,6 @@ import {
     FlatList,
     TouchableOpacity
 } from 'react-native';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Video from 'react-native-video';
 import { Actions } from 'react-native-router-flux';
 
 const {width,scale,height} = Dimensions.get('window');
@@ -23,37 +20,43 @@ const number = Math.random();
 
 const goods = [
     {
-        title: '灰太狼一号',
-        wenzi:'你要搞清你的人生剧本，不是你父母的续集，不是你孩子的前传，更不是你朋友的番外篇。',
+        title: '喜羊羊一号',
+        wenzi:'我好想你 好想你',
         guanzhu: '+关注',
         jingxuan: '精选',
         pinglun: '评论',
+        pinglunshu: 20,
         dianzan: '点赞',
-        images: require('../images/meitu1.png'),
-        img: require('../images/huitailang1.png'),
+        dianzanshu: 18,
+        images: require('../images/meitu9.png'),
+        img: require('../images/xiyangyang1.png'),
         url: {uri: 'https://qianxunlingbao.github.io/Movie-test/%E5%8F%B6%E7%82%AB%E6%B8%85-%E9%9D%99%E6%9C%88%E6%80%9D%20(%E3%80%8A%E6%98%8E%E6%9C%88%E7%85%A7%E6%88%91%E5%BF%83%E3%80%8B%E7%BD%91%E5%89%A7%E6%8F%92%E6%9B%B2)(%E8%B6%85%E6%B8%85).mp4'}
     },
     {
-        title: '灰太狼二号',
+        title: '喜羊羊二号',
         guanzhu: '+关注',
-        wenzi:'向来缘浅，奈何情深',
+        wenzi:'没有命中注定的结局，只有不够努力的过程',
         jingxuan: '精选',
         dianzan: '点赞',
+        dianzanshu: 23,
         pinglun: '评论',
-        images: require('../images/meitu2.png'),
-        img: require('../images/huitailang.png'),
+        pinglunshu: 14,
+        images: require('../images/meitu10.png'),
+        img: require('../images/xiyangyang.png'),
         url: {uri: 'https://qianxunlingbao.github.io/Movie-test/%E7%B4%AB%E9%99%8C%E5%AD%90%E5%A2%A8%E6%99%B4-%E3%80%90%E5%B0%81%E8%8C%97%E5%9B%A7%E8%8F%8C%E3%80%91%E6%89%AC%E5%B7%9E%E6%9B%B2(%E8%B6%85%E6%B8%85).mp4'}
     
     },
     {
-        title: '企鹅三号',
+        title: '喜羊羊三号',
         guanzhu: '+关注',
         jingxuan: '精选',
         wenzi:'凉凉夜色为你思念成河，化作春泥呵护着我，浅浅岁月拂满爱人袖，便便芳菲如水流',
         dianzan: '点赞',
+        dianzanshu: 34,
         pinglun: '评论',
         images: require('../images/meitu5.png'),
-        img: require('../images/punch.png'),
+        pinglunshu: 20,
+        img: require('../images/xiyangyang2.png'),
         url: {uri: 'https://qianxunlingbao.github.io/Movie-test/%E8%B5%B5%E4%B8%BD%E9%A2%96-%E8%AE%B8%E5%BF%97%E5%AE%89-%E4%B9%B1%E4%B8%96%E4%BF%B1%E7%81%AD%20(%E3%80%8A%E8%9C%80%E5%B1%B1%E6%88%98%E7%BA%AA%E3%80%8B%E7%94%B5%E8%A7%86%E5%89%A7%E4%B8%BB%E9%A2%98%E6%9B%B2)(%E8%B6%85%E6%B8%85).mp4'}
     },
     {
@@ -62,8 +65,10 @@ const goods = [
         guanzhu: '+关注',
         jingxuan: '精选',
         pinglun: '评论',
+        pinglunshu: 20,
         dianzan: '点赞',
-        images: require('../images/meitu6.png'),
+        dianzanshu: 18,
+        images: require('../images/meitu4.png'),
         img: require('../images/huitailang1.png'),
         url: {uri: 'https://qianxunlingbao.github.io/Movie-test/%E5%8F%B6%E7%82%AB%E6%B8%85-%E9%9D%99%E6%9C%88%E6%80%9D%20(%E3%80%8A%E6%98%8E%E6%9C%88%E7%85%A7%E6%88%91%E5%BF%83%E3%80%8B%E7%BD%91%E5%89%A7%E6%8F%92%E6%9B%B2)(%E8%B6%85%E6%B8%85).mp4'}
     },
@@ -76,7 +81,7 @@ const goods = [
         dianzanshu: 23,
         pinglun: '评论',
         pinglunshu: 14,
-        images: require('../images/meitu7.png'),
+        images: require('../images/meitu2.png'),
         img: require('../images/huitailang.png'),
         url: {uri: 'https://qianxunlingbao.github.io/Movie-test/%E7%B4%AB%E9%99%8C%E5%AD%90%E5%A2%A8%E6%99%B4-%E3%80%90%E5%B0%81%E8%8C%97%E5%9B%A7%E8%8F%8C%E3%80%91%E6%89%AC%E5%B7%9E%E6%9B%B2(%E8%B6%85%E6%B8%85).mp4'}
     
@@ -89,14 +94,14 @@ const goods = [
         dianzan: '点赞',
         dianzanshu: 34,
         pinglun: '评论',
-        images: require('../images/meitu8.png'),
+        images: require('../images/12.png'),
         pinglunshu: 20,
         img: require('../images/punch.png'),
         url: {uri: 'https://qianxunlingbao.github.io/Movie-test/%E8%B5%B5%E4%B8%BD%E9%A2%96-%E8%AE%B8%E5%BF%97%E5%AE%89-%E4%B9%B1%E4%B8%96%E4%BF%B1%E7%81%AD%20(%E3%80%8A%E8%9C%80%E5%B1%B1%E6%88%98%E7%BA%AA%E3%80%8B%E7%94%B5%E8%A7%86%E5%89%A7%E4%B8%BB%E9%A2%98%E6%9B%B2)(%E8%B6%85%E6%B8%85).mp4'}
     }
 ]
 
-export default class FirstOne extends Component {
+export default class RedAlert extends Component {
     constructor(props){
         super(props)
         this.state={
@@ -114,7 +119,7 @@ export default class FirstOne extends Component {
             tianjiaguanzhu: '+关注',
             isAdd: false,
             dianzanshu:20,
-            pinglunshu:4
+            pinglunshu:18
         }
     }
     dianzan(){
@@ -134,10 +139,8 @@ export default class FirstOne extends Component {
             muted:!this.state.muted
         })
     }
-    
     videoError(error) {
-        console.log('videoError',error)
-       
+        console.log('videoError',error)   
     }
     
     onBuffer(data) {
@@ -174,26 +177,28 @@ export default class FirstOne extends Component {
                             width:width*0.3,
                             marginTop:-height*0.03
                             }} 
-                            onPress={()=>Actions.RedAlert()
+                            onPress={()=>Actions.Condition()
                         }>
+                            <Text style={{
+                                position:'absolute',
+                                marginLeft:width*0.04,
+                                marginTop:width*0.004
+                            }}>精选</Text>
                             <TouchableOpacity style={{
                                 position:'relative',
-                                backgroundColor:'white',
-                                width:width*0.15,
+                                width:width*0.18,
                                 borderColor:'black',
                                 borderRadius:25,
-                                height:width*0.05
+                                height:width*0.05,
+                                marginLeft:width*0.12,
+                                backgroundColor:'white'
                             }}>
                                 <Text style={{
-                                    marginLeft:width*0.044,
+                                    textAlign:'center',
                                     marginTop:width*0.004
-                                }}>精选</Text>
+                                }}>关注</Text>
                             </TouchableOpacity>
-                            <Text style={{
-                                marginLeft:width*0.02,
-                                marginTop:-width*0.045,
-                                marginLeft:width*0.19
-                            }}>关注</Text></TouchableOpacity>
+                        </TouchableOpacity>
                     </View>
                     <TouchableOpacity
                         style={{
@@ -207,108 +212,70 @@ export default class FirstOne extends Component {
                             height:width*0.052,
                             marginTop:width*0.01
                         }} source={require('../images/tianjiayonghu.png')} />
-                    </TouchableOpacity>     
-                </View>          
-                <View style={{height:height*0.3}}>
-                    <ScrollView    
-                        pagingEnabled={true} 
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                    >
-                        <View style={{width:width*0.8,marginLeft:width*0.1,marginRight:width*0.1,height:height*0.3,justifyContent:'center',alignItems:'center'}}>
-                            <Video source={{uri: 'https://qianxunlingbao.github.io/Movie-test/%E7%B4%AB%E9%99%8C%E5%AD%90%E5%A2%A8%E6%99%B4-%E3%80%90%E5%B0%81%E8%8C%97%E5%9B%A7%E8%8F%8C%E3%80%91%E6%89%AC%E5%B7%9E%E6%9B%B2(%E8%B6%85%E6%B8%85).mp4'}}   // Can be a URL or a local file.
-                                ref={(ref) => {
-                                    this.player = ref
-                                }}  
-                                rate={this.state.rate}   
-                                muted={this.state.muted}  
-                                repeat={true}    
-                                paused={this.state.paused} 
-                                playInBackground={false}                          
-                                onError={this.videoError}
-                                onBuffer={this.onBuffer}             
-                                style={styles.backgroundVideo}        
-                            />
+                    </TouchableOpacity>
+                        
+                   
+                </View>    
+                <View style={{
+                        height:height*0.25
+                    }}
+                >
+                    <View style={
+                        {
+                            width:width*0.8,
+                            height:height*0.12,
+                            marginLeft:width*0.1,
+                            marginTop:width*0.05,
+                            backgroundColor:'white',
+                            borderRadius:15
+                        }
+                    }>
+                        <View style={
                             {
-                                <TouchableOpacity onPress={() => this.play()} style={styles.pause}>
-                                    <Icon name={this.state.playIcon} size={18} />
-                                </TouchableOpacity>
+                                width:width*0.7
                             }
+                        }>
+                            <Text style={
+                                {
+                                    fontSize:27,
+                                    marginTop:width*0.03,
+                                    marginLeft:width*0.03
+                                }
+                            }>最新音乐</Text>
+                            <Text style={
+                                {
+                                    fontSize:15,
+                                    marginTop:width*0.02,
+                                    marginLeft:width*0.03
+                                }
+                            }>关注可能喜欢的歌手，新歌消息不再错过！</Text>
                         </View>
-                        <View style={{
-                            width:width*0.8,
-                            marginLeft:width*0.1,
-                            marginRight:width*0.1,
-                            height:height*0.3,
-                            justifyContent:'center',
-                            alignItems:'center'
-                        }}>
-                            <Image style={{
-                                width:width*0.8,
-                                height:width*0.4
-                                }} 
-                                source={require('../images/meitu3.png')} 
-                            />
-                        </View>
-                        <View style={{
-                            width:width*0.8,
-                            marginLeft:width*0.1,
-                            marginRight:width*0.1,
-                            height:height*0.3,
-                            justifyContent:'center',
-                            alignItems:'center'
-                            }}>
-                            <Image style={{
-                                width:width*0.8,
-                                height:width*0.4
-                                }} 
-                                source={require('../images/meitu4.png')} 
-                            />
-                        </View>
-                    </ScrollView>
+                        <TouchableOpacity>
+                            <Image style={
+                                {
+                                    width:width*0.08,
+                                    height:height*0.05,
+                                    marginLeft:width*0.7,
+                                    marginTop:-height*0.06
+                                }
+                            } source={require('../images/youcejiantou.png')} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={
+                        {
+                            width:width*0.76,
+                            marginTop:height*0.05,
+                            marginLeft:width*0.12
+                        }
+                    }>
+                        <Text style={
+                            {
+                                fontSize:20
+                            }
+                        }>暂无动态，看看为你推荐的优质账号吧！</Text>
+                    </View>
                 </View>
-                <View style={styles.touxiangfanwei}>
-                    <ScrollView    
-                            pagingEnabled={true} 
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                        >
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/huachenyu.png')} />
-                            <TouchableOpacity>
-                                <Text>华晨宇</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/weixinyu.png')} />
-                            <Text>魏新雨</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/weichen.png')} />
-                            <Text>魏晨</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/zhangliangyin.png')} />
-                            <Text>张靓颖</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/punch.png')} />
-                            <Text>punch</Text>
-                        </View>    
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/pikaqiu2.png')} />
-                            <Text>皮卡丘</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/pikaqiu1.png')} />
-                            <Text>皮卡丘</Text>
-                        </View>
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/pikaqiu3.png')} />
-                            <Text>皮卡丘</Text>
-                        </View>              
-                    </ScrollView>
-                </View>
+                
                 <View>
                 <FlatList 
                     style={{backgroundColor: '#F4F4F4'}}
@@ -343,9 +310,7 @@ export default class FirstOne extends Component {
                                         source={item.images} />
                             </View>
                             <View>
-                                <Text>
-                                    {item.jingxuan}
-                                </Text>
+                                
                                 
                                 <TouchableOpacity style={styles.dianzan} onPress={()=>this.dianzan()}>
                                     <Text>{item.dianzan}{this.state.dianzanshu}</Text>
@@ -359,25 +324,6 @@ export default class FirstOne extends Component {
                         
                     )}
                 />
-                <View style={{
-                        width:width*0.2,
-                        height:width*0.2,
-                        position: 'absolute',
-                        marginLeft:width*0.74,
-                        marginTop:height*0.3
-                    }}>
-                    <TouchableOpacity
-                        onPress={()=>Actions.dongTai()}
-                    >
-                        <Image style={
-                            {
-                                zIndex:2,
-                                width:width*0.2,
-                                height:width*0.2
-                            }
-                        } source={require('../images/tianjia.png')} />
-                    </TouchableOpacity>
-                </View>
                 </View>
             </View>
             </>
@@ -413,11 +359,11 @@ const styles = StyleSheet.create({
     },
     dianzan: {
         marginLeft:width*0.7,
-        marginTop:-width*0.043
+        //marginTop:-width*0.043
     },
     dianzan1: {
         marginLeft:width*0.8,
-        marginTop:-width*0.042
+        marginTop:-width*0.04
     },
     img: {
         width: '100%',

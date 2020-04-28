@@ -50,8 +50,11 @@ import Publish from './components/Publish'
 import Login from './components/Login'
 import Register from './components/Register'
 import Songword from './components/Songword'
-const App = () => {
-  const [value,setValue]= useState('正在热搜:李宇春新歌');
+import AddSong from './components/AddSong'
+import RedAlert from './components/RedAlert'
+import OverLike  from './components/OverLike'
+
+const App = () => {  
   return (
     <>
       <Router
@@ -87,13 +90,13 @@ const App = () => {
               <Scene key = "songword" component={Songword} hideTabBar  hideNavBar/>
             </Scene>
             <Scene key="recommend" title="推荐" 
-            icon={()=><Icon name = 'carry-out' size = {30}/>}
+            icon={()=><Icon name = 'find' size = {30}/>}
             hideNavBar
             >
               <Scene key = "Recommend" component={Recommend}/>  
             </Scene>
             <Scene key="condition" title="动态" 
-            icon={()=><Icon name = 'smile' size = {30}/>}
+            icon={()=><Icon name = 'eye' size = {30}/>}
             hideNavBar
             >
               <Scene key = "Condition" component={Condition}/>
@@ -101,20 +104,22 @@ const App = () => {
               <Scene key = "faBu" component={Fabu}/>
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
               <Scene key="CustomScrollView" component={CustomScrollView} />
+              <Scene key="RedAlert" component={RedAlert} />
+              <Scene key="OverLike" component={OverLike} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}
             >
-              <Scene key = "My" component={My}  navBar={()=><NavBar value = {value}/>}/>
+              <Scene key = "My" component={My}  navBar={()=><NavBar />}/>
               <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar  />
               <Scene key = "manage" component={Manage}  title='歌单管理' hideTabBar  />
               <Scene key = "like" component={MyLike}  title='我喜欢' hideTabBar  />
               <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar  />
               <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar />
               <Scene key = "buy" component={Buied}  title='已购' hideTabBar/>
+              <Scene key = "addsong" component={AddSong}  title='歌曲管理' hideTabBar/>
               <Scene key = 'login' component = {Login} hideNavBar hideTabBar/>      
-          <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
-
+              <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
             </Scene>
           </Tabs>    
           </Scene>

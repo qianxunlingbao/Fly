@@ -19,7 +19,7 @@ export default class Login extends Component {
       if (new Date().getTime() - now < 2000) {
         BackHandler.exitApp();
       } else {
-        ToastAndroid.show('确定要退出吗', 100);
+        Actions.pop()
         now = new Date().getTime();
         return true;
       }
@@ -32,7 +32,9 @@ export default class Login extends Component {
       let i;
       for(i = 0; i< res.data.length; i++){
         if(res.data[i].user_name == this.state.username && res.data[i].user_password == this.state.pwd){
-          setTimeout(()=>Actions.My({unlogin : false, name : this.state.username}),500) ;
+          AsyncStorage.setItem('login',JSON.stringify(false));
+          AsyncStorage.setItem('name',JSON.stringify(this.state.username));
+          setTimeout(()=>Actions.My(),500) ;
           break;
         }
       }

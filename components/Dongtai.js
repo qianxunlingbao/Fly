@@ -19,7 +19,9 @@ import Button from 'react-native-button';
 
 import ImagePicker from 'react-native-image-picker';
 
+import Video from 'react-native-video';
 
+import { Actions } from 'react-native-router-flux';
 
 const {width,scale,height} = Dimensions.get('window');
 
@@ -105,66 +107,67 @@ export default class Home extends Component {
                 }}>
                     <Text style={{fontSize:25}}>发布动态</Text>
                 </View>
-                <View style={{
-                    width:width*0.9,
-                    height:height*0.25,
-                    marginLeft:width*0.05}}>
-                    <TouchableOpacity>
-                        <Text style={{
-                            color:'blue',
-                            fontSize:15,
-                            fontStyle:'italic',
-                            textDecorationLine:'underline'
-                        }}>李信：千乘万骑，走北邙。>>> </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{
-                            color:'white',
-                            fontSize:15,
-                            fontStyle:'italic',
-                            textDecorationLine:'underline'
-                        }}>吕布：从此刻开始，战场由我一人主宰可有人敢与我一战。 >>> </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{
-                            color:'white',
-                            fontSize:15,
-                            fontStyle:'italic',
-                            textDecorationLine:'underline'
-                        }}>典韦：身体里沉睡的野兽，觉醒啦！！！ >>> </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{
-                            color:'white',
-                            fontSize:15,
-                            fontStyle:'italic',
-                            textDecorationLine:'underline'
-                        }}>狄仁杰：打击罪恶，为无辜者代言。元芳，你怎么看？？？ >>> </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{
-                            color:'red',
-                            fontSize:15,
-                            fontStyle:'italic',
-                            textDecorationLine:'underline'
-                        }}>花木兰：离家太远，会忘记故乡，杀人太多会忘记自己。谁说女子不如男，永不放弃，不会认输。>>> </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{
-                            color:'white',
-                            fontSize:15,
-                            fontStyle:'italic',
-                            textDecorationLine:'underline'
-                        }}>孙悟空：取经之路就在脚下，超脱三界之外，不在五行之中。>>> </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Text style={{
-                            color:'white',
-                            fontSize:15,
-                            fontStyle:'italic',
-                            textDecorationLine:'underline'
-                        }}>李白：一片诗意的酒，一曲长歌。一剑天涯，但愿长醉不复醒。>>> </Text>
-                    </TouchableOpacity>
+                <View style={
+                    {
+                        width:width*0.9,
+                        height:height*0.25,
+                        marginLeft:width*0.05
+                    }
+                }>
+                    <View style={{height:height*0.24}}>
+                        <ScrollView    
+                            pagingEnabled={true} 
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        >
+                            <View style={{
+                                width:width*0.8,
+                                marginLeft:width*0.05,
+                                marginRight:width*0.1,
+                                height:height*0.3,
+                                justifyContent:'center',
+                                alignItems:'center'
+                            }}>
+                                <Image style={{
+                                    width:width*0.8,
+                                    height:height*0.24
+                                    }} 
+                                    source={require('../images/meitu12.png')} 
+                                />
+                            </View>
+                            <View style={{
+                                width:width*0.8,
+                                //marginLeft:width*0.05,
+                                marginRight:width*0.1,
+                                height:height*0.3,
+                                justifyContent:'center',
+                                alignItems:'center'
+                            }}>
+                                <Image style={{
+                                    width:width*0.8,
+                                    height:width*0.4
+                                    }} 
+                                    source={require('../images/meitu12.png')} 
+                                />
+                            </View>
+                            <View style={{
+                                width:width*0.8,
+                                //marginLeft:width*0.1,
+                                marginRight:width*0.1,
+                                height:height*0.3,
+                                justifyContent:'center',
+                                alignItems:'center'
+                                }}>
+                                <Image style={{
+                                    width:width*0.8,
+                                    height:width*0.4
+                                    }} 
+                                    source={require('../images/meitu11.png')} 
+                                />
+                            </View>
+                        </ScrollView>
+                    </View>
+                    
                 </View>
                 <TextInput
                 　　style = {{
@@ -245,7 +248,7 @@ export default class Home extends Component {
                                     borderRadius:25,
                                     borderColor:'black',
                                     borderWidth:1,
-                                    backgroundColor:'#eeeaaa',
+                                    backgroundColor:'#CCFFFF',
                                     width:width*0.4,
                                     marginTop:width*0.1
                                 }}            
