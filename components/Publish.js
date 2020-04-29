@@ -15,6 +15,7 @@ import {
     Alert,
     AsyncStorage,
 } from 'react-native';
+import Video from 'react-native-video';
 import {Actions} from 'react-native-router-flux';
 // import { Slider } from 'react-native-elements'
 import Sound from 'react-native-sound'
@@ -25,12 +26,15 @@ let lyrObj = []   // 存放歌词
 let {width, height} = Dimensions.get('window');
 let mp3 = "";
 //如果是网络音频，使用 new Sound(mp3,null,error => {})
-let whoosh = null;
+
 export default class Doc extends Component{
 	constructor(props) {
         super(props);
         this.spinValue = new Animated.Value(0)
         this.state = {
+            rate: 1,
+            paused: true,
+            muted: true,
             volume: 0.5,
             seconds: 0, //秒数
             totalMin: '', //总分钟
@@ -60,20 +64,30 @@ export default class Doc extends Component{
 			music_name:'',
             music_author:'',
             playlistvisible:false,
-            isplayBtn: "http://qiniu.guang.lerzen.com/zhanting.png"  //播放/暂停按钮背景图
+            song:'',
         }
     }
-    // 旋转动画
-    spin = () => {
-        this.spinValue.setValue(0)
-        myAnimate = Animated.timing(
-            this.spinValue,
-            {
-                toValue: 1,
-                duration: 4000,
-                easing: Easing.linear
-            }
-        ).start(() => this.spin())
+      //格式化音乐播放的时间为0：00
+    formatMediaTime(duration) {
+        let min = Math.floor(duration / 60);
+        let second = duration - min * 60;
+        min = min >= 10 ? min : "0" + min;
+        second = second >= 10 ? second : "0" + second;
+        return min + ":" + second;
+    }
+    
+    //设置进度条和播放时间的变化
+    setTime(data) {
+        let sliderValue = parseInt(this.state.currentTime);
+        this.setState({
+        slideValue: sliderValue,
+        currentTime: data.currentTime
+        });
+    }
+    
+        //设置总时长
+    setDuration(duration) {
+        this.setState({ duration: duration.duration });
     }
     loadSongInfo = (index) => {
 		var that = this;
@@ -81,120 +95,51 @@ export default class Doc extends Component{
 				let bitrate;
 					bitrate=this.state.songs[index].music_value;
 				let music_name=this.state.songs[index].music_name;
-				let music_author=this.state.songs[index].music_author;
+                let music_author=this.state.songs[index].music_author;
+                this.state.music=this.state.songs[index].music_value;
+                console.log(this.state.music,'asdsad')
                 this.setState({
                     music_name: music_name,     //歌曲名
                     music_author: music_author,   //歌手
                     file_link: bitrate,   //播放链接
-                })
-                whoosh = new Sound(bitrate, null, (error) => {
-                    if (error) {
-                        return console.log('资源加载失败', error);
-					}
-					let totalTime=Math.ceil(whoosh.getDuration());
-					let totalMin = parseInt(totalTime / 60); //总分钟数
-					let totalSec = totalTime - totalMin * 60; //秒钟数并判断前缀是否 + '0'
-					totalSec = totalSec > 9 ? totalSec : '0' + totalSec;
-					that.setState({
-						totalMin,
-						totalSec,
-						maximumValue: totalTime,
-					})
-	
-                })
-                this.onGetLyric(this.state.songs[index].music_id);
+                }) 
     }
-     onGetMusicLists = async () => {
-        var that = this;
-        await AsyncStorage.getItem('playlist').then(
-            (value) => {
-                that.setState({
-                    songs : value == null ? [] : JSON.parse(value) 
-                })
-            })
-      let songArry = [...this.state.songs];
+    onGetMusicLists = () => {
+		var that = this;
+	
+	  let songArry = [...this.state.songs];
 	  function chongfu(additem){
 		return additem.music_id != that.props.data.music_id;
 	  }
 	  if(songArry.every(chongfu)){
-        if(whoosh){
-			whoosh.stop();
-			whoosh.release();
-		}
 		  that.setState({
 			  songs : [...that.state.songs,that.props.data]
-          },()=>{AsyncStorage.setItem('playlist',JSON.stringify(that.state.songs));that.loadSongInfo(that.state.songs.length - 1)})
-          that.setState({
-              currentIndex:that.state.songs.length - 1
-          })
+		  },()=>{console.log('songs',that.state.songs);AsyncStorage.setItem('playlist',JSON.stringify(that.state.songs));that.loadSongInfo(that.state.songs.length - 1)})
 	  }else{
 		  for(var i = 0; i < songArry.length;i++){
 			  if(songArry[i].music_id == that.props.data.music_id){
-                  if(whoosh == null){
-                    that.loadSongInfo(i);
-                  }else{
-                      console.log(this.state.nowMin)
-                  }
-                  that.setState({
-                    currentIndex:i
-                })
+				  that.loadSongInfo(i);
 				  break;
 			  }
 		  }
-      }
+	  }
     }
-    onGetLyric = (songId) => {
-     /*   //加载歌词
-        let url = config.serverUrl + "/Music/GetMusicLyric/getMusicLyric?songId=" + songId;
-        fetch(url)
-            .then((response) => response.json())
-            .then((responseJson) => {
-                    let lry = responseJson.data.lrcContent
-                    let lryAry = lry.split('\n')   //按照换行符切数组
-                    lryAry.forEach(
-                        function (val, index) {
-                            let obj = {}   //用于存放时间
-                            val = val.replace(/(^\s*)|(\s*$)/g, '')    //正则,去除前后空格
-                            let indeofLastTime = val.indexOf(']')  // ]的下标
-                            let timeStr = val.substring(1, indeofLastTime) //把时间切出来 0:04.19
-                            let minSec = ''
-                            let timeMsIndex = timeStr.indexOf('.')  // .的下标
-                            if (timeMsIndex !== -1) {
-                                //存在毫秒 0:04.19
-                                minSec = timeStr.substring(1, val.indexOf('.'))  // 0:04.
-                                obj.ms = parseInt(timeStr.substring(timeMsIndex + 1, indeofLastTime))  //毫秒值 19
-                            } else {
-                                //不存在毫秒 0:04
-                                minSec = timeStr
-                                obj.ms = 0
-                            }
-                            let curTime = minSec.split(':')  // [0,04]
-                            obj.min = parseInt(curTime[0])   //分钟 0
-                            obj.sec = parseInt(curTime[1])   //秒钟 04
-                            obj.txt = val.substring(indeofLastTime + 1, val.length) //歌词文本: 留下唇印的嘴
-                            obj.txt = obj.txt.replace(/(^\s*)|(\s*$)/g, '')
-                            obj.dis = false
-                            obj.total = obj.min * 60 + obj.sec + obj.ms / 100   //总时间
-                            if (obj.txt.length > 0) {
-                                lyrObj.push(obj)
-                            }
-                        }
-                    )
-                }
-            )*/
-    }
-
     componentDidMount() {
-        //先从总列表中获取到song_id保存
+        AsyncStorage.getItem('playlist').then(
+            (value) => {
+                this.setState({
+                    songs : JSON.stringify(value) == null ? [] : JSON.stringify(value)
+                })
+            }
+        )
 		this.onGetMusicLists();
-        /*this.spin()   //   启动旋转*/
     }
 
     // 上下一曲
     nextAction = (index) => {
         this.recover()
         lyrObj = [];
-        if (index == this.state.songs.length - 1) {
+        if (index == 10) {
             index = 0 //如果是最后一首就回到第一首
 		}
 		if (index == -1) {
@@ -203,58 +148,9 @@ export default class Doc extends Component{
         this.setState({
             currentIndex: index,  //更新数据
         })
-        this.loadSongInfo(index)  //加载数据       
+        this.loadSongInfo(index)  //加载数据
+       
     }
-    // 播放/暂停
-    playAction = () => {
-        console.log(this.state.music_name,'bo')
-        let pauseStatus = !this.state.pause;
-        this.setState({
-            pause: !this.state.pause
-		})
-        //判断按钮显示什么（播放）
-        if (pauseStatus == true) {
-            this.start();
-        } else {
-            // 暂停
-            this.pause();
-        }
-    }
-
-    componentWillUnmount() {
-        this.time && clearTimeout(this.time);
-    }
-
-// 歌词
-    renderItem() {
-        // 数组
-        let itemAry = [];
-        for (let i = 0; i < lyrObj.length; i++) {
-            let item = lyrObj[i].txt
-
-            if (this.state.currentTime.toFixed(2) > lyrObj[i].total) {
-                //正在唱的歌词
-                itemAry.push(
-                    <View key={i} style={styles.itemStyle}>
-                        <Text style={{color: 'blue'}}> {item} </Text>
-                    </View>
-                );
-                _scrollView.scrollTo({x: 0, y: (25 * i), animated: false});
-            }
-            else {
-                //所有歌词
-                itemAry.push(
-                    <View key={i} style={styles.itemStyle}>
-                        <Text style={{color: 'red'}}> {item} </Text>
-                    </View>
-                )
-            }
-        }
-
-        return itemAry;
-    }
-
-//把秒数转换为时间类型
     formatTime = (time) => {
         // 71s -> 01:11
         let min = Math.floor(time / 60)
@@ -262,31 +158,6 @@ export default class Doc extends Component{
         min = min >= 10 ? min : '0' + min
         second = second >= 10 ? second : '0' + second
         return min + ':' + second
-    }
-    // 开始播放
-    start = () => {
-        whoosh.play();
-        this.time = setInterval(() => {
-            whoosh.getCurrentTime(seconds => {
-                seconds = Math.ceil(seconds);
-                this.onGetNowTime(seconds)
-            })
-        }, 1000)
-    }
-    // 暂停
-    pause = () => {
-        clearInterval(this.time);
-        whoosh.pause();
-    }
-    // 停止
-    stop = () => {
-        clearInterval(this.time);
-        this.setState({
-            nowMin: 0,
-            nowSec: 0,
-            seconds: 0,
-        })
-        whoosh.stop();
     }
 	clickph=()=>{
 		this.state.clicknum2++
@@ -321,45 +192,15 @@ export default class Doc extends Component{
 				word
 			})	
 		}
-	}
-    recover = () => {
-        if (whoosh) {
-            this.pause();
-            this.stop();
-            whoosh = null;
-        }
+    }
+    play(){
+        console.log(this.state.paused)
         this.setState({
-            pause: true,
-            seconds: 0,
-            currentTime: 0.0
+            paused:!this.state.paused,
+            playIcon: this.state.paused ? 'pause' : 'play',
+            muted:!this.state.muted
         })
     }
-    // 时间处理
-    onGetNowTime = (seconds) => {
-        let nowMin = this.state.nowMin,
-            nowSec = this.state.nowSec;
-        if (seconds >= 60) {
-            nowMin = parseInt(seconds / 60); //当前分钟数
-            nowSec = seconds - nowMin * 60;
-            nowSec = nowSec < 10 ? '0' + nowSec : nowSec;
-        } else {
-            nowSec = seconds < 10 ? '0' + seconds : seconds;
-        }
-        this.setState({
-            nowMin,
-            nowSec,
-            seconds
-        })
-        this.setState({
-            currentTime: seconds
-        })
-    }
-    _backplay = ()=>{
-        this.setState({
-            playlistvisible :false
-        })
-    }
-
 		render() {
 		let time = this.state;
 		return (
@@ -389,7 +230,7 @@ export default class Doc extends Component{
 				<View style={{flex:30,justifyContent:'center',}}>
 					<View style={{flex:1,marginLeft:'5%'}}>
 						<Image style={{width:'95%',height:'100%',
-						 borderRadius:width*0.05}} source={{uri:`http://49.235.231.110:8802/musicimage/${this.props.data.music_id}.JPG`}} />
+						 borderRadius:width*0.05}} source={require('../images/2.png')} />
 					</View>
 				</View>
 				<View style={{flex:8,flexDirection:'row',marginTop:'3%'}} >
@@ -426,28 +267,24 @@ export default class Doc extends Component{
 						thumbTintColor={'#fff'}
 						maximumTrackTintColor={'#ccc'} //右侧轨道的颜色
 						minimumTrackTintColor={'#fff'} //左侧轨道的颜色
-						maximumValue={this.state.maximumValue} //滑块最大值
-						minimumValue={0} //滑块最小值
-						step={1}
-						value={this.state.seconds}
-						onSlidingComplete={(value) => { //用户完成更改值时调用的回调（例如，当滑块被释放时）
-						value = parseInt(value);
-						this.onGetNowTime(value)
-										// 设置播放时间
-						whoosh.setCurrentTime(value);
-						}}
-						onValueChange={(value) => {
-						this.onGetNowTime(value)
-						}}
+                        value={this.state.slideValue}
+                        maximumValue={this.state.duration}
+                        step={1}
+                        onValueChange={(value) => {
+                            this.setState({
+                                currentTime:value
+                            })
+                                      }
+                                  }
+                          onSlidingComplete={(value) => {
+                                       this.refs.video.seek(value)
+                                  }}
 					/>
 					</View>
 					<View style={{flex:3,flexDirection:'row'}}>
 						<View style={{marginTop: 0*height, marginLeft: 0.07*width}}>
-						<Text style={{color:'#fff'}}>{time.nowMin}:{time.nowSec}</Text>
-            			</View>
-						<View style={{marginTop: 0*height, marginLeft: 0.8*width}}>
-						<Text style={{color:'#fff'}}>{time.totalMin}:{time.totalSec}</Text>
-            			</View>
+						<Text style={{color:'#fff'}}>{this.state.currentTime}</Text>
+            			</View>						
 					</View>
 		</View>
 		<View style={{flex:5,flexDirection:'row',paddingBottom:'1%', justifyContent: 'space-around',marginLeft:'9%',alignItems: 'center'}}>
@@ -462,10 +299,25 @@ export default class Doc extends Component{
 		</TouchableOpacity>
 		</View>
 		<View style={{flex:1,justifyContent:'center'}}>
-		<TouchableOpacity  onPress={() => this.playAction()} >
-		<Image style={{width:0.15*width,height:0.15*width}} source={this.state.pause?require('../images/suspend.png' ):require('../images/broadcast.png')} />
-		</TouchableOpacity>
+        <View style={{}}>
+            <Video source={{uri:this.state.music}}   // Can be a URL or a local file.
+             ref='video'
+            rate={this.state.rate}   
+            muted={this.state.muted}  
+            paused={this.state.paused}
+            onBuffer={this.onBuffer}
+            style={styles.backgroundVideo}
+            onLoad={data => this.setDuration(data)}
+            volume={1.0}
+            playInBackground={true}
+            onProgress={e => this.setTime(e)}
+            />
+        </View>
+        <TouchableOpacity onPress={() => this.play()} style={{width:50,height:50,color:'#fff'}}>
+        <Image style={{width:0.15*width,height:0.15*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
+         </TouchableOpacity>
 		</View>
+
 		<View style={{flex:1,justifyContent:'center',marginLeft:0.05*width}}>
 		<TouchableOpacity   onPress={() => this.nextAction(this.state.currentIndex + 1)} >
 		<Image style={{width:0.1*width,height:0.1*width}} source={require('../images/next.png' )} />
@@ -480,7 +332,7 @@ export default class Doc extends Component{
 		</View>
 		</View>
 		</View>
-        <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs} currentIndex = {this.state.currentIndex}/>
+        <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
 
         </View>
 	
