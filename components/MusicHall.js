@@ -93,7 +93,7 @@ export default class MusicHall extends Component {
                                 </Swiper>
                             </View>
                             <View style={{ width: '90%', height: 70, marginTop: 20, flexDirection: 'row' }}>
-                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={() => Actions.singer()}>
                                     <Icon name="user" size={30} color='green' />
                                     <Text>歌手</Text>
                                 </TouchableOpacity>
@@ -163,49 +163,27 @@ export default class MusicHall extends Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: '90%', height: 50, marginTop: 15, alignItems: 'center', flexDirection: 'row' }}>
-                                <Text style={{ fontSize: 21, width: '20%' }}>热门歌单</Text>
+                                <Text style={{ fontSize: 21, width: '20%' }}>热门歌曲</Text>
                                 <TouchableOpacity style={{ width: '9%', marginLeft: '71%' }}>
                                     <Text style={{ fontSize: 15, color: 'gray' }}>更多></Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={{ height: 160, width: '90%', marginLeft: '5%', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                            <TouchableOpacity style={{ width: '32%', height: 160, overflow: 'hidden', alignItems: 'center' }} >
-                                <Image style={{ width: '100%', height: 120, borderRadius: 10 }} source={{ uri: 'http://49.235.231.110:8802/musicimage/3.JPG' }} />
-                                <Text style={{ marginTop: 5 }}>
-                                    {
-                                        this.state.albumname.map((item, index) => {
-                                            if (index == 2) {
-                                                return this.state.albumname[2].music_name.slice(0, 9);
-                                            }
-                                        })
+                        <View style={{ width: '90%', marginLeft: '5%', flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                            {
+                                this.state.albumname.map((item, index) => {
+                                    if (index>1 && index<8) {
+                                        return (
+                                            <TouchableOpacity style={{ width: '32%', height: 160, overflow: 'hidden', alignItems: 'center' }} >
+                                                <Image style={{ width: '100%', height: 120, borderRadius: 10 }} source={{ uri: 'http://49.235.231.110:8802/musicimage/'+(index+1)+'.JPG' }} />
+                                                <Text style={{ marginTop: 5 }}>
+                                                    {item.music_name}
+                                                </Text>
+                                            </TouchableOpacity>
+                                        )
                                     }
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: '32%', height: 160, overflow: 'hidden', alignItems: 'center' }} >
-                                <Image style={{ width: '100%', height: 120, borderRadius: 10 }} source={{ uri: 'http://49.235.231.110:8802/musicimage/4.JPG' }} />
-                                <Text style={{ marginTop: 5 }}>
-                                    {
-                                        this.state.albumname.map((item, index) => {
-                                            if (index == 3) {
-                                                return this.state.albumname[3].music_name.slice(0, 9);
-                                            }
-                                        })
-                                    }
-                                </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={{ width: '32%', height: 160, overflow: 'hidden', alignItems: 'center' }} >
-                                <Image style={{ width: '100%', height: 120, borderRadius: 10 }} source={{ uri: 'http://49.235.231.110:8802/musicimage/5.JPG' }} />
-                                <Text style={{ marginTop: 5 }}>
-                                    {
-                                        this.state.albumname.map((item, index) => {
-                                            if (index == 4) {
-                                                return this.state.albumname[4].music_name.slice(0, 9);
-                                            }
-                                        })
-                                    }
-                                </Text>
-                            </TouchableOpacity>
+                                })
+                            }
                         </View>
                     </ScrollView>
                 </SafeAreaView>
