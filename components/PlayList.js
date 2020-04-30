@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage} from 'react-native'
+import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage, FlatList} from 'react-native'
 
 /**
 *
@@ -9,11 +9,6 @@ import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,Asyn
 */
 class PlayList
  extends Component {
-    componentDidMount(){
-        AsyncStorage.getItem('playlist').then(
-            (value) => console.log('list',JSON.parse(value))
-        )
-    }
     render() {
         return (
             <Modal
@@ -33,9 +28,22 @@ class PlayList
                             backgroundColor:'white',
                             opacity:0.8
                             }}>
-                                <ScrollView style={{width:'100%',height:'100%'}}>
-
-                                </ScrollView>
+                                <View>
+                                    <Text style={{fontSize:20}}>
+                                        播放列表
+                                    </Text>
+                                </View>
+                                <FlatList
+                                data = {this.props.list}
+                                style = {{width:'100%',height:'100%'}}
+                                renderItem = {
+                                    ({item,index}) => 
+                                    <View   style = {{paddingLeft:10,marginBottom:10}}>
+                                        <Text style = {{fontSize:18,color:index == this.props.currentIndex ? 'green':'black'}}>{item.music_name}</Text>
+                                        <Text style = {{color:index == this.props.currentIndex ? 'green':'black'}}>{item.music_author}</Text>
+                                    </View>
+                                }
+                                />
                         </View>
                      </TouchableOpacity>
                 </View>
