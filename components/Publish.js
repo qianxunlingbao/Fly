@@ -14,6 +14,7 @@ import {
     Easing,
     Alert,
     AsyncStorage,
+    TouchableWithoutFeedback,
 } from 'react-native';
 import Video from 'react-native-video';
 import {Actions} from 'react-native-router-flux';
@@ -35,18 +36,15 @@ export default class Doc extends Component{
             rate: 1,
             paused: true,
             muted: true,
-            volume: 0.5,
             seconds: 0, //秒数
             totalMin: '', //总分钟
             totalSec: '', //总分钟秒数
-            nowMin: 0, //当前分钟
-            nowSec: 0, //当前秒钟
+            nowMin: '00', //当前分钟
+            nowSec: '00', //当前秒钟
             maximumValue: 0, //滑块最大值,
             songs: [],   //歌曲id数据源
             playModel: 1,  // 播放模式  1:列表循环    2:随机    3:单曲循环
-            btnModel: "http://qiniu.guang.lerzen.com/liebiaoxunhuan.png", //播放模式按钮背景图
-            pic_small: '',    //小图
-            pic_big: '',      //大图
+            btnModel: "", //播放模式按钮背景图
             song_id: '',     //歌曲id
             title: '',       //歌曲名字
             author: '',      //歌曲作者
@@ -65,6 +63,7 @@ export default class Doc extends Component{
             music_author:'',
             playlistvisible:false,
             song:'',
+            color:['#000','#fff','#000']
         }
     }
       //格式化音乐播放的时间为0：00
@@ -79,12 +78,20 @@ export default class Doc extends Component{
     //设置进度条和播放时间的变化
     setTime(data) {
         let sliderValue = parseInt(this.state.currentTime);
+        let min = Math.floor(sliderValue / 60);
+        let second = sliderValue - min * 60;
+        min = min >= 10 ? min : "0" + min;
+        second = second >= 10 ? second : "0" + second;
+        console.log(min,second)
+            this.state.nowMin=min
+            this.state.nowSec=second
         this.setState({
         slideValue: sliderValue,
-        currentTime: data.currentTime
+        currentTime: data.currentTime,
+        nowMin:this.state.nowMin,
+        nowsec:this.state.nowSec
         });
     }
-    
         //设置总时长
     setDuration(duration) {
         this.setState({ duration: duration.duration });
@@ -105,8 +112,7 @@ export default class Doc extends Component{
                 }) 
     }
     onGetMusicLists = () => {
-		var that = this;
-	
+	var that = this;
 	  let songArry = [...this.state.songs];
 	  function chongfu(additem){
 		return additem.music_id != that.props.data.music_id;
@@ -151,14 +157,6 @@ export default class Doc extends Component{
         this.loadSongInfo(index)  //加载数据
        
     }
-    formatTime = (time) => {
-        // 71s -> 01:11
-        let min = Math.floor(time / 60)
-        let second = time - min * 60
-        min = min >= 10 ? min : '0' + min
-        second = second >= 10 ? second : '0' + second
-        return min + ':' + second
-    }
 	clickph=()=>{
 		this.state.clicknum2++
 		let click= this.state.clicknum2
@@ -201,138 +199,297 @@ export default class Doc extends Component{
             muted:!this.state.muted
         })
     }
+    renderChildView(){
+		// 数组
+		
+		let url = 'http://music.163.com/api/song/media?id=5255987'
+        fetch(url)
+            .then((response) => response.json())
+            .then((responseJson) => {
+				
+				let songinfo = responseJson.data
+                this.setState({
+                  
+                })
+
+            })
+		var allChild = [];
+		var songword = ['你若化成风', '我幻化成雨', '守护你身边', '一笑为红颜', '你若化成风'
+		, '我幻化成雨', '爱锁在眉间', '似水往昔浮流年', '乖乖 我的小乖乖',
+		 '你的样子太可爱', '追你的男生每个都超级厉害', '我却在考虑怎么Say hi', '害羞的我这样下去要怎么办'
+		, '怎么办 爱情甜又酸', '我不是Boss', '没有超大的House', '如果送你Rose', 
+		'可不可以给我Chance', '不想看时间这么一点一滴飞逝', '老夫子带着假发', '我不要三寸金莲胡话',
+		'想和你跳超短裙的恰恰', '想带你回家见妈妈', '你若化成风', '我幻化成雨',
+		'守护你身边','一笑为红颜','你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年','周末找个借口和你泛舟',
+		'一壶清酒 江水悠悠 我心悠悠','这感情Just for you','表面平静其实内心早已风起云涌',
+		'缘字诀 几番轮回 你锁眉','哎哟你的心情左右我的情绪','虽然有些问题真的很难搞定','我还是充满信心',
+		'老夫子带着假发','我不要三寸金莲胡话','想和你跳超短裙的恰恰','想带你回家见妈妈','你若化成风','我幻化成雨','守护你身边','一笑为红颜',
+		'你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年','你千万不要装酷','呆的像大脑短路','我不收你的礼物','只想收一点点幸福','请领悟',
+		'请拿出速度奉我为公主','别磨蹭的像胖叔叔','有压力也要顶住','坚持自己的道路','真心去付出随时准备自我颠覆','这一首有点复古',
+		'不预示下首的套路','踩着Hip-Hop的鼓点陪你跳恰恰舞','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟嘟嘟嘟嘟',
+		'嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟嘟嘟嘟嘟','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨',
+		'爱锁在眉间','似水往昔浮流年','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年'];
+		var time=['00:00','00:06','00:09','00:11','00:14','00:17','00:19','00:22','00:24','00:27','00:29','00:31','00:33','00:35',
+		'00:37','00:40','00:41','00:42','00:43','00:45','00:48','00:50','00:53','00:55','00:58','01:00','01:03','01:06','01:08',
+		'01:11','01:13','01:16','01:19','01:21','01:24','01:26','01:29','01:32','01:35','01:38','01:39','01:42','01:44',
+		'01:47','01:49','01:52','01:55','01:57','02:00','02:02','02:05','02:07','02:10','02:12','02:13','02:14','02:16','02:16',
+		'02:18','02:20','02:22','02:23','02:25','02:27','02:28','02:31','02:32','02:33','02:34','02:36','02:37','02:39','02:41','02:42','02:44','02:45','02:46',
+		'02:47','02:49','02:54','02:57','02:59','03:02','03:04','03:07','03:09','03:12','03:15','03:17','03:20','03:22','03:25','03:27','03:30','03:33'];
+		this.state.songword=songword;
+		this.state.time=time;
+		var index=0;
+		// 遍历
+	   for(var i=0; i<songword.length; i++){
+		   if(this.state.index==i){
+			allChild.push(
+				//  循环排列的view中必须有唯一表示
+				  <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
+					 <Text style={{flex:1,color:'#fff'}}>{songword[i]}</Text>
+				  </View>
+			  );
+		   }
+		   else{
+			allChild.push(
+				//  循环排列的view中必须有唯一表示
+				  <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
+					 <Text style={{flex:1,color:'#000'}}>{songword[i]}</Text>
+				  </View>
+			  );
+		   }
+		
+	   }
+	   // 返回数组，不然怎么显示出来
+	   return allChild;
+	 }
 		render() {
+
+           console.log(this.state.color)
 		let time = this.state;
 		return (
 			<View style={styles.container}>
-			<View style={{flex:50}}>
-				<View style={{flex:6,flexDirection:'row'}}>
+			
+				<View style={{width:width,height:0.05*height,flexDirection:'row'}}>
 					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}}  onPress={()=>Actions.userinfor()}>
 					<Image style={{width:'35%',height:'20%'}} source={require('../images/down.png')} />
 					</TouchableOpacity>
 					<View  style={{flex:5,justifyContent:'center', alignItems: 'center',flexDirection:'row'}}>
-						<TouchableOpacity  onPress={()=>Actions.userinfor()}>
-                        <Text>推荐</Text>
+						<TouchableOpacity>
+                        <Text style={{color:this.state.color[0]}}>推荐</Text>
                         </TouchableOpacity>
 						<Text>  |  </Text>
                         <TouchableOpacity>
-						<Text style={{color:'#fff'}}>歌曲</Text>
+						<Text style={{color:this.state.color[1]}}>歌曲</Text>
                         </TouchableOpacity>
 						<Text>  |  </Text>
-                        <TouchableOpacity  onPress={()=>Actions.songword()}>
-						<Text>歌词</Text>
+                        <TouchableOpacity>
+						<Text style={{color:this.state.color[2]}}>歌词</Text>
                         </TouchableOpacity>
 					</View>
 					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}} >
-					<Image style={{width:'35%',height:'20%'}} source={require('../images/share.png')} />
+					<Image style={{width:'35%',height:'35%'}} source={require('../images/share.png')} />
 					</TouchableOpacity>
 				</View>
-				<View style={{flex:30,justifyContent:'center',}}>
-					<View style={{flex:1,marginLeft:'5%'}}>
-						<Image style={{width:'95%',height:'100%',
-						 borderRadius:width*0.05}} source={require('../images/2.png')} />
-					</View>
-				</View>
-				<View style={{flex:8,flexDirection:'row',marginTop:'3%'}} >
-					<View style={{flex:5,flexDirection:'column',marginLeft:'7%'}} >
-					<Text  style={{color:'#fff',fontSize:30,paddingBottom:'2%'}}>{this.state.music_name}</Text>
-					<Text  style={{color:'#ccc',paddingBottom:'2%'}}>{this.state.music_author}</Text>
-					<Text  style={{color:'#ccc'}}>歌曲类型</Text>
-					</View>
-					<TouchableOpacity   style={{flex:1,marginLeft:'7%',marginTop:'2%'}} onPress={this.clickheart}>
-					<Image style={{width:'46%',height:'20%'}} source={this.state.iscollect?require('../images/heart.png' ):require('../images/redheart.png')} />
-					</TouchableOpacity>
-				</View>
-				<View style={{flex:4,flexDirection:'row',justifyContent:'center', alignItems: 'center'}}>
-					<TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
-						<Image style={{width:'40%',height:'60%'}}  source={require('../images/mike.png' )} />
-					</TouchableOpacity>
-					<TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
-						<Image style={{width:'40%',height:'60%'}} source={require('../images/download.png' )} />
-					</TouchableOpacity>
-					<TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
-						<Image  style={{width:'40%',height:'60%'}}  source={require('../images/remark.png' )} />
-					</TouchableOpacity>
-					<TouchableOpacity   style={{flex:1,marginLeft:'7%'}}>
-						<Image  style={{width:'40%',height:'60%'}}  source={require('../images/ellipsis.png' )} />
-					</TouchableOpacity>
-				</View>
-				<View style={{flex:2}}>
-					<View style={{flex:2,justifyContent:'center', alignItems: 'center'}}>			
-					<Slider
-					
-					width={'95%'}
-						ref='slider'
-						// disabled //禁止滑动
-						thumbTintColor={'#fff'}
-						maximumTrackTintColor={'#ccc'} //右侧轨道的颜色
-						minimumTrackTintColor={'#fff'} //左侧轨道的颜色
-                        value={this.state.slideValue}
-                        maximumValue={this.state.duration}
-                        step={1}
-                        onValueChange={(value) => {
-                            this.setState({
-                                currentTime:value
-                            })
-                                      }
-                                  }
-                          onSlidingComplete={(value) => {
-                                       this.refs.video.seek(value)
-                                  }}
-					/>
-					</View>
-					<View style={{flex:3,flexDirection:'row'}}>
-						<View style={{marginTop: 0*height, marginLeft: 0.07*width}}>
-						<Text style={{color:'#fff'}}>{this.state.currentTime}</Text>
-            			</View>						
-					</View>
-		</View>
-		<View style={{flex:5,flexDirection:'row',paddingBottom:'1%', justifyContent: 'space-around',marginLeft:'9%',alignItems: 'center'}}>
-		<View style={{flex:1,justifyContent:'center'}}  >
-		<TouchableOpacity onPress={this.clickph}>
-		<Image style={{width:0.1*width,height:0.08*width}} source={this.state.photo} />
-		</TouchableOpacity>
-		</View>
-		<View style={{flex:1,justifyContent:'center'}}>
-		<TouchableOpacity  onPress={() => this.nextAction(this.state.currentIndex - 1)} >
-		<Image style={{width:0.1*width,height:0.1*width}} source={require('../images/back.png' )} />
-		</TouchableOpacity>
-		</View>
-		<View style={{flex:1,justifyContent:'center'}}>
-        <View style={{}}>
-            <Video source={{uri:this.state.music}}   // Can be a URL or a local file.
-             ref='video'
-            rate={this.state.rate}   
-            muted={this.state.muted}  
-            paused={this.state.paused}
-            onBuffer={this.onBuffer}
-            style={styles.backgroundVideo}
-            onLoad={data => this.setDuration(data)}
-            volume={1.0}
-            playInBackground={true}
-            onProgress={e => this.setTime(e)}
-            />
-        </View>
-        <TouchableOpacity onPress={() => this.play()} style={{width:50,height:50,color:'#fff'}}>
-        <Image style={{width:0.15*width,height:0.15*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
-         </TouchableOpacity>
-		</View>
+                <ScrollView
+                        ref='swiper_ScrollVie'
+                        //  默认为垂直排列 此属性为true改为水平排列
+                    horizontal={true}
+                    
+                    showsHorizontalScrollIndicator={false}
+                    //  自动分页限ios
+                    pagingEnabled={false}
+                    //  禁用滚动限ios
+                    // scrollEnabled={false}
+                    onScroll = {(event)=>{{
+                        this.state.move=event.nativeEvent.contentOffset.x
+                        console.log(event.nativeEvent.contentOffset.x);//水平滚动距离
+                        console.log(event.nativeEvent.contentOffset.y);//垂直滚动距离 
+                    }}}
+                
+                >
+                    <View style={{width:width,height:0.95*height}}>
+                        <ScrollView  style={{height:height*0.95,marginLeft:width*0.05}}>
+                        <View >
+                        
+                            <View style={{height:height*0.12,backgroundColor:'#999',width:width*0.9,borderRadius:width*0.02
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
+                            <Text style={{fontSize:25,color:'#fff'}}>当你老了</Text>
+                            <Text style={{fontSize:10,color:'#ccc'}}>2015年03月27日发行  歌曲详情</Text>
+                            <View style={{borderTopColor:'#fff',borderTopWidth:1,marginTop:height*0.01,marginBottom:height*0.01}}>
+                            </View>
+                            <Text style={{fontSize:13,color:'#fff'}}>歌手：赵照                                                                   专辑：当你老了</Text>
+                            </View>
+                            <View style={{height:height*0.2,backgroundColor:'#999',width:width*0.9,borderRadius:width*0.02
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
+                            <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>相关歌曲</Text>
+                            <Text style={{fontSize:18,color:'#ccc',marginBottom:height*0.01}}>2015年03月27日发行  歌曲详情</Text>
+                            <Text style={{fontSize:18,color:'#ccc',marginBottom:height*0.01}}>别哭，我最爱的人-水木年华</Text>
+                            <Text style={{fontSize:18,color:'#ccc',marginBottom:height*0.01}}>天空之城(Live)-蒋国豪</Text>
+                            <Text style={{fontSize:18,color:'#ccc',marginBottom:height*0.01}}>未给姐姐递出的信-赵雷</Text>
+                            </View>
+                            <View style={{height:height*0.12,backgroundColor:'#999',width:width*0.9,borderRadius:width*0.02
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
+                            <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>其他版本</Text>
+                            <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>当你老了（原唱：赵照）</Text>
+                            <Text style={{fontSize:13,color:'#ccc',marginBottom:height*0.01}}>秋叶牧阳：青春之歌</Text>                          
+                            </View>
+                            <View style={{height:height*0.35,width:width*0.9,borderRadius:width*0.02
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
+                            <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>相关歌单</Text>    
+                            </View>
+                            <View style={{height:height*0.3,width:width*0.9,borderRadius:width*0.02
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
+                            <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>相关视频</Text> 
+                            </View>
+                        </View>
+                        </ScrollView>
+                    </View>
+                    <View style={{width:width}}>
+                    <View style={{width:width,height:0.95*height,marginTop:-0.015*height}}>
+                        <View style={{flex:30,justifyContent:'center',}}>
+                            <View style={{width:width*0.95,height:0.55*height,marginLeft:'5%'}}>
+                                <Image style={{width:'95%',height:'100%',
+                                borderRadius:width*0.05}} source={require('../images/2.png')} />
+                            </View>
+                        </View>
+                        <View style={{width:width,height:0.135*height,flexDirection:'row'}} >
+                            <View style={{flex:5,flexDirection:'column',marginLeft:'7%'}} >
+                            <Text  style={{color:'#fff',fontSize:30,paddingBottom:'2%'}}>{this.state.music_name}</Text>
+                            <Text  style={{color:'#ccc',paddingBottom:'2%'}}>{this.state.music_author}</Text>
+                            <Text  style={{color:'#ccc'}}>歌曲类型</Text>
+                            </View>
+                            <TouchableOpacity   style={{width:0.15*width,height:0.15*height}} onPress={this.clickheart}>
+                            <Image style={{width:'46%',height:'20%'}} source={this.state.iscollect?require('../images/heart.png' ):require('../images/redheart.png')} />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{width:width,height:0.07*height,flexDirection:'row',justifyContent:'center', alignItems: 'center'}}>
+                            <TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
+                                <Image style={{width:'40%',height:'60%'}}  source={require('../images/mike.png' )} />
+                            </TouchableOpacity>
+                            <TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
+                                <Image style={{width:'40%',height:'60%'}} source={require('../images/download.png' )} />
+                            </TouchableOpacity>
+                            <TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
+                                <Image  style={{width:'40%',height:'60%'}}  source={require('../images/remark.png' )} />
+                            </TouchableOpacity>
+                            <TouchableOpacity   style={{flex:1,marginLeft:'7%'}}>
+                                <Image  style={{width:'40%',height:'60%'}}  source={require('../images/ellipsis.png' )} />
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{flex:2}}>
+                            <View style={{flex:2,justifyContent:'center', alignItems: 'center'}}>			
+                            <Slider
+                            width={'95%'}
+                                ref='slider'
+                                // disabled //禁止滑动
+                                thumbTintColor={'#fff'}
+                                maximumTrackTintColor={'#ccc'} //右侧轨道的颜色
+                                minimumTrackTintColor={'#fff'} //左侧轨道的颜色
+                                value={this.state.slideValue}
+                                maximumValue={this.state.duration}
+                                step={1}
+                                onValueChange={(value) => {
+                                    this.setState({
+                                        currentTime:value
+                                    })
+                                            }
+                                        }
+                                onSlidingComplete={(value) => {
+                                                this.refs.video.seek(value)
+                                        }}
+                            />
+                            </View>
+                            <View style={{flex:3,flexDirection:'row'}}>
+                                <View style={{marginTop: 0*height, marginLeft: 0.07*width}}>
+                                <Text style={{color:'#fff'}}>{this.state.nowMin}:{this.state.nowSec}</Text>
+                                </View>						
+                            </View>
+                            </View>
+                            <View style={{flex:5,flexDirection:'row',paddingBottom:'1%', justifyContent: 'space-around',marginLeft:'9%',alignItems: 'center'}}>
+                            <View style={{flex:1,justifyContent:'center'}}  >
+                            <TouchableOpacity onPress={this.clickph}>
+                            <Image style={{width:0.1*width,height:0.08*width}} source={this.state.photo} />
+                            </TouchableOpacity>
+                            </View>
+                            <View style={{flex:1,justifyContent:'center'}}>
+                            <TouchableOpacity  onPress={() => this.nextAction(this.state.currentIndex - 1)} >
+                            <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/back.png' )} />
+                            </TouchableOpacity>
+                            </View>
+                            <View style={{flex:1,justifyContent:'center'}}>
+                            <View style={{}}>
+                                <Video source={{uri:this.state.music}}   // Can be a URL or a local file.
+                                ref='video'
+                                rate={this.state.rate}   
+                                muted={this.state.muted}  
+                                paused={this.state.paused}
+                                onBuffer={this.onBuffer}
+                                style={styles.backgroundVideo}
+                                onLoad={data => this.setDuration(data)}
+                                volume={1.0}
+                                playInBackground={true}
+                                onProgress={e => this.setTime(e)}
+                                />
+                            </View>
+                            <TouchableOpacity onPress={() => this.play()} style={{width:0.15*width,height:0.15*width,marginTop:-0*width,color:'#fff'}}>
+                            <Image style={{width:0.15*width,height:0.15*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
+                            </TouchableOpacity>
+                            </View>
 
-		<View style={{flex:1,justifyContent:'center',marginLeft:0.05*width}}>
-		<TouchableOpacity   onPress={() => this.nextAction(this.state.currentIndex + 1)} >
-		<Image style={{width:0.1*width,height:0.1*width}} source={require('../images/next.png' )} />
-		</TouchableOpacity>
-		</View>
-		<View style={{flex:1,justifyContent:'center'}}>
-		<TouchableOpacity  onPress = {()=>this.setState({
-            playlistvisible : true
-        })}>
-		<Image style={{width:0.1*width,height:0.1*width}} source={require('../images/list.png' )} />
-		</TouchableOpacity>
-		</View>
-		</View>
-		</View>
-        <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
+                            <View style={{flex:1,justifyContent:'center',marginLeft:0.05*width}}>
+                            <TouchableOpacity   onPress={() => this.nextAction(this.state.currentIndex + 1)} >
+                            <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/next.png' )} />
+                            </TouchableOpacity>
+                            </View>
+                            <View style={{flex:1,justifyContent:'center'}}>
+                            <TouchableOpacity  onPress = {()=>this.setState({
+                                playlistvisible : true
+                            })}>
+                            <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/list.png' )} />
+                            </TouchableOpacity>
+                            </View>
+                            </View>
+
+                        </View>
+                    </View>
+                    <View style={{width:width,height:height*0.95}}>
+                    <View style={{flex:38,marginLeft:width*0.05}}>
+                            <View style={{flex:5}}>
+                                <Text style={{color:'#ddd',fontSize:30}}>{this.state.music_name}</Text>
+                                <TouchableWithoutFeedback    >
+                                    <Text style={{color:'#ddd',marginTop:width*0.01,marginBottom:width*0.02}}>歌手链接</Text>
+                                </TouchableWithoutFeedback>
+                            </View>
+                            <View style={{flex:33}}>
+                            <ScrollView
+                            ref='swiper_ScrollView'
+                                //  默认为垂直排列 此属性为true改为水平排列
+                            horizontal={false}
+                            //  禁用水平滚动条
+                            showsHorizontalScrollIndicator={false}
+                            //  自动分页限ios
+                            pagingEnabled={false}
+                            //  禁用滚动限ios
+                            // scrollEnabled={false}
+                            >
+                            {this.renderChildView()} 
+                            </ScrollView>
+                            </View>
+                        </View>
+                        <View style={{flex:4,flexDirection:'row'}}>
+                            <View style={{flex:2}}>
+                            </View>
+                            <View style={{flex:2,marginLeft:width*0.6,justifyContent:'center', alignItems: 'center'}}>
+                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,marginTop:-0.05*width,color:'#fff'}}>
+                                <Image style={{width:0.1*width,height:0.1*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
+                                </TouchableOpacity>
+                            </View>
+
+                        </View>
+                    </View>
+               </ScrollView>
+                	
+                <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
+      
 
         </View>
 	
