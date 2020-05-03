@@ -63,28 +63,29 @@ export default class Doc extends Component{
             music_author:'',
             playlistvisible:false,
             song:'',
-            color:['#000','#fff','#000']
+            move:0,
+            index:0,
+            color:['#fff','#000','#000']
         }
     }
-      //格式化音乐播放的时间为0：00
-    formatMediaTime(duration) {
-        let min = Math.floor(duration / 60);
-        let second = duration - min * 60;
-        min = min >= 10 ? min : "0" + min;
-        second = second >= 10 ? second : "0" + second;
-        return min + ":" + second;
-    }
-    
     //设置进度条和播放时间的变化
     setTime(data) {
+
         let sliderValue = parseInt(this.state.currentTime);
         let min = Math.floor(sliderValue / 60);
         let second = sliderValue - min * 60;
         min = min >= 10 ? min : "0" + min;
         second = second >= 10 ? second : "0" + second;
-        console.log(min,second)
+        
             this.state.nowMin=min
             this.state.nowSec=second
+            for(var i =0 ;i<this.state.time.length;i++){
+                if(this.state.time[i]==min+':'+second)
+                {
+                    this.refs.swiper_ScrollView.scrollTo({ x:0, y:width*0.08*i , animated: true })
+                }
+            }
+            
         this.setState({
         slideValue: sliderValue,
         currentTime: data.currentTime,
@@ -104,7 +105,6 @@ export default class Doc extends Component{
 				let music_name=this.state.songs[index].music_name;
                 let music_author=this.state.songs[index].music_author;
                 this.state.music=this.state.songs[index].music_value;
-                console.log(this.state.music,'asdsad')
                 this.setState({
                     music_name: music_name,     //歌曲名
                     music_author: music_author,   //歌手
@@ -192,27 +192,67 @@ export default class Doc extends Component{
 		}
     }
     play(){
-        console.log(this.state.paused)
         this.setState({
             paused:!this.state.paused,
             playIcon: this.state.paused ? 'pause' : 'play',
             muted:!this.state.muted
         })
     }
+    componentWillUpdate() {
+        
+    }
+    move(){
+        if(this.state.move>width/2&&this.state.index==0){
+            this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+            this.state.index=1
+            console.log(this.state.move>width/2)
+        }
+       else if(this.state.move<width/2&&this.state.index==1){
+            this.refs.swiper_ScrollVie.scrollTo({ x: 0, y:0 , animated: true })
+            this.state.index=0
+        }
+        else if(this.state.move>width+width/2&&this.state.index==1){
+            this.refs.swiper_ScrollVie.scrollTo({ x: width*2, y:0 , animated: true })
+            this.state.index=2
+        }
+        else if(this.state.move<width+width/2&&this.state.index==2){
+            this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+            this.state.index=1
+        }
+        else{
+            this.time1 = setTimeout(() => {
+                if(this.state.move<width/2&&this.state.index==0){
+                    this.refs.swiper_ScrollVie.scrollTo({ x: 0, y:0 , animated: true })
+                    this.state.index=0
+                }
+                if(this.state.move>width/2&&this.state.index==1){
+                    this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+                    this.state.index=1
+                }
+                if(this.state.move<width/2+width&&this.state.index==1){
+                    this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+                    this.state.index=1
+                }
+                if(this.state.move>width/2+width&&this.state.index==2){
+                    this.refs.swiper_ScrollVie.scrollTo({ x: width*2, y:0 , animated: true })
+                    this.state.index=2
+                }
+                this.time1 && clearTimeout(this.time1);
+            }, 1000)
+        }  
+        for(var i=0;i<this.state.color.length;i++){
+            if(i==this.state.index)
+            this.state.color[this.state.index]='#fff'
+            else
+            this.state.color[i]='#000'
+        }
+        this.setState({
+            color:this.state.color
+        })     
+    }
     renderChildView(){
-		// 数组
-		
-		let url = 'http://music.163.com/api/song/media?id=5255987'
-        fetch(url)
-            .then((response) => response.json())
-            .then((responseJson) => {
-				
-				let songinfo = responseJson.data
-                this.setState({
-                  
-                })
+        // 数组
 
-            })
 		var allChild = [];
 		var songword = ['你若化成风', '我幻化成雨', '守护你身边', '一笑为红颜', '你若化成风'
 		, '我幻化成雨', '爱锁在眉间', '似水往昔浮流年', '乖乖 我的小乖乖',
@@ -240,7 +280,7 @@ export default class Doc extends Component{
 		var index=0;
 		// 遍历
 	   for(var i=0; i<songword.length; i++){
-		   if(this.state.index==i){
+		   if(this.state.time[i]==this.state.nowMin+':'+this.state.nowSec){
 			allChild.push(
 				//  循环排列的view中必须有唯一表示
 				  <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
@@ -262,8 +302,6 @@ export default class Doc extends Component{
 	   return allChild;
 	 }
 		render() {
-
-           console.log(this.state.color)
 		let time = this.state;
 		return (
 			<View style={styles.container}>
@@ -293,7 +331,7 @@ export default class Doc extends Component{
                         ref='swiper_ScrollVie'
                         //  默认为垂直排列 此属性为true改为水平排列
                     horizontal={true}
-                    
+
                     showsHorizontalScrollIndicator={false}
                     //  自动分页限ios
                     pagingEnabled={false}
@@ -301,13 +339,13 @@ export default class Doc extends Component{
                     // scrollEnabled={false}
                     onScroll = {(event)=>{{
                         this.state.move=event.nativeEvent.contentOffset.x
-                        console.log(event.nativeEvent.contentOffset.x);//水平滚动距离
-                        console.log(event.nativeEvent.contentOffset.y);//垂直滚动距离 
+                        this.move();
                     }}}
                 
                 >
                     <View style={{width:width,height:0.95*height}}>
-                        <ScrollView  style={{height:height*0.95,marginLeft:width*0.05}}>
+                        <ScrollView  style={{height:height*0.95,marginLeft:width*0.05}}
+                        showsVerticalScrollIndicator={false}>
                         <View >
                         
                             <View style={{height:height*0.12,backgroundColor:'#999',width:width*0.9,borderRadius:width*0.02
@@ -468,6 +506,7 @@ export default class Doc extends Component{
                             showsHorizontalScrollIndicator={false}
                             //  自动分页限ios
                             pagingEnabled={false}
+                            showsVerticalScrollIndicator={false}
                             //  禁用滚动限ios
                             // scrollEnabled={false}
                             >
