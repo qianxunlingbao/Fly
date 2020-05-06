@@ -65,7 +65,9 @@ export default class Doc extends Component{
             song:'',
             move:0,
             index:0,
-            color:['#fff','#000','#000']
+            color:['#fff','#000','#000'],
+            moveclick:false,
+
         }
     }
     //设置进度条和播放时间的变化
@@ -201,54 +203,81 @@ export default class Doc extends Component{
     componentWillUpdate() {
         
     }
-    move(){
-        if(this.state.move>width/2&&this.state.index==0){
-            this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
-            this.state.index=1
-            console.log(this.state.move>width/2)
-        }
-       else if(this.state.move<width/2&&this.state.index==1){
-            this.refs.swiper_ScrollVie.scrollTo({ x: 0, y:0 , animated: true })
-            this.state.index=0
-        }
-        else if(this.state.move>width+width/2&&this.state.index==1){
-            this.refs.swiper_ScrollVie.scrollTo({ x: width*2, y:0 , animated: true })
-            this.state.index=2
-        }
-        else if(this.state.move<width+width/2&&this.state.index==2){
-            this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
-            this.state.index=1
-        }
-        else{
-            this.time1 = setTimeout(() => {
-                if(this.state.move<width/2&&this.state.index==0){
-                    this.refs.swiper_ScrollVie.scrollTo({ x: 0, y:0 , animated: true })
-                    this.state.index=0
-                }
-                if(this.state.move>width/2&&this.state.index==1){
-                    this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
-                    this.state.index=1
-                }
-                if(this.state.move<width/2+width&&this.state.index==1){
-                    this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
-                    this.state.index=1
-                }
-                if(this.state.move>width/2+width&&this.state.index==2){
-                    this.refs.swiper_ScrollVie.scrollTo({ x: width*2, y:0 , animated: true })
-                    this.state.index=2
-                }
-                this.time1 && clearTimeout(this.time1);
-            }, 1000)
-        }  
-        for(var i=0;i<this.state.color.length;i++){
-            if(i==this.state.index)
-            this.state.color[this.state.index]='#fff'
-            else
+    moveclick(){
+        this.state.moveclick=true;
+
+        for(var i =0;i<3;i++){
             this.state.color[i]='#000'
         }
+        this.state.color[this.state.index]='#fff'
+        if(this.state.index==0){
+            this.refs.swiper_ScrollVie.scrollTo({ x: 0, y:0 , animated: true })
+        }
+        if(this.state.index==1){
+            this.refs.swiper_ScrollVie.scrollTo({ x:  width, y:0 , animated: true })
+        }
+        if(this.state.index==2){
+            this.refs.swiper_ScrollVie.scrollTo({ x:  width*2, y:0 , animated: true })
+        }
+        this.time2 = setTimeout(() => {
+            this.state.moveclick=false;
+            this.time2 && clearTimeout(this.time2);
+        }, 1000)
         this.setState({
             color:this.state.color
-        })     
+        })
+    }
+    move(){
+        if(!this.state.moveclick){
+            if(this.state.move>width/2&&this.state.index==0){
+                this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+                this.state.index=1
+            }
+           else if(this.state.move<width/2&&this.state.index==1){
+                this.refs.swiper_ScrollVie.scrollTo({ x: 0, y:0 , animated: true })
+                this.state.index=0
+            }
+            else if(this.state.move>width+width/2&&this.state.index==1){
+                this.refs.swiper_ScrollVie.scrollTo({ x: width*2, y:0 , animated: true })
+                this.state.index=2
+            }
+            else if(this.state.move<width+width/2&&this.state.index==2){
+                this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+                this.state.index=1
+            }
+            else{
+                this.time1 = setTimeout(() => {
+                    if(this.state.move<width/2&&this.state.index==0){
+                        this.refs.swiper_ScrollVie.scrollTo({ x: 0, y:0 , animated: true })
+                        this.state.index=0
+                    }
+                    if(this.state.move>width/2&&this.state.index==1){
+                        this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+                        this.state.index=1
+                    }
+                    if(this.state.move<width/2+width&&this.state.index==1){
+                        this.refs.swiper_ScrollVie.scrollTo({ x: width, y:0 , animated: true })
+                        this.state.index=1
+                    }
+                    if(this.state.move>width/2+width&&this.state.index==2){
+                        this.refs.swiper_ScrollVie.scrollTo({ x: width*2, y:0 , animated: true })
+                        this.state.index=2
+                    }
+                    this.time1 && clearTimeout(this.time1);
+                    console.log('aaa')
+                }, 1000)
+            }  
+            for(var i=0;i<this.state.color.length;i++){
+                if(i==this.state.index)
+                this.state.color[this.state.index]='#fff'
+                else
+                this.state.color[i]='#000'
+            }
+            this.setState({
+                color:this.state.color
+            })     
+        }
+        
     }
     renderChildView(){
         // 数组
@@ -269,7 +298,7 @@ export default class Doc extends Component{
 		'不预示下首的套路','踩着Hip-Hop的鼓点陪你跳恰恰舞','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟嘟嘟嘟嘟',
 		'嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟嘟嘟嘟嘟','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨',
 		'爱锁在眉间','似水往昔浮流年','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年'];
-		var time=['00:00','00:06','00:09','00:11','00:14','00:17','00:19','00:22','00:24','00:27','00:29','00:31','00:33','00:35',
+		var time=['00:06','00:09','00:11','00:14','00:17','00:19','00:22','00:24','00:27','00:29','00:31','00:33','00:35',
 		'00:37','00:40','00:41','00:42','00:43','00:45','00:48','00:50','00:53','00:55','00:58','01:00','01:03','01:06','01:08',
 		'01:11','01:13','01:16','01:19','01:21','01:24','01:26','01:29','01:32','01:35','01:38','01:39','01:42','01:44',
 		'01:47','01:49','01:52','01:55','01:57','02:00','02:02','02:05','02:07','02:10','02:12','02:13','02:14','02:16','02:16',
@@ -311,15 +340,24 @@ export default class Doc extends Component{
 					<Image style={{width:'35%',height:'20%'}} source={require('../images/down.png')} />
 					</TouchableOpacity>
 					<View  style={{flex:5,justifyContent:'center', alignItems: 'center',flexDirection:'row'}}>
-						<TouchableOpacity>
+						<TouchableOpacity onPress={(event)=>{{
+                        this.state.index=0;
+                        this.moveclick();
+                    }}}>
                         <Text style={{color:this.state.color[0]}}>推荐</Text>
                         </TouchableOpacity>
 						<Text>  |  </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={(event)=>{{
+                        this.state.index=1;
+                        this.moveclick();
+                    }}}>
 						<Text style={{color:this.state.color[1]}}>歌曲</Text>
                         </TouchableOpacity>
 						<Text>  |  </Text>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={(event)=>{{
+                        this.state.index=2;
+                        this.moveclick();
+                    }}}>
 						<Text style={{color:this.state.color[2]}}>歌词</Text>
                         </TouchableOpacity>
 					</View>
