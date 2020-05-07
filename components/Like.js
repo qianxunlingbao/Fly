@@ -32,6 +32,10 @@ export default class Like extends Component {
     }
     componentDidMount = ()=>{
         //this.setState.num++;
+        //http://49.235.231.110:8800/musicword 评论
+        //word_id music_id user_id word_value word_goodcounts
+        //dynamic_id user_id dynamic_value dynamic_img dynamic_goodcounts
+        //http://49.235.231.110:8800/dynamic 动态
         fetch('http://49.235.231.110:8800/music')
             .then(res=>res.json())
             .then(res=>{
