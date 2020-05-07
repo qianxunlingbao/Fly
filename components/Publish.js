@@ -58,7 +58,7 @@ export default class Doc extends Component{
 			currentIndex: 0,    //当前第几首
 			photo:require('../images/loop.png'),
 			clicknum3:0,
-			collect:0,
+			collect:false,
 			clicknum2:0,
 			music_name:'',
             music_author:'',
@@ -74,6 +74,7 @@ export default class Doc extends Component{
             volume:1,
             sliderValuevolume: 0,    //Slide的value
             modalVisible1:false,
+            
         }
     }
     //设置进度条和播放时间的变化
@@ -224,10 +225,11 @@ export default class Doc extends Component{
 		}
     }
     play(){
+
         this.setState({
             paused:!this.state.paused,
             playIcon: this.state.paused ? 'pause' : 'play',
-            rate:!this.state.rate
+            rate:this.state.rate
         })
     }
     componentWillUpdate() {
@@ -382,8 +384,8 @@ export default class Doc extends Component{
       setModalVisible1(visible) {
         this.setState({modalVisible1: visible});
     }
-    rate(rate){
-        this.state.rate=rate;
+    rateA(ratea){
+        this.state.rate=ratea;
         
         this.setState({
             rate:this.state.rate
@@ -498,17 +500,17 @@ export default class Doc extends Component{
                             </TouchableOpacity>
                         </View>
                         <View style={{width:width,height:0.07*height,flexDirection:'row',justifyContent:'center', alignItems: 'center'}}>
-                            <TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
-                                <Image style={{width:'40%',height:'60%'}}  source={require('../images/mike.png' )} />
+                            <TouchableOpacity  style={{flex:1,marginLeft:'7%',marginTop:-0.05*height}} >
+                                <Image style={{width:0.1*width,height:0.1*width}}  source={require('../images/mike.png' )} />
                             </TouchableOpacity>
-                            <TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
-                                <Image style={{width:'40%',height:'60%'}} source={require('../images/download.png' )} />
+                            <TouchableOpacity  style={{flex:1,marginLeft:'7%',marginTop:-0.05*height}} >
+                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/download.png' )} />
                             </TouchableOpacity>
-                            <TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
-                                <Image  style={{width:'40%',height:'60%'}}  source={require('../images/remark.png' )} />
+                            <TouchableOpacity  style={{flex:1,marginLeft:'7%',marginTop:-0.05*height}} >
+                                <Image  style={{width:0.1*width,height:0.1*width}}  source={require('../images/remark.png' )} />
                             </TouchableOpacity>
-                            <TouchableOpacity   style={{flex:1,marginLeft:'7%'}}  onPress={() => { this.setModalVisible(true) }}>
-                                <Image  style={{width:'40%',height:'60%'}}  source={require('../images/ellipsis.png' )} />
+                            <TouchableOpacity   style={{flex:1,marginLeft:'7%',marginTop:-0.05*height}}  onPress={() => { this.setModalVisible(true) }}>
+                                <Image  style={{width:0.1*width,height:0.1*width}}  source={require('../images/ellipsis.png' )} />
                             </TouchableOpacity>
                             <View>
                             <Modal
@@ -605,23 +607,23 @@ export default class Doc extends Component{
                                                                                 <View style={{height:0.07*height,justifyContent:'center'}}>
                                                                                 <Text style={{color:'#444',}}>选择播放速度</Text>
                                                                                 </View>
-                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(0.75) }}>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rateA(0.75) }}>
                                                                                     <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>0.75X</Text>
                                                                                     <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.02*height}} source={this.state.rate==0.75?require('../images/True.png'):require('../images/none.png')} />
                                                                                 </TouchableOpacity>
-                                                                                <TouchableOpacity style={{height:0.07*height,flexDirection:'row'}}onPress={() => { this.rate(1.0) }}>
+                                                                                <TouchableOpacity style={{height:0.07*height,flexDirection:'row'}}onPress={() => { this.rateA(1.0) }}>
                                                                                     <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>1.0X</Text>
                                                                                     <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.8*width,marginTop:0.015*height}} source={this.state.rate==1.0?require('../images/True.png'):require('../images/none.png')} />
                                                                                 </TouchableOpacity>
-                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(1.25) }}>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rateA(1.25) }}>
                                                                                     <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>1.25X</Text>
                                                                                     <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.034*height}} source={this.state.rate==1.25?require('../images/True.png'):require('../images/none.png')} />
                                                                                 </TouchableOpacity>
-                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(1.5) }}>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rateA(1.5) }}>
                                                                                     <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>1.5X</Text>
                                                                                     <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.04*height}} source={this.state.rate==1.5?require('../images/True.png'):require('../images/none.png')} />
                                                                                 </TouchableOpacity>
-                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(2.0) }}>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rateA(2.0) }}>
                                                                                     <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>2.0X</Text>
                                                                                     <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.04*height}} source={this.state.rate==2.0?require('../images/True.png'):require('../images/none.png')} />
                                                                                 </TouchableOpacity>
