@@ -97,9 +97,9 @@ export default class MusicHall extends Component {
                                     <Icon name="user" size={30} color='green' />
                                     <Text>歌手</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={()=>Actions.ranking()}>
                                     <Icon name="bar-chart-2" size={30} color='green' />
-                                    <Text>排行榜</Text>
+                                    <Text>排行</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
                                     <Icon name="grid" size={30} color='green' />

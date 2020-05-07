@@ -4,6 +4,8 @@ import {Router, Scene} from "react-native-router-flux";
 import Search from './components/Search';
 import Singer from './components/Singer';
 import SingerDetail from './components/SingerDetail';
+import Ranking from './components/Ranking';
+import RankingDetail from './components/RankingDetail';
 
 const App = () => {
   return (
@@ -27,6 +29,16 @@ const App = () => {
           <Scene
             key="singerdetail"
             component={SingerDetail}
+            hideNavBar
+          />
+          <Scene
+            key="ranking"
+            component={Ranking}
+            hideNavBar
+          />
+          <Scene
+            key="rankingdetail"
+            component={RankingDetail}
             hideNavBar
           />
         </Scene>
