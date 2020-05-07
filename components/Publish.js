@@ -58,7 +58,7 @@ export default class Doc extends Component{
 			currentIndex: 0,    //当前第几首
 			photo:require('../images/loop.png'),
 			clicknum3:0,
-			iscollect:true,
+			collect:0,
 			clicknum2:0,
 			music_name:'',
             music_author:'',
@@ -73,6 +73,7 @@ export default class Doc extends Component{
             songword:[],
             volume:1,
             sliderValuevolume: 0,    //Slide的value
+            modalVisible1:false,
         }
     }
     //设置进度条和播放时间的变化
@@ -226,7 +227,7 @@ export default class Doc extends Component{
         this.setState({
             paused:!this.state.paused,
             playIcon: this.state.paused ? 'pause' : 'play',
-            muted:!this.state.muted
+            rate:!this.state.rate
         })
     }
     componentWillUpdate() {
@@ -251,7 +252,7 @@ export default class Doc extends Component{
         this.time2 = setTimeout(() => {
             this.state.moveclick=false;
             this.time2 && clearTimeout(this.time2);
-        }, 500)
+        }, 700)
         this.setState({
             color:this.state.color
         })
@@ -293,7 +294,7 @@ export default class Doc extends Component{
                         this.state.index=2
                     }
                     this.time1 && clearTimeout(this.time1);
-                }, 500)
+                }, 1000)
             }  
             for(var i=0;i<this.state.color.length;i++){
                 if(i==this.state.index)
@@ -307,7 +308,12 @@ export default class Doc extends Component{
         }
         
     }
-    list(){
+    clickred(){
+        this.state.collect=!this.state.collect
+        this.setState({
+            collect:this.state.collect
+        })
+
         
     }
     renderChildView(){
@@ -373,8 +379,19 @@ export default class Doc extends Component{
           this.state.modalVisible=!this.state.modalVisible
           this.setState({modalVisible:this.state.modalVisible});
       }
+      setModalVisible1(visible) {
+        this.setState({modalVisible1: visible});
+    }
+    rate(rate){
+        this.state.rate=rate;
+        
+        this.setState({
+            rate:this.state.rate
+            });
+      }
 		render() {
-		let time = this.state;
+        let time = this.state;
+        
 		return (
 			<View style={styles.container}>
 			
@@ -476,8 +493,8 @@ export default class Doc extends Component{
                             <Text  style={{color:'#ccc',paddingBottom:'2%'}}>{this.state.music_author}</Text>
                             <Text  style={{color:'#ccc'}}>{this.state.songword[this.state.nowsong]}</Text>
                             </View>
-                            <TouchableOpacity   style={{width:0.15*width,height:0.15*height}} onPress={this.clickheart}>
-                            <Image style={{width:'46%',height:'20%'}} source={this.state.iscollect?require('../images/heart.png' ):require('../images/redheart.png')} />
+                            <TouchableOpacity   style={{width:0.15*width,height:0.15*height}} onPress={()=>{this.clickred()}}>
+                            <Image style={{width:'46%',height:'20%'}} source={this.state.collect?require('../images/heart.png' ):require('../images/redheart.png')} />
                             </TouchableOpacity>
                         </View>
                         <View style={{width:width,height:0.07*height,flexDirection:'row',justifyContent:'center', alignItems: 'center'}}>
@@ -538,7 +555,7 @@ export default class Doc extends Component{
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/musicor.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>查看歌手</Text>
                                                         </TouchableOpacity>
@@ -546,41 +563,83 @@ export default class Doc extends Component{
                                                     <View style={{width:0.2*width,}}>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/addlist.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>加到歌单</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/Album.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>查看专辑</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                     <View style={{width:0.2*width,}}>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
+                                                    <Modal
+                                                        animationType = {"slide"}
+                                                        transparent = {true}
+                                                        visible = {this.state.modalVisible1}
+                                                        >
+                                                            <TouchableOpacity style={{width:'100%',height:'100%'}} onPress={() => { this.setModalVisible1(false) }}>
+                                                            <View style = {{
+                                                                    width:'100%',
+                                                                        height:'50%',
+                                                                        position:'absolute',
+                                                                        top:'0%',
+                                                                        justifyContent:"center",
+                                                                        alignItems:"center",
+                                                                        backgroundColor:'#000',
+                                                                        opacity:0.5
+                                                                    }}>
+                                                                    </View>
+                                                                    </TouchableOpacity>
+                                                                <View style = {{
+                                                                    width:'100%',
+                                                                        height:'50%',
+                                                                        position:'absolute',
+                                                                        top:'50%',
+                                                                        paddingLeft:width*0.04,
+                                                                        backgroundColor:'#181a19',
+                                                                        opacity:1
+                                                                    }}>
+                                                                                <View style={{height:0.07*height,justifyContent:'center'}}>
+                                                                                <Text style={{color:'#444',}}>选择播放速度</Text>
+                                                                                </View>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(0.75) }}>
+                                                                                    <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>0.75X</Text>
+                                                                                    <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.02*height}} source={this.state.rate==0.75?require('../images/True.png'):require('../images/none.png')} />
+                                                                                </TouchableOpacity>
+                                                                                <TouchableOpacity style={{height:0.07*height,flexDirection:'row'}}onPress={() => { this.rate(1.0) }}>
+                                                                                    <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>1.0X</Text>
+                                                                                    <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.8*width,marginTop:0.015*height}} source={this.state.rate==1.0?require('../images/True.png'):require('../images/none.png')} />
+                                                                                </TouchableOpacity>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(1.25) }}>
+                                                                                    <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>1.25X</Text>
+                                                                                    <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.034*height}} source={this.state.rate==1.25?require('../images/True.png'):require('../images/none.png')} />
+                                                                                </TouchableOpacity>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(1.5) }}>
+                                                                                    <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>1.5X</Text>
+                                                                                    <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.04*height}} source={this.state.rate==1.5?require('../images/True.png'):require('../images/none.png')} />
+                                                                                </TouchableOpacity>
+                                                                                <TouchableOpacity style={{height:0.07*height}} onPress={() => { this.rate(2.0) }}>
+                                                                                    <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>2.0X</Text>
+                                                                                    <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.865*width,marginTop:-0.04*height}} source={this.state.rate==2.0?require('../images/True.png'):require('../images/none.png')} />
+                                                                                </TouchableOpacity>
+                                                                                <TouchableOpacity style={{width:width,height:0.03*height,justifyContent:'center', alignItems: 'center'}} onPress={() => { this.setModalVisible1(false) }}>
+                                                                                    <Text style={{color:'#fff',fontSize:15}}>取消</Text>
+                                                                                </TouchableOpacity>
+                                                                    </View>
+
+                                                        </Modal>
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}onPress={() => { this.setModalVisible1(true) }} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/speed.jpg')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>倍速播放</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
-                                                            </View>
-                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>设置铃声</Text>
-                                                        </TouchableOpacity>
-                                                    </View>
-                                                    <View style={{width:0.2*width,}}>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
-                                                            <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
-                                                            </View>
-                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>音质</Text>
-                                                        </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
-                                                            <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/bill.jpg')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>歌词海报</Text>
                                                         </TouchableOpacity>
@@ -588,13 +647,13 @@ export default class Doc extends Component{
                                                     <View style={{width:0.2*width,}}>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/HQ.png')} />
                                                             </View>
-                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>个性主题</Text>
+                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>音质</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/DM.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>驾驶模式</Text>
                                                         </TouchableOpacity>
@@ -602,13 +661,13 @@ export default class Doc extends Component{
                                                     <View style={{width:0.2*width,}}>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.07*width}} source={require('../images/PT.png')} />
                                                             </View>
-                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>播放器样式</Text>
+                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>个性主题</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/BM.jpg')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>背景音乐</Text>
                                                         </TouchableOpacity>
@@ -616,21 +675,34 @@ export default class Doc extends Component{
                                                     <View style={{width:0.2*width,}}>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/player.png')} />
                                                             </View>
-                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>定时关闭</Text>
+                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>播放器样式</Text>
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/share.png')} />
+                                                                <Image style={{width:0.08*width,height:0.07*width}} source={require('../images/Report.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>举报</Text>
                                                         </TouchableOpacity>
                                                     </View>
+                                                    <View style={{width:0.2*width,}}>
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
+                                                            <View style={styles.box}>
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/timing.png')} />
+                                                            </View>
+                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>定时关闭</Text>
+                                                        </TouchableOpacity>
+                                                    </View>
                                                 </ScrollView>
-                                                <View style={{width:width,height:0.08*height}}>
+                                                <View style={{width:width,height:0.08*height,flexDirection:'row'}}>
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',width:0.15*width}} >
+                                                            <View >
+                                                                <Image style={{width:0.04*width,height:0.025*width}} source={require('../images/Mute.png')} />
+                                                            </View>
+                                                    </TouchableOpacity>
                                                     <Slider
-                                                        width={'95%'}
+                                                        width={'70%'}
                                                             ref='slider'
                                                             // disabled //禁止滑动
                                                             thumbTintColor={'#fff'}
@@ -649,9 +721,14 @@ export default class Doc extends Component{
                                                                             this.state.volume=value
                                                                     }}
                                                         />
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',width:0.15*width}}  >
+                                                            <View>
+                                                                <Image style={{width:0.04*width,height:0.025*width}} source={require('../images/Lmax.png')} />
+                                                            </View>
+                                                        </TouchableOpacity>
                                                 </View>
-                                                <TouchableOpacity style={{width:width,height:0.03*height,justifyContent:'center', alignItems: 'center'}} onPress={() => { this.setModalVisible(false) }}>
-                                                    <Text style={{color:'#fff',fontSize:22}}>取消</Text>
+                                                <TouchableOpacity style={{width:width,height:0.05*height,justifyContent:'center', alignItems: 'center',marginTop:-0.01*height}} onPress={() => { this.setModalVisible(false) }}>
+                                                    <Text style={{color:'#fff',fontSize:15}}>取消</Text>
                                                 </TouchableOpacity>
                                             </View>
 
@@ -718,7 +795,6 @@ export default class Doc extends Component{
                             <Image style={{width:0.15*width,height:0.15*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
                             </TouchableOpacity>
                             </View>
-
                             <View style={{flex:1,justifyContent:'center',marginLeft:0.05*width}}>
                             <TouchableOpacity   onPress={() => this.nextAction(this.state.currentIndex + 1)} >
                             <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/next.png' )} />
@@ -732,7 +808,6 @@ export default class Doc extends Component{
                             </TouchableOpacity>
                             </View>
                             </View>
-
                         </View>
                     </View>
                     <View style={{width:width,height:height*0.95}}>
