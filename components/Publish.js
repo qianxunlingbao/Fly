@@ -13,6 +13,7 @@ import {
     Animated,
     Easing,
     Alert,
+    Modal,
     AsyncStorage,
     TouchableWithoutFeedback,
 } from 'react-native';
@@ -67,7 +68,7 @@ export default class Doc extends Component{
             index:0,
             color:['#fff','#000','#000'],
             moveclick:false,
-
+            nowsong:0,
         }
     }
     //设置进度条和播放时间的变化
@@ -222,7 +223,7 @@ export default class Doc extends Component{
         this.time2 = setTimeout(() => {
             this.state.moveclick=false;
             this.time2 && clearTimeout(this.time2);
-        }, 1000)
+        }, 500)
         this.setState({
             color:this.state.color
         })
@@ -264,8 +265,7 @@ export default class Doc extends Component{
                         this.state.index=2
                     }
                     this.time1 && clearTimeout(this.time1);
-                    console.log('aaa')
-                }, 1000)
+                }, 500)
             }  
             for(var i=0;i<this.state.color.length;i++){
                 if(i==this.state.index)
@@ -277,6 +277,9 @@ export default class Doc extends Component{
                 color:this.state.color
             })     
         }
+        
+    }
+    list(){
         
     }
     renderChildView(){
@@ -307,9 +310,15 @@ export default class Doc extends Component{
 		this.state.songword=songword;
 		this.state.time=time;
 		var index=0;
-		// 遍历
+        // 遍历
+        for(var j=0;j<time.length;j++){
+            if(this.state.time[j]==this.state.nowMin+':'+this.state.nowSec)
+            {
+                this.state.nowsong=j
+            }
+        }
 	   for(var i=0; i<songword.length; i++){
-		   if(this.state.time[i]==this.state.nowMin+':'+this.state.nowSec){
+		   if(this.state.nowsong==i){
 			allChild.push(
 				//  循环排列的view中必须有唯一表示
 				  <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
@@ -447,7 +456,7 @@ export default class Doc extends Component{
                             <TouchableOpacity  style={{flex:1,marginLeft:'7%'}} >
                                 <Image  style={{width:'40%',height:'60%'}}  source={require('../images/remark.png' )} />
                             </TouchableOpacity>
-                            <TouchableOpacity   style={{flex:1,marginLeft:'7%'}}>
+                            <TouchableOpacity   style={{flex:1,marginLeft:'7%'}} onPress={this.list}>
                                 <Image  style={{width:'40%',height:'60%'}}  source={require('../images/ellipsis.png' )} />
                             </TouchableOpacity>
                         </View>
