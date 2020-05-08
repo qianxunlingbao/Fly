@@ -52,6 +52,7 @@ import Songword from './components/Songword'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
+import Huachenyu  from './components/Huachenyu'
 
 const App = () => {  
   return (
@@ -104,6 +105,7 @@ const App = () => {
               <Scene key="CustomScrollView" component={CustomScrollView} />
               <Scene key="RedAlert" component={RedAlert} />
               <Scene key="OverLike" component={OverLike} />
+              <Scene key="huachenyu" component={Huachenyu} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}

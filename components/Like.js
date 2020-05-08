@@ -71,10 +71,11 @@ export default class Like extends Component {
                 <ScrollView>
                     <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
                         <View style={{width:width*0.1,height:width*0.1}}>
-                            <TouchableOpacity 
-                                onPress={()=>Actions.Condition()}
-                            >
-                                <Image style={{width:width*0.1,height:width*0.1}} source={require('../images/fanhui.png')} />
+                            <TouchableOpacity onPress={()=>Actions.Condition()}>
+                                <Text style={{
+                                    textAlign:"center",
+                                    fontSize:25
+                                }}>〈</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.30,marginTop:-width*0.09}}>

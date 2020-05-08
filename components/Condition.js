@@ -347,7 +347,7 @@ export default class FirstOne extends Component {
                             showsHorizontalScrollIndicator={false}
                         >
                         <View style={styles.slide2}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>Actions.huachenyu()}>
                                 <Image style={styles.touxiang} source={require('../images/huachenyu.png')} />                            
                                 <Text style={{textAlign:'center'}}>华晨宇</Text>
                             </TouchableOpacity>

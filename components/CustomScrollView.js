@@ -6,9 +6,12 @@ import {
     TouchableOpacity,
     ScrollView,
     Image,
+    StatusBar,
     PanResponder,
     Dimensions
 } from 'react-native';
+
+import { Actions } from 'react-native-router-flux';
 
 import Utils from '../src/common/Utils'
 
@@ -30,6 +33,7 @@ export default class CustomScrollView extends Component {
                 {name:'有两种悲伤。一种碌碌无为活到老的空切悲伤，另一种是一路奋斗过来，人到中年侥幸有点成就，回首却发觉女神已嫁人，大部分朋友被你甩在身后断了联系，长辈也渐渐不在。越过山丘的喜悦无人分享，也是一种悲伤。',},
                 {name:'耳边同时放着自己最喜欢的歌。歌声时而婉转动人，如山涧中的滚滚流水；歌声时而激情澎湃，如大海的滚滚浪花；歌声时而忧郁悲伤，如林黛玉望月伤悲，看花坠泪。',}
             ],
+            tits:[]
         }
 
         this.itemHight = height*0.2;
@@ -43,7 +47,20 @@ export default class CustomScrollView extends Component {
         this.scrollArray = [];
 
     }
-
+    componentDidMount = ()=>{
+        //this.setState.num++;
+        //http://49.235.231.110:8800/musicword 评论
+        //word_id music_id user_id word_value word_goodcounts
+        //dynamic_id user_id dynamic_value dynamic_img dynamic_goodcounts
+        //http://49.235.231.110:8800/dynamic 动态
+        fetch('http://49.235.231.110:8800/musicword')
+            .then(res=>res.json())
+            .then(res=>{
+                this.setState({
+                    tits: res.data
+                });
+            })
+    }
     
 
     static navigationOptions = { 
@@ -52,26 +69,28 @@ export default class CustomScrollView extends Component {
 
     render(){
         return(
-            <View style={styles.container}>
-                
+            
+            <View style={styles.container}>    
+            <StatusBar backgroundColor='#AAAAAA' translucent={true}/>
+                <View style={{width:width,height:width*0.1,backgroundColor:'white',marginBottom:width*0.05}}>
+                    <View style={{width:width*0.1,height:width*0.1}}>
+                        <TouchableOpacity 
+                            onPress={()=>Actions.Condition()}
+                        >
+                            <Image style={{width:width*0.1,height:width*0.1}} source={require('../images/fanhui.png')} />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.45,marginTop:-width*0.09}}>
+                        <Text style={{fontSize:30}}>评论</Text>
+                    </View>       
+                </View>                              
                 <ScrollView 
                     showsVerticalScrollIndicator={false}
                     onScrollEndDrag={(e)=>this.exportOnScrollEndDrag(e)}
                     onMomentumScrollEnd={(e)=>this.exportonMomentumScrollEnd(e)}
                     ref = {(ref)=>{this.outsideScroll = ref}}
                 >
-                    <View style={{
-                        height:height*0.05,
-                        justifyContent:'center',
-                        alignItems:'center',
-                        backgroundColor:'#AAAAAA',
-                        width:width*0.91,
-                        borderWidth:1,
-                        borderRadius:25,
-                        marginBottom:width*0.06
-                    }}>
-                        <Text style={{fontSize:25}}>评论</Text>
-                    </View>
+                                  
                     <View style={{height:this.ViewHeight,width:Utils.size.width}}>
                         {this.state.data.map((item,index)=>{
                             return(
@@ -88,7 +107,7 @@ export default class CustomScrollView extends Component {
                                     style={{
                                         top:this._getTopValueYById(index),
                                         position: 'absolute',
-                                        width:Utils.size.width-40,
+                                        width:Utils.size.width,
                                         height:this.itemHight,
                                         backgroundColor:'white',
                                         marginBottom:this.interval,
@@ -110,7 +129,7 @@ export default class CustomScrollView extends Component {
                                         onTouchStart = {(e)=>{this.onTouchStart(e,index)}}                                        
                                         onMomentumScrollEnd = {(e)=>{this.onMomentumScrollEnd(e,index)}}
                                     >
-                                        <View style={{width:Utils.size.width-40,height:this.itemHight,justifyContent:'center'}}>
+                                        <View style={{width:Utils.size.width,height:this.itemHight,justifyContent:'center'}}>
                                             <TouchableOpacity style={{marginLeft:10,marginRight:10}} onPress={()=>{console.log(index)}}>
                                                 <View style={{flexDirection:'row'}}>
                                                     
@@ -128,11 +147,12 @@ export default class CustomScrollView extends Component {
                                         <TouchableOpacity 
                                                 onPress={this.removeItem.bind(this,index)}
                                                 style={{
-                                                    width:this.itemHight,
-                                                    height:this.itemHight,     
+                                                    width:this.itemHight*0.5,
+                                                    height:this.itemHight*0.5,     
                                                     justifyContent:'center',
                                                     alignItems:'center',
-                                                    backgroundColor:'red'
+                                                    backgroundColor:'greenyellow',
+                                                    marginTop:width*0.1
                                                     }}>
                                                     <Text style={{fontSize:15}}>{"删除"}</Text>
                                         </TouchableOpacity>                                  
@@ -334,9 +354,7 @@ export default class CustomScrollView extends Component {
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        marginRight:20,
-        marginLeft:20,
-        marginTop:20
+        
     },
 
     mingzi: {

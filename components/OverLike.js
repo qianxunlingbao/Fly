@@ -69,14 +69,18 @@ export default class OverLike extends Component {
                 <ScrollView>
                     <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
                         <View style={{width:width*0.1,height:width*0.1}}>
-                            <TouchableOpacity 
-                                onPress={()=>Actions.Condition()}
-                            >
-                                <Image style={{width:width*0.1,height:width*0.1}} source={require('../images/fanhui.png')} />
+                            <TouchableOpacity onPress={()=>Actions.Condition()}>
+                                <Text style={{
+                                    textAlign:"center",
+                                    fontSize:25
+                                }}>〈</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.30,marginTop:-width*0.09}}>
-                            <Text style={{fontSize:30,color:'#AAAAAA'}}>推荐  |  </Text>
+                            <TouchableOpacity onPress={()=>Actions.dongTaiLike()}>
+                                <Text style={{fontSize:30,color:'#AAAAAA'}}>推荐  |  </Text>
+                            </TouchableOpacity>
+                            
                             <TouchableOpacity style={
                                 {
                                     width:width*0.2,
@@ -84,27 +88,20 @@ export default class OverLike extends Component {
                                     marginTop:-width*0.1,
                                     height:width*0.1
                                 }
-                            } onPress={()=>Actions.Condition()}>
+                            } onPress={()=>Actions.OverLike()}>
                                 <Text style={{textAlign:'center',marginTop:width*0.017,fontSize:30}}>已关注</Text>
                             </TouchableOpacity>
                         </View>
                         
                     </View>
-                    <View style={{
-                            width:width*0.9,
-                            height:width*0.2,
-                            marginLeft:width*0.05,
-                            marginTop:width*0.05
-                        }}>
-                       <Text>关注页</Text>
-                    </View>
+                    
                                 
                     <View>
                     <FlatList 
                         data={this.state.tits}
                         renderItem={({item})=>
                             
-                            <View style={{flex:1,marginTop:width*0.05}}>
+                            <View style={{flex:1,marginTop:width*0.1}}>
                                 <View style={{
                                     width:width*0.9,
                                     height:width*0.2,
