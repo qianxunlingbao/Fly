@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage, FlatList} from 'react-native'
-
-/**
-*
-* @ author: 
-* @ email: 
-* @ data: 2020-04-27 16:02
-*/
 class PlayList
  extends Component {
     render() {

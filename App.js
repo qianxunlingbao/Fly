@@ -53,6 +53,7 @@ import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
 import UserInfo  from './components/UserInfo'
+import ModifyNetName  from './components/ModifyNetName'
 
 const App = () => {  
   return (
@@ -120,6 +121,7 @@ const App = () => {
               <Scene key = 'login' component = {Login} hideNavBar hideTabBar/>      
               <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
               <Scene key = 'userinfo' component = {UserInfo}  hideTabBar title = '我的资料'/>      
+              <Scene key = 'modifynetname' component = {ModifyNetName}  hideTabBar title = '修改昵称'/>      
             </Scene>
           </Tabs>    
           </Scene>
