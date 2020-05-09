@@ -102,7 +102,8 @@ class My extends Component {
                             </TouchableOpacity>
                         </View> 
                         :<View style={styles.uphalf}>
-                        <TouchableOpacity style={styles.headImg}>
+                            <TouchableOpacity style={styles.uphalf} onPress = {()=>{Actions.userinfo()}}>
+                            <TouchableOpacity style={styles.headImg}>
                             <Image source = {require('../images/16.png')} style={{width:height * 0.2 * 0.3,
         height:height * 0.2 * 0.3,
         borderRadius:height * 0.2 * 0.3 * 0.5,}}/>
@@ -111,6 +112,7 @@ class My extends Component {
                         <Image style={{width:25,height:25,marginLeft:10}} source={require('../images/diamond.png')}/>
                         <Image style={{width:25,height:25}} source={require('../images/ear.png')}/>
                         <Image style={{width:25,height:25,marginLeft:width*0.8*0.3}} source={require('../images/email.png')}/>
+                            </TouchableOpacity>
                         </View> 
                     }
                 

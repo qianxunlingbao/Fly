@@ -52,6 +52,7 @@ import Songword from './components/Songword'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
+import UserInfo  from './components/UserInfo'
 
 const App = () => {  
   return (
@@ -118,6 +119,7 @@ const App = () => {
               <Scene key = "addsong" component={AddSong}  title='歌曲管理' hideTabBar/>
               <Scene key = 'login' component = {Login} hideNavBar hideTabBar/>      
               <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
+              <Scene key = 'userinfo' component = {UserInfo}  hideTabBar title = '我的资料'/>      
             </Scene>
           </Tabs>    
           </Scene>
