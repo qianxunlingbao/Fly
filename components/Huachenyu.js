@@ -7,12 +7,15 @@ import {
     Dimensions,
     ScrollView,
     ToastAndroid,
+    Modal,
     StatusBar,
     Image,
     StyleSheet,
     FlatList,
     TouchableHighlight,
 } from 'react-native';
+
+import ConfirmModal from './ConfirmModal';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -48,12 +51,16 @@ export default class Huachenyu extends Component {
             createdata:[],
             addposition:'absolute',
             addflex:'flex',
+            modalVisible: false ,
+            content:'I come from Parent component',
         }
     }
     componentDidMount = ()=>{
         
     }
-    
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
     guanzhu(){
         this.setState({
             isAdd:!this.state.isAdd,
@@ -66,8 +73,6 @@ export default class Huachenyu extends Component {
         )
     }
     render() {
-        let number = this.state.num;
-        let ma = Math.random();
         return (
             <View>
                 {/* 状态栏 //fetch('http://49.235.231.110:8800/music') */}
@@ -91,6 +96,12 @@ export default class Huachenyu extends Component {
                     
                     </View>
                     <View style={{width:width*0.5}}>
+                        <ConfirmModal
+                            modalVisible={this.state.modalVisible}
+                            content={this.state.content}
+                            callback={this.setModalVisible.bind(this)}
+                            >
+                        </ConfirmModal>
                         <TouchableOpacity style={{
                             marginLeft:width*0.36,
                             borderRadius:25,
@@ -113,7 +124,9 @@ export default class Huachenyu extends Component {
                             marginTop:-height*0.04,
                             marginLeft:width*0.8
                         }}
-                        onPress={()=>this.share()}
+                        onPress={() => {
+                            this.setModalVisible(true);
+                        }}
                     >
                         <Image style={{
                             width:width*0.052,
@@ -224,7 +237,7 @@ export default class Huachenyu extends Component {
                                 }
                             }>私信</Text>
                         </TouchableOpacity>
-                    </View>  
+                    </View> 
                     <View>
                         <View style={
                             {
