@@ -3,6 +3,18 @@ import { StyleSheet, View, Text ,Image, ScrollView ,Dimensions, FlatList, Toucha
 import ChooseSex from './ChooseSex'
 import { Actions } from 'react-native-router-flux';
 const {width,height} = Dimensions.get('window');
+import ImagePicker from 'react-native-image-picker';
+const options = {
+    title: '请选择',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '从相册选择图片',
+    customButtons: [{ name: 'fb', title: '从 Facebook 选择图片' }],
+    cancelButtonTitle: '取消',
+    storageOptions: {
+      skipBackup: true,
+      path: 'assets',
+    },
+};
 class UserInfo extends Component {
     constructor(){
         super();
@@ -15,6 +27,7 @@ class UserInfo extends Component {
     }
     componentWillUnmount(){
         AsyncStorage.setItem('sex',this.state.sex);
+        AsyncStorage.setItem('headimage',this.state.headimage.uri)
     }
     componentDidMount(){
         AsyncStorage.getItem('netname').then(
@@ -22,6 +35,16 @@ class UserInfo extends Component {
                 if(value){
                     this.setState({
                         netname: value
+                    })
+                }
+                
+            }
+        )
+        AsyncStorage.getItem('headimage').then(
+            (value) => {
+                if(value){
+                    this.setState({
+                        headimage: {uri : value}
                     })
                 }
                 
@@ -49,7 +72,26 @@ class UserInfo extends Component {
             }
         )
     }
+    takephoto = () =>{
+        ImagePicker.showImagePicker(options,(response) => {
+            if(response.didCancel){
+                return;
+            }else if(response.error){
+                console.log(error);
+            }else if(response.customButton){
+                console.log(res.customButton);
+            }else {
+                this.setState({
+                    headimage:{uri:response.uri}
+                });
+               
+            }
+        })
+    }
     basicInfoClick = (value)=>{
+        if(value == 1){
+            this.takephoto();
+        }
         if(value == 2){
             Actions.modifynetname();
         }

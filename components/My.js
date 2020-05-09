@@ -31,7 +31,7 @@ class My extends Component {
             addflex:'flex',
             modalVisible : false,
             listTitle : '新建歌单',
-
+            headImg:require('../images/16.png')
                 }
     }
     _onPressEmpty = () => {
@@ -74,9 +74,28 @@ class My extends Component {
                 })
             }
         )
+        AsyncStorage.getItem('headimage').then(
+            (value) => {
+                if(value){
+                    this.setState({
+                        headImg: {uri : value}
+                    })
+                }
+                
+            }
+        )
     }
-    componentWillMount = () => {
-        
+    componentDidUpdate(){
+        AsyncStorage.getItem('headimage').then(
+            (value) => {
+                if(value){
+                    this.setState({
+                        headImg: {uri : value}
+                    })
+                }
+                
+            }
+        )
     }
     render() {
         return (
@@ -104,7 +123,7 @@ class My extends Component {
                         :<View style={styles.uphalf}>
                             <TouchableOpacity style={styles.uphalf} onPress = {()=>{Actions.userinfo()}}>
                             <TouchableOpacity style={styles.headImg}>
-                            <Image source = {require('../images/16.png')} style={{width:height * 0.2 * 0.3,
+                            <Image source = {this.state.headImg} style={{width:height * 0.2 * 0.3,
         height:height * 0.2 * 0.3,
         borderRadius:height * 0.2 * 0.3 * 0.5,}}/>
                         </TouchableOpacity>
