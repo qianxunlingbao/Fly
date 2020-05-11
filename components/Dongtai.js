@@ -19,8 +19,6 @@ import Button from 'react-native-button';
 
 import ImagePicker from 'react-native-image-picker';
 
-import Video from 'react-native-video';
-
 import { Actions } from 'react-native-router-flux';
 
 const {width,scale,height} = Dimensions.get('window');
@@ -45,13 +43,33 @@ export default class Home extends Component {
             value1:'点赞 0',
             value3:'评论 0',
             value:'',
-            
+            tits: [],
             width: new Animated.Value(20),
             imageUrl:'',
             isloading:false,
             tianjiaguanzhu: '+关注',
             isAdd: false
         }
+    }
+    componentDidMount = ()=>{
+        //this.setState.num++;
+        //fetch('http://49.235.231.110:8800/music')
+        //    .then(res=>res.json())
+        //    .then(res=>{
+        //       this.setState({
+        //          tits: res.data
+        //        });
+        //    })
+    }
+    delete(){
+        console.log(this.state.tits.length)
+        console.log(this.state.tits)
+        this.setState({
+            arr:this.state.tits,
+            key:this.state.arr.length,
+            tits:this.state.tits.splice(1,10)
+        })
+        console.log(this.state.key)
     }
     takephoto = ()=>{
         ImagePicker.showImagePicker(options, (response) => {
@@ -99,14 +117,32 @@ export default class Home extends Component {
     render() {
         return (
             <View style={{flex:1}}>
-                <View style={{
+                <ScrollView>
+                    <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
+                        <View style={{width:width*0.1,height:width*0.1}}>
+                            <TouchableOpacity onPress={()=>Actions.Condition()}>
+                                <Text style={{
+                                    textAlign:"center",
+                                    fontSize:25,marginTop:width*0.01
+                                }}>〈</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.37,marginTop:-width*0.09}}>
+                            <TouchableOpacity onPress={()=>Actions.dongTaiLike()}>
+                                <Text style={{fontSize:30,color:'#AAAAAA'}}>发布动态 </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    
+                {/*<View style={{
                     height:height*0.05,
                     justifyContent:'center',
                     alignItems:'center',
                     backgroundColor:'white'
                 }}>
+                    
                     <Text style={{fontSize:25}}>发布动态</Text>
-                </View>
+            </View>*/}
                 <View style={
                     {
                         width:width*0.9,
@@ -184,94 +220,92 @@ export default class Home extends Component {
                 　　onChangeText = {this.getValue}
                 />
                 <View style={styles.good}>
-                            <View style={{
-                                width:'100%',
-                                height:height*0.07
-                            }}>
-                                <Image 
-                                    resizeMode="contain"
-                                    source={require('../images/huachenyu.png')}
-                                    style={styles.touxiang1}
+                    <View style={{
+                        width:'100%',
+                        height:height*0.07
+                    }}>
+                        <Image 
+                            resizeMode="contain"
+                            source={require('../images/huachenyu.png')}
+                            style={styles.touxiang1}
+                        />
+                        <Text style={styles.mingzi}>企鹅1号</Text>
+                        <TouchableOpacity style={styles.jiaguanzhu} 
+                            onPress={()=>this.tianjiaguanzhu()
+                        }>
+                            <Text>{this.state.tianjiaguanzhu}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <Text>{this.state.value}</Text>
+                    </View>
+                    <View style={{
+                        width:'100%',
+                        height:height*0.3
+                    }}>
+                        <View style={{
+                            height:height*0.25,
+                            borderColor:'black',
+                            borderWidth:1
+                        }}>
+                            <Button 
+                                onPress={()=>{this.takephoto()}}                     
+                            >
+                                <Text style={{
+                                    position:'absolute'
+                                }}>+添加图片</Text>
+                                <Image style={{
+                                    width:'100%',
+                                    height:height*0.25,
+                                    position:'relative'
+                                }}
+                                    source={require('../images/meitu2.png')}
                                 />
-                                <Text
-                                    style={styles.mingzi}
-                                >企鹅1号</Text>
-                                <TouchableOpacity style={styles.jiaguanzhu} onPress={()=>this.tianjiaguanzhu()}>
-                                    <Text>{this.state.tianjiaguanzhu}</Text>
-                                </TouchableOpacity>
-                            </View>
-                            <View>
-                                <Text>
-                                    {this.state.value}   
-                                </Text>
-                                
-                            </View>
-                            <View style={{
-                                width:'100%',
-                                height:height*0.3
-                            }}>
-                               <View style={{
-                                   height:height*0.25,
-                                   borderColor:'black',
-                                   borderWidth:1
-                                }}>
-                                    <Button 
-                                        onPress={()=>{this.takephoto()}}                     
-                                    >
-                                        <Text style={{
-                                            position:'absolute'
-                                        }}>+添加图片</Text>
-                                        <Image style={{
-                                            width:'100%',
-                                            height:height*0.25,
-                                            position:'relative'
-                                            }}
-                                            source={this.state.imageUrl}
-                                        />
-                                    </Button>
-                                    
-                                    
-                                </View>
-                            </View>
-                            <View>
-                                <Text>
-                                    {this.state.value2}   
-                                </Text>
-                                <Text style={styles.dianzan}>
-                                    {this.state.value1} {this.state.value3}
-                                </Text>
-                            </View>
-                            
+                            </Button>    
                         </View>
+                    </View>
+                    <View>
+                        <Text>{this.state.value2}</Text>
+                        <Text style={styles.dianzan}>{this.state.value1} {this.state.value3}</Text>
+                    </View>
+                </View>
                         <TouchableOpacity       
-                                style={{marginLeft:width*0.3,
-                                    borderRadius:25,
-                                    borderColor:'black',
-                                    borderWidth:1,
-                                    backgroundColor:'#CCFFFF',
-                                    width:width*0.4,
-                                    marginTop:width*0.1
-                                }}            
+                            style={{marginLeft:width*0.7,
+                                borderRadius:25,
+                                borderColor:'black',
+                                borderWidth:1,
+                                backgroundColor:'white',
+                                width:width*0.1,
+                                height:width*0.1,
+                                marginTop:width*0.04,
+                            }}            
                                 onPress={() => this.clickSetData()}
                             >
                                 <Text style={{
                                     fontSize:24,
-                                    textAlign:'center'
-                                }}>点击发布</Text>
+                                    textAlign:'center',
+                                    marginTop:width*0.01
+                                }}>+</Text>
                             </TouchableOpacity>
                             <TouchableOpacity   
                                 style={{
-                                    marginLeft:width*0.8,
-                                    borderRadius:25,
-                                    borderColor:'white',
+                                    marginLeft:width*0.81,
+                                    borderRadius:10,
+                                    borderColor:'black',
                                     borderWidth:1,
                                     backgroundColor:'white',
-                                    width:width*0.13
+                                    width:width*0.1,
+                                    height:width*0.1,
+                                    marginTop:-width*0.1
                                 }}                              
-                                onPress={() => this.clickGetData()}
+                                onPress={() =>Actions.UserInfo()}
                             >
-                                <Text>终端数据</Text>
+                                <Image 
+                                    style={{marginLeft:width*0.02,marginTop:width*0.015}}
+                                    source={require('../images/manage.png')}                       
+                                />
                             </TouchableOpacity>
+                            </ScrollView>
             </View>
         )
     }
@@ -361,5 +395,52 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         borderRadius: 100,
         backgroundColor: 'black'
+    },
+    touxiang:{
+        width:width*0.2,
+        height:width*0.2
+    },
+    one:{
+        width:width*0.4,
+        height:width*0.2,
+        marginTop:-width*0.2,
+        marginLeft:width*0.2
+    },
+    two:{
+        width:width*0.12,
+        height:width*0.2,
+        marginTop:-width*0.2,
+        marginLeft:width*0.6
+    },
+    three:{
+        width:width*0.12,
+        height:height*0.027,
+        borderColor:'#888888',
+        borderWidth:1,
+        borderRadius:25,
+        marginTop:width*0.071
+    },
+    four:{
+        width:width*0.18,
+        height:width*0.2,
+        marginTop:-width*0.2,
+        marginLeft:width*0.72
+    },
+    author:{
+        fontSize:17,
+        marginTop:width*0.03
+    },
+    name:{
+        fontSize:15,
+        color:'#888888',
+        marginTop:width*0.05
+    },
+    delete:{
+        textAlign:'center',
+        marginTop:width*0.058,
+        fontSize:24
+    },
+    guanzhu:{
+        textAlign:'center'
     }
 })

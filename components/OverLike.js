@@ -72,7 +72,7 @@ export default class OverLike extends Component {
                             <TouchableOpacity onPress={()=>Actions.Condition()}>
                                 <Text style={{
                                     textAlign:"center",
-                                    fontSize:25
+                                    fontSize:25,marginTop:width*0.01
                                 }}>〈</Text>
                             </TouchableOpacity>
                         </View>
@@ -85,7 +85,7 @@ export default class OverLike extends Component {
                                 {
                                     width:width*0.2,
                                     marginLeft:width*0.21,
-                                    marginTop:-width*0.1,
+                                    marginTop:-width*0.102,
                                     height:width*0.1
                                 }
                             } onPress={()=>Actions.OverLike()}>
