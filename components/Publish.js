@@ -75,6 +75,18 @@ export default class Doc extends Component{
             modalVisible3:false,
             HQ:['标准品质（2.7M）','HQ高品质（6.6M）','标准品质（4.7M）','HQ高品质（11.9M）'],
             HQT:true,
+            modalVisible4:false,
+            xuanzhong:[''],
+            op:true,
+            modalVisible5:false,
+            modalVisible6:false,
+            modalVisible7:false,
+            modalVisible8:false,
+            modalVisible9:false,
+            checksong:[],
+            bc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png'),require('../images/4.png')],
+            backc:require('../images/1.png'),
+            fontcolor:'black',
         }
     }
     //设置进度条和播放时间的变化
@@ -303,8 +315,10 @@ export default class Doc extends Component{
             collect:this.state.collect
         })
     }
-    renderChildView(){
+    renderChildView(p){
         // 数组
+        if(p==undefined)
+        p=0
         var allChild = [];
 		var songword = ['你若化成风', '我幻化成雨', '守护你身边', '一笑为红颜', '你若化成风'
 		, '我幻化成雨', '爱锁在眉间', '似水往昔浮流年', '乖乖 我的小乖乖',
@@ -338,22 +352,29 @@ export default class Doc extends Component{
             }
         }
 	   for(var i=0; i<songword.length; i++){
-		   if(this.state.nowsong==i){
-			allChild.push(
-				//  循环排列的view中必须有唯一表示
-				  <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
-					 <Text style={{flex:1,color:'#fff'}}>{songword[i]}</Text>
-				  </View>
-			  );
-		   }
-		   else{
-			allChild.push(
-				//  循环排列的view中必须有唯一表示
-				  <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
-					 <Text style={{flex:1,color:'#000'}}>{songword[i]}</Text>
-				  </View>
-			  );
-		   }
+           if(this.state.modalVisible){
+            var c=width*0.1
+           
+            for(var i=0; i<songword.length; i++){
+                             allChild.push(
+                                 //  循环排列的view中必须有唯一表示 
+                                 <TouchableOpacity key={i} onPress={this.renderChildView1.bind(this, i)}>
+                                   <View  style={{backgroundColor:this.state.xuanzhong[i], 
+                                   width:width,
+                                    height:c,
+                                    marginTop:-c*[index],
+                                      justifyContent:'center',
+                                      flexDirection:'row'
+                                      }} >
+                                         <Text style={{flex:1,color:'#fff',fontSize:18,marginLeft:0.1*width,marginTop:0.025*width}}>{songword[i]}</Text>
+                                         <Image style={{width:0.05*width,height:0.05*width,marginTop:0.025*width,opacity:this.state.xuanzhong[i]=='#527d50'?1:0,marginRight:0.05*width}} source={require('../images/wt.png')} />                                    
+                                   </View>
+                                   </TouchableOpacity>
+                               );
+            }
+      
+        }
+		   
 		
 	   }
 	   // 返回数组，不然怎么显示出来
@@ -399,6 +420,33 @@ export default class Doc extends Component{
         this.setState({modalVisible3: visible,
       });
     }
+    renderChildView1(i){
+        for(var j=0;j<this.state.songword.length;j++){
+            if(this.state.xuanzhong[j]!='#527d50'){
+                this.state.xuanzhong[j]=''
+                this.state.checksong[j]=''
+            }
+
+           
+        }
+         if(this.state.xuanzhong[i]=='#527d50')
+         {
+            
+             this.state.xuanzhong[i]='#487346'
+             this.state.checksong[i]=''
+         }
+         else{
+            this.state.xuanzhong[i]='#527d50'
+            this.state.checksong[i]=this.state.songword[i]
+
+         }
+
+        this.setState({
+            op:!this.state.op
+        })
+     }
+      //修改模态视图可见性
+ 
 		render() {
         let time = this.state;
 		return (
@@ -645,7 +693,7 @@ export default class Doc extends Component{
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>倍速播放</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.songwordpost()}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/bill.jpg')} />
                                                             </View>
@@ -947,6 +995,7 @@ export default class Doc extends Component{
                         </View>
                     </Modal>
                </View>
+  
                 <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
         </View>
 	
