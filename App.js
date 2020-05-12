@@ -55,8 +55,7 @@ import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
 import timestop  from './components/timestop'
-import pageone  from './components/pageone'
-import pagetwo  from './components/pagetwo'
+
 
 const App = () => {  
   return (
@@ -98,8 +97,8 @@ const App = () => {
             icon={()=><Icon name = 'find' size = {30}/>}
             hideNavBar
             >
-              <Scene key = "pageone" component={pageone}/>    
-              <Scene key = "pagetwo" component={pagetwo}/>  
+              <Scene key = "Recommend" component={Recommend}/>
+
             </Scene>
             <Scene key="condition" title="动态" 
             icon={()=><Icon name = 'eye' size = {30}/>}
