@@ -6,7 +6,7 @@
  * @flow
  */
 
-import React from 'react';
+import React,{useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,8 @@ import {
   View,
   Text,
   StatusBar,
+  Dimensions,
+  TextInput
 } from 'react-native';
 
 import {
@@ -23,92 +25,112 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {Router, Scene, Tabs, Lightbox, Modal, Actions,BackHandler} from "react-native-router-flux";
+import Recommend from './components/Recommend'
+import Songwordpost from './components/songwordpost'
+import Condition from './components/Condition'
+import My from './components/My'
+import NavBar from './components/NavBar'
+import MoreInfo from './components/MoreInfo'
+import Manage from './components/Manage'
+import Buied from './components/Buied'
+import MyLike from './components/MyLike'
+import Local from './components/Local'
+import Recent from './components/Recent'
+import Dongtai from './components/Dongtai'
+import Fabu from './components/Fabu'
+import DongTaiLike from './components/Like'
+import Music from './components/MusicHall'
+import Search from './components/Search'
+import CustomScrollView from './components/CustomScrollView'
+import CustomTabBar from './components/CustomTabBar'
+import SongList from './components/SongList'
+import SongNav from './components/SongNav'
+import Publish from './components/Publish'
+import Login from './components/Login'
+import Register from './components/Register'
+import Songword from './components/Songword'
+import AddSong from './components/AddSong'
+import RedAlert from './components/RedAlert'
+import OverLike  from './components/OverLike'
 
-const App: () => React$Node = () => {
+const App = () => {  
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      <Router
+      backAndroidHandler={()=>{
+        if(Actions.currentScene != 'home'){
+          Actions.pop();
+          return true;
+        }else{
+          if(new Date().getTime()-now<2000){
+            BackHandler.exitApp();
+          }else{
+            ToastAndroid.show('确定要退出吗',100);
+            now = new Date().getTime();
+            return true;
+          }
+        }
+        
+      }}
+      >
+        <Scene key = 'root' >
+        <Tabs key='tabbar'
+            hideNavBar
+          >
+            <Scene key="music" 
+            title="音乐馆" 
+            icon={()=><Icon name = 'home' size = {30}/>}
+            
+           >
+              <Scene key = "Music" component={Music} hideNavBar/>
+              <Scene key = "search" component={Search} hideNavBar hideTabBar/>
+              <Scene key = "songList" component={SongList} hideTabBar  hideNavBar/>
+              <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
+              <Scene key = "songwordpost" component={Songwordpost} hideTabBar  hideNavBar/>
+            </Scene>
+            <Scene key="recommend" title="推荐" 
+            icon={()=><Icon name = 'find' size = {30}/>}
+            hideNavBar
+            >
+              <Scene key = "Recommend" component={Recommend}/>  
+            </Scene>
+            <Scene key="condition" title="动态" 
+            icon={()=><Icon name = 'eye' size = {30}/>}
+            hideNavBar
+            >
+              <Scene key = "Condition" component={Condition}/>
+              <Scene key = "dongTai" component={Dongtai}/>
+              <Scene key = "faBu" component={Fabu}/>
+              <Scene key = "dongTaiLike" component={DongTaiLike}/>
+              <Scene key="CustomScrollView" component={CustomScrollView} />
+              <Scene key="RedAlert" component={RedAlert} />
+              <Scene key="OverLike" component={OverLike} />
+            </Scene>
+            <Scene key="my" title="我的"  
+            icon={()=><Icon name = 'user' size = {30}/>}
+            >
+              <Scene key = "My" component={My}  navBar={()=><NavBar />}/>
+              <Scene key = "moreInfo" component={MoreInfo}  title='更多' hideTabBar  />
+              <Scene key = "manage" component={Manage}  title='歌单管理' hideTabBar  />
+              <Scene key = "like" component={MyLike}  title='我喜欢' hideTabBar  />
+              <Scene key = "recent" component={Recent}  title='最近播放' hideTabBar  />
+              <Scene key = "download" component={Local}  title='本地歌曲' hideTabBar />
+              <Scene key = "buy" component={Buied}  title='已购' hideTabBar/>
+              <Scene key = "addsong" component={AddSong}  title='歌曲管理' hideTabBar/>
+              <Scene key = 'login' component = {Login} hideNavBar hideTabBar/>      
+              <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
+            </Scene>
+          </Tabs>    
+          </Scene>
+      </Router>
     </>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  
 });
 
 export default App;
