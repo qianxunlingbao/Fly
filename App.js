@@ -6,6 +6,7 @@ import Singer from './components/Singer';
 import SingerDetail from './components/SingerDetail';
 import Ranking from './components/Ranking';
 import RankingDetail from './components/RankingDetail';
+import SongList from './components/SongList';
 
 const App = () => {
   return (
@@ -39,6 +40,11 @@ const App = () => {
           <Scene
             key="rankingdetail"
             component={RankingDetail}
+            hideNavBar
+          />
+          <Scene
+            key="songlist"
+            component={SongList}
             hideNavBar
           />
         </Scene>
