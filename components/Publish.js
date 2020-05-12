@@ -352,28 +352,26 @@ export default class Doc extends Component{
             }
         }
 	   for(var i=0; i<songword.length; i++){
-           if(this.state.modalVisible){
-            var c=width*0.1
            
-            for(var i=0; i<songword.length; i++){
-                             allChild.push(
-                                 //  循环排列的view中必须有唯一表示 
-                                 <TouchableOpacity key={i} onPress={this.renderChildView1.bind(this, i)}>
-                                   <View  style={{backgroundColor:this.state.xuanzhong[i], 
-                                   width:width,
-                                    height:c,
-                                    marginTop:-c*[index],
-                                      justifyContent:'center',
-                                      flexDirection:'row'
-                                      }} >
-                                         <Text style={{flex:1,color:'#fff',fontSize:18,marginLeft:0.1*width,marginTop:0.025*width}}>{songword[i]}</Text>
-                                         <Image style={{width:0.05*width,height:0.05*width,marginTop:0.025*width,opacity:this.state.xuanzhong[i]=='#527d50'?1:0,marginRight:0.05*width}} source={require('../images/wt.png')} />                                    
-                                   </View>
-                                   </TouchableOpacity>
-                               );
-            }
-      
-        }
+            var c=width*0.1
+
+            if(this.state.nowsong==i){
+                allChild.push(
+                    //  循环排列的view中必须有唯一表示
+                      <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
+                         <Text style={{flex:1,color:'#fff'}}>{songword[i]}</Text>
+                      </View>
+                  );
+               }
+               else{
+                allChild.push(
+                    //  循环排列的view中必须有唯一表示
+                      <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
+                         <Text style={{flex:1,color:'#000'}}>{songword[i]}</Text>
+                      </View>
+                  );
+               }
+           
 		   
 		
 	   }
@@ -453,7 +451,7 @@ export default class Doc extends Component{
 			<View style={styles.container}>
 			
 				<View style={{width:width,height:0.05*height,flexDirection:'row'}}>
-					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}}  onPress={()=>Actions.userinfor()}>
+					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}}  onPress={()=>Actions.pop()}>
 					<Image style={{width:'35%',height:'20%'}} source={require('../images/down.png')} />
 					</TouchableOpacity>
 					<View  style={{flex:5,justifyContent:'center', alignItems: 'center',flexDirection:'row'}}>
@@ -722,7 +720,7 @@ export default class Doc extends Component{
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>个性主题</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}}  onPress={()=>Actions.timestop()}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/timing.png')} />
                                                             </View>
@@ -960,7 +958,7 @@ export default class Doc extends Component{
                             <Text style={{color:'#fff',fontSize:20,marginTop:-0.4*height}}>分享音乐卡片</Text>
                         </View>
                         <View style = {{
-                            width:'80%',
+                            width:'77%',
                                 height:'70%',
                                 position:'absolute',
                                 top:'10%',
