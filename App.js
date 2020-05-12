@@ -52,7 +52,7 @@ import Songword from './components/Songword'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
-
+import Songwordpost from './components/songwordpost'
 const App = () => {  
   return (
     <>
@@ -87,6 +87,7 @@ const App = () => {
               <Scene key = "songList" component={SongList} hideTabBar  hideNavBar/>
               <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
               <Scene key = "songword" component={Songword} hideTabBar  hideNavBar/>
+              <Scene key = "songwordpost" component={Songwordpost} hideTabBar  hideNavBar/>
             </Scene>
             <Scene key="recommend" title="推荐" 
             icon={()=><Icon name = 'find' size = {30}/>}
