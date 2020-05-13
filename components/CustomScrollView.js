@@ -72,18 +72,22 @@ export default class CustomScrollView extends Component {
             
             <View style={styles.container}>    
             <StatusBar backgroundColor='#AAAAAA' translucent={true}/>
-                <View style={{width:width,height:width*0.1,backgroundColor:'white',marginBottom:width*0.05}}>
-                    <View style={{width:width*0.1,height:width*0.1}}>
-                        <TouchableOpacity 
-                            onPress={()=>Actions.Condition()}
-                        >
-                            <Image style={{width:width*0.1,height:width*0.1}} source={require('../images/fanhui.png')} />
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.45,marginTop:-width*0.09}}>
-                        <Text style={{fontSize:30}}>评论</Text>
-                    </View>       
-                </View>                              
+                <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
+                        <View style={{width:width*0.1,height:width*0.1}}>
+                            <TouchableOpacity onPress={()=>Actions.Condition()}>
+                                <Text style={{
+                                    textAlign:"center",
+                                    fontSize:25,marginTop:width*0.01
+                                }}>〈</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.45,marginTop:-width*0.09}}>
+                            <TouchableOpacity >
+                                <Text style={{fontSize:30,color:'#AAAAAA'}}>评论 </Text>
+                            </TouchableOpacity>
+                        </View>
+                        
+                    </View>                            
                 <ScrollView 
                     showsVerticalScrollIndicator={false}
                     onScrollEndDrag={(e)=>this.exportOnScrollEndDrag(e)}
