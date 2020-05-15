@@ -14,6 +14,7 @@ const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
 import { Actions} from 'react-native-router-flux';
 import Prompt from './Prompt'
+import  {DeviceEventEmitter} from 'react-native';
 class My extends Component {
     constructor(){
         super();
@@ -84,18 +85,21 @@ class My extends Component {
                 
             }
         )
-    }
-    componentDidUpdate(){
-        AsyncStorage.getItem('headimage').then(
-            (value) => {
-                if(value){
-                    this.setState({
-                        headImg: {uri : value}
-                    })
+        this.changeHeadImg = DeviceEventEmitter.addListener('changeHeadImg',()=>{
+            AsyncStorage.getItem('headimage').then(
+                (value) => {
+                    if(value){
+                        this.setState({
+                            headImg: {uri : value}
+                        })
+                    }
+                    
                 }
-                
-            }
-        )
+            )
+        })
+    }
+    componentWillMount(){
+        this.changeHeadImg&&this.changeHeadImg.remove();
     }
     render() {
         return (
@@ -378,7 +382,6 @@ const styles = StyleSheet.create({
         width:height * 0.2 * 0.3,
         height:height * 0.2 * 0.3,
         borderRadius:height * 0.2 * 0.3 * 0.5,
-        backgroundColor:'blue',
         marginLeft:width*0.8*0.05,
         justifyContent:"center",
         alignItems:"center"

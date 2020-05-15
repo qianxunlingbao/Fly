@@ -4,6 +4,7 @@ import ChooseSex from './ChooseSex'
 import { Actions } from 'react-native-router-flux';
 const {width,height} = Dimensions.get('window');
 import ImagePicker from 'react-native-image-picker';
+import  {DeviceEventEmitter} from 'react-native';
 const options = {
     title: '请选择',
     takePhotoButtonTitle: '拍照',
@@ -27,7 +28,9 @@ class UserInfo extends Component {
     }
     componentWillUnmount(){
         AsyncStorage.setItem('sex',this.state.sex);
-        AsyncStorage.setItem('headimage',this.state.headimage.uri)
+        AsyncStorage.setItem('headimage',this.state.headimage.uri);
+        DeviceEventEmitter.emit('changeHeadImg');
+        this.changeNetName && this.changeNetName.remove();
     }
     componentDidMount(){
         AsyncStorage.getItem('netname').then(
@@ -59,18 +62,18 @@ class UserInfo extends Component {
             }
             
         })
-    }
-    componentDidUpdate(){
-        AsyncStorage.getItem('netname').then(
-            (value) => {
-                if(value){
-                    this.setState({
-                        netname: value
-                    })
+        this.changeNetName = DeviceEventEmitter.addListener('changeNetName',()=>{
+            AsyncStorage.getItem('netname').then(
+                (value) => {
+                    if(value){
+                        this.setState({
+                            netname: value
+                        })
+                    }
+                    
                 }
-                
-            }
-        )
+            )
+        })
     }
     takephoto = () =>{
         ImagePicker.showImagePicker(options,(response) => {

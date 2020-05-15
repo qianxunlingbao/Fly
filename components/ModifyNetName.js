@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text ,Image, TextInput, AsyncStorage, TouchableOpacity } from 'react-native'
+import  {DeviceEventEmitter} from 'react-native';
 class ModifyNetName extends Component {
+    componentWillUnmount(){
+        DeviceEventEmitter.emit('changeNetName');
+    }
     render() {
         return (
             <View style={styles.container}>
