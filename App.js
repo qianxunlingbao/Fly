@@ -54,6 +54,8 @@ import Songword from './components/Songword'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
+import timestop  from './components/timestop'
+
 
 const App = () => {  
   return (
@@ -89,12 +91,14 @@ const App = () => {
               <Scene key = "songList" component={SongList} hideTabBar  hideNavBar/>
               <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
               <Scene key = "songwordpost" component={Songwordpost} hideTabBar  hideNavBar/>
+              <Scene key = "timestop" component={timestop}  hideNavBar hideTabBar/>
             </Scene>
             <Scene key="recommend" title="推荐" 
             icon={()=><Icon name = 'find' size = {30}/>}
             hideNavBar
             >
-              <Scene key = "Recommend" component={Recommend}/>  
+              <Scene key = "Recommend" component={Recommend}/>
+
             </Scene>
             <Scene key="condition" title="动态" 
             icon={()=><Icon name = 'eye' size = {30}/>}
