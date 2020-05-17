@@ -5763,7 +5763,7 @@ react-native-video@^4.4.5:
     prop-types "^15.5.10"
     shaka-player "^2.4.4"
 
-react-native@^0.61.5:
+react-native@0.61.5:
   version "0.61.5"
   resolved "https://registry.npm.taobao.org/react-native/download/react-native-0.61.5.tgz#6e21acb56cbd75a3baeb1f70201a66f42600bba8"
   integrity sha1-biGstWy9daO66x9wIBpm9CYAu6g=

@@ -87,7 +87,6 @@ export default class Doc extends Component{
             bc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png'),require('../images/4.png')],
             backc:require('../images/1.png'),
             fontcolor:'black',
-            stoptime:[false,'',0,0]
         }
     }
     //设置进度条和播放时间的变化
@@ -353,6 +352,9 @@ export default class Doc extends Component{
             }
         }
 	   for(var i=0; i<songword.length; i++){
+           
+            var c=width*0.1
+
             if(this.state.nowsong==i){
                 allChild.push(
                     //  循环排列的view中必须有唯一表示
@@ -369,6 +371,9 @@ export default class Doc extends Component{
                       </View>
                   );
                }
+           
+		   
+		
 	   }
 	   // 返回数组，不然怎么显示出来
 	   return allChild;
@@ -413,93 +418,31 @@ export default class Doc extends Component{
         this.setState({modalVisible3: visible,
       });
     }
-    setModalVisible5(visible) {
-        this.state.modalVisible5=visible
-      this.setState({modalVisible5: this.state.modalVisible5,
-    });
-  }
-  renderChildView1(i){
-    
-    if(i==undefined){
-        this.state.stoptime[0]=false
-        this.state.stoptime[1]=0
-    }
-    else{
-        this.state.stoptime[0]=true
-        this.state.stoptime[1]=i
-    }
+    renderChildView1(i){
+        for(var j=0;j<this.state.songword.length;j++){
+            if(this.state.xuanzhong[j]!='#527d50'){
+                this.state.xuanzhong[j]=''
+                this.state.checksong[j]=''
+            }
 
- 
-
-        if(i!=undefined){
-            if(i==15)i=1
-            let a=0
-            let stoptime=i*60
-            var that =this
-            this.time3 = setInterval(function () {
-                
-              
-                
-                let sliderValue = stoptime-a;
-                let min = Math.floor(sliderValue / 60);
-                let second = sliderValue - min * 60;
-                min = min >= 10 ? min : "0" + min;
-                second = second >= 10 ? second : "0" + second;
-               
-               let  stoptimetext=min+':'+second
-                that.setState({
-                    stoptimetext:stoptimetext
-                })
-                console.log(15,i)
-                if (a==stoptime) {
-                    console.log(true)
-                    stoptimetext=0
-                   clearInterval(time3);
-                    that.setState({
-                        stoptimetext:stoptimetext
-                    })
-                }
-                a++
-              }, 1000);
-           
            
         }
-        else{
-            this.time3 &&clearInterval(time3);
-        }
-    
-   
+         if(this.state.xuanzhong[i]=='#527d50')
+         {
+            
+             this.state.xuanzhong[i]='#487346'
+             this.state.checksong[i]=''
+         }
+         else{
+            this.state.xuanzhong[i]='#527d50'
+            this.state.checksong[i]=this.state.songword[i]
 
-   for(var j=0;j<this.state.songword.length;j++){
-       if(this.state.xuanzhong[j]!='#527d50'){
-           this.state.xuanzhong[j]=''
-           this.state.checksong[j]=''
-       }
+         }
 
-      
-   }
-    if(this.state.xuanzhong[i]=='#527d50')
-    {
-       
-        this.state.xuanzhong[i]='#487346'
-        this.state.checksong[i]=''
-    }
-    else{
-       for(var j=0;j<this.state.xuanzhong.length;j++){
-           if(j!=i)
-           this.state.xuanzhong[j]=''
-       }
-       this.state.xuanzhong[i]='#527d50'
-       this.state.checksong[i]=this.state.songword[i]
-
-    }
-
-    
-    console.log(this.state.stoptime)
-   this.setState({
-       op:!this.state.op
-   })
-}
+        this.setState({
+            op:!this.state.op
+        })
+     }
       //修改模态视图可见性
  
 		render() {
@@ -765,9 +708,9 @@ export default class Doc extends Component{
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.08*width,height:0.07*width}} source={require('../images/Report.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/DM.png')} />
                                                             </View>
-                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>举报</Text>
+                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>驾驶模式</Text>
                                                         </TouchableOpacity>
                                                     </View>
                                                     <View style={{width:0.2*width,}}>
@@ -777,9 +720,9 @@ export default class Doc extends Component{
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>个性主题</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={() => { this.setModalVisible5(true) }}>
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}}  onPress={()=>Actions.timestop()}>
                                                             <View style={styles.box}>
-                                                                <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/timing.png')} />
+                                                                <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/timing.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>定时关闭</Text>
                                                         </TouchableOpacity>
@@ -791,7 +734,12 @@ export default class Doc extends Component{
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>播放器样式</Text>
                                                         </TouchableOpacity>
-
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
+                                                            <View style={styles.box}>
+                                                                <Image style={{width:0.08*width,height:0.07*width}} source={require('../images/Report.png')} />
+                                                            </View>
+                                                            <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>举报</Text>
+                                                        </TouchableOpacity>
                                                     </View>
                                                 </ScrollView>
                                                 <View style={{width:width,height:0.08*height,flexDirection:'row'}}>
@@ -1045,144 +993,7 @@ export default class Doc extends Component{
                         </View>
                     </Modal>
                </View>
-               <View>
-                                <Modal
-                        animationType = {"slide"}
-                        transparent = {true}
-                        visible = {this.state.modalVisible5}
-                        >  
-                        <View style = {{
-                                width:'100%',
-                                    height:'100%',
-                                    position:'absolute',
-                                    top:'0%',
-                                    
-                                    backgroundColor:'#fff',
-                                    opacity:1,
-                                    justifyContent:'center', alignItems: 'center'
-                                }}>
-                                    <View
-                                    style = {{
-                                        width:'100%',
-                                            height:'7%',
-                                            position:'absolute',
-                                            top:'0%',
-                                            paddingLeft:0.1*width,
-                                            backgroundColor:'#eee',
-                                            opacity:1,
-                                            justifyContent:'center', alignItems: 'center'
-                                            ,flexDirection:'row'
-                                        }}>                                            
-                                                <TouchableOpacity style={{marginLeft:-0.5*width}} onPress={() => { this.setModalVisible5(false) }}>
-                                                <Image style={{width:0.05*width,height:0.05*width}} source={require('../images/fanhui.png')} />
-                                            </TouchableOpacity>
-                                            <Text style={{fontSize:18,color:'#000',marginLeft:0.3*width}}>定时关闭</Text>
-
-                                        </View>
-                                       
-                                    <View
-                                    style = {{
-                                        width:'100%',
-                                            height:'60%',
-                                            position:'absolute',
-                                            top:'10%',
-                                            
-                                            backgroundColor:'#fff',
-                                            opacity:1,
-                                            justifyContent:'center', alignItems: 'center'
-                                        }}>
-                                           
-                                     <TouchableOpacity  onPress={()=>{this.renderChildView1()}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>不开启</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:!this.state.stoptime[0]?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(15)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>15分钟</Text>
-                                    <Text style={{width:0.1*width,color:'#000',fontSize:18}}>{this.state.stoptimetext}</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==15?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(30)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>30分钟</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==30?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(45)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>45分钟</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==45?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(60)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>60分钟</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==60?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                                    </View>
-                                    <View
-                                    style = {{
-                                        width:'100%',
-                                            height:'15%',
-                                            position:'absolute',
-                                            top:'85%',
-                                            paddingLeft:0.1*width,
-                                            backgroundColor:'#fff',
-                                            opacity:1,
-                                            justifyContent:'center', alignItems: 'center'
-                                            ,flexDirection:'row',
-                                            
-                                        }}>
-
-
-                                        </View>
-                            </View>
-                        </Modal>
-                                </View>
+  
                 <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
         </View>
 	

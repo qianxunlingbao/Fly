@@ -68,6 +68,41 @@ class timestop extends Component {
     }
     //默认模态视图不可见
 
+    renderChildView(p){
+        // 数组
+        if(p==undefined)
+        p=0
+        var allChild = [];
+		var songword = ['15分钟后','30分钟后','45分钟后','60分钟后'];
+			this.state.songword=songword;
+        // 遍历
+        var c=width*0.1
+
+	   for(var i=0; i<songword.length; i++){
+          
+                        allChild.push(
+                            //  循环排列的view中必须有唯一表示 
+                            <TouchableOpacity key={i} onPress={this.renderChildView1.bind(this, i)}>
+                              <View  style={{backgroundColor:'#fff', 
+                              width:width,
+                               height:c,
+                               marginTop:0,
+                                 justifyContent:'center',
+                                 flexDirection:'row',
+                                 marginTop:0.03*width
+                                 }} >
+                                 
+                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>{songword[i]}</Text>
+                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.xuanzhong[i]=='#527d50'&&this.state.stoptime[0]?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
+                              </View>
+                              </TouchableOpacity>
+                          );
+       
+       }
+        
+	   // 返回数组，不然怎么显示出来
+	   return allChild;
+     }
      renderChildView1(i){
          if(i==undefined){
              this.state.stoptime[0]=false
@@ -77,10 +112,10 @@ class timestop extends Component {
              this.state.stoptime[0]=true
          }
          
-         if(i==15)this.state.stoptime[1]=15
-         if(i==30)this.state.stoptime[1]=30
-         if(i==45)this.state.stoptime[1]=45
-         if(i==60)this.state.stoptime[1]=60
+         if(i==0)this.state.stoptime[1]=15
+         if(i==1)this.state.stoptime[1]=30
+         if(i==2)this.state.stoptime[1]=45
+         if(i==3)this.state.stoptime[1]=60
 
         for(var j=0;j<this.state.songword.length;j++){
             if(this.state.xuanzhong[j]!='#527d50'){
@@ -165,7 +200,7 @@ class timestop extends Component {
                                <Modal
                         animationType = {"slide"}
                         transparent = {true}
-                        visible = {this.state.modalVisible5}
+                        visible = {this.state.modalVisible4}
                         >  
                         <View style = {{
                                 width:'100%',
@@ -189,7 +224,7 @@ class timestop extends Component {
                                             justifyContent:'center', alignItems: 'center'
                                             ,flexDirection:'row'
                                         }}>                                            
-                                                <TouchableOpacity style={{marginLeft:-0.5*width}} onPress={() => { this.setModalVisible5(false) }}>
+                                                <TouchableOpacity style={{marginLeft:-0.5*width}} onPress={()=>Actions.pop({ refresh: {   data: '从 three 回到 two'}})}>
                                                 <Image style={{width:0.05*width,height:0.05*width}} source={require('../images/fanhui.png')} />
                                             </TouchableOpacity>
                                             <Text style={{fontSize:18,color:'#000',marginLeft:0.3*width}}>定时关闭</Text>
@@ -207,7 +242,18 @@ class timestop extends Component {
                                             opacity:1,
                                             justifyContent:'center', alignItems: 'center'
                                         }}>
-                                           
+                                            <ScrollView
+                                ref=''
+                                    //  默认为垂直排列 此属性为true改为水平排列
+                                horizontal={false}
+                                //  禁用水平滚动条
+                                showsHorizontalScrollIndicator={false}
+                                //  自动分页限ios
+                                pagingEnabled={false}
+                                showsVerticalScrollIndicator={false}
+                                //  禁用滚动限ios
+                                // scrollEnabled={false}
+                                >
                                      <TouchableOpacity  onPress={()=>{this.renderChildView1()}}>
                               <View  style={{backgroundColor:'#fff', 
                               width:width,
@@ -222,62 +268,8 @@ class timestop extends Component {
                                     <Image style={{width:0.05*width,height:0.05*width,opacity:!this.state.stoptime[0]?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
                               </View>
                               </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(15)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>15分钟</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==15?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(30)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>30分钟</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==30?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(45)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>45分钟</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==45?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
-                              <TouchableOpacity  onPress={()=>{this.renderChildView1(60)}}>
-                              <View  style={{backgroundColor:'#fff', 
-                              width:width,
-                               height:width*0.1,
-                               marginTop:0,
-                                 justifyContent:'center',
-                                 flexDirection:'row',
-                                 marginTop:0.03*width
-                                 }} >
-                                 
-                                    <Text style={{flex:1,color:'#000',fontSize:18,marginLeft:0.1*width}}>60分钟</Text>
-                                    <Image style={{width:0.05*width,height:0.05*width,opacity:this.state.stoptime[1]==60?1:0,marginRight:0.05*width}} source={require('../images/buy.png')} />                                    
-                              </View>
-                              </TouchableOpacity>
+                                {this.renderChildView()} 
+                                </ScrollView>
                                     </View>
                                     <View
                                     style = {{

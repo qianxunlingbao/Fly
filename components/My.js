@@ -76,7 +76,7 @@ class My extends Component {
         )
     }
     componentWillMount = () => {
-
+        
     }
     render() {
         return (
@@ -102,12 +102,17 @@ class My extends Component {
                             </TouchableOpacity>
                         </View> 
                         :<View style={styles.uphalf}>
-                        <TouchableOpacity style={styles.headImg}>
+                            <TouchableOpacity style={styles.uphalf} onPress = {()=>{Actions.userinfo()}}>
+                            <TouchableOpacity style={styles.headImg}>
+                            <Image source = {require('../images/16.png')} style={{width:height * 0.2 * 0.3,
+        height:height * 0.2 * 0.3,
+        borderRadius:height * 0.2 * 0.3 * 0.5,}}/>
                         </TouchableOpacity>
                         <Text style={{marginLeft:20,fontSize:20}}>{this.state.name}</Text>
                         <Image style={{width:25,height:25,marginLeft:10}} source={require('../images/diamond.png')}/>
                         <Image style={{width:25,height:25}} source={require('../images/ear.png')}/>
                         <Image style={{width:25,height:25,marginLeft:width*0.8*0.3}} source={require('../images/email.png')}/>
+                            </TouchableOpacity>
                         </View> 
                     }
                 
@@ -133,7 +138,7 @@ class My extends Component {
                         <FlatList
                         data={[{key:"like",title:'喜欢',value:require('../images/like.png')},
                         {key:"recent",title:'最近',value:require('../images/clock.png')},
-                        {key:"download",title:'本地',value:require('../images/download.png')},
+                        {key:"download",title:'本地',value:require('../images/download1.png')},
                         {key:"buy",title:'已购',value:require('../images/buy.png')}
                     ]}
                         numColumns={4}
@@ -259,10 +264,12 @@ class My extends Component {
                         <View style={{margintop:10}}>
                             <FlatList
                             data={this.state.createdata}
-                            renderItem={({item})=>
+                            renderItem={({item,index})=>
                                 <View style={styles.createlist}>
                                     <TouchableOpacity style={styles.createlist} onPress = {() => Actions.addsong({num:item.num})}>
-                                    <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10}}></View>
+                                    <View style={{width:'20%',height:'90%',borderRadius:10,justifyContent:"center",alignItems:"center"}}>
+                                        <Image style={{width:'100%',height:'100%',borderRadius:10}} source = {{uri:`http://49.235.231.110:8802/musicimage/${index + 1}.JPG`}}/>
+                                    </View>
                                     <View style={{marginLeft:10}}>
                                         <Text style={{fontSize:16,marginBottom:10}}>{item.title}</Text>
                                         <Text style={{color:'grey',marginBottom:10}}>{item.num}首</Text>
@@ -353,7 +360,9 @@ const styles = StyleSheet.create({
         height:height * 0.2 * 0.3,
         borderRadius:height * 0.2 * 0.3 * 0.5,
         backgroundColor:'blue',
-        marginLeft:width*0.8*0.05
+        marginLeft:width*0.8*0.05,
+        justifyContent:"center",
+        alignItems:"center"
     },
     half:{
         width:width * 0.8 * 0.4,
