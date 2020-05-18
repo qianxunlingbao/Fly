@@ -273,7 +273,7 @@ export default class FirstOne extends Component {
                     >
                         <View style={{width:width*0.8,marginLeft:width*0.1,marginRight:width*0.1,height:height*0.3,justifyContent:'center',alignItems:'center'}}>
                             
-                            <Video source={{uri: 'https://qianxunlingbao.github.io/Movie-test/%E7%B4%AB%E9%99%8C%E5%AD%90%E5%A2%A8%E6%99%B4-%E3%80%90%E5%B0%81%E8%8C%97%E5%9B%A7%E8%8F%8C%E3%80%91%E6%89%AC%E5%B7%9E%E6%9B%B2(%E8%B6%85%E6%B8%85).mp4'}}   // Can be a URL or a local file.
+                            <Video source={{uri: 'https://qianxunlingbao.github.io/Movie-test/%E6%9C%80%E5%90%8E%E4%B8%80%E6%AC%A1%E7%9A%84%E5%88%86%E7%A6%BB.mp4'}}   // Can be a URL or a local file.
                                 ref={(ref) => {
                                     this.player = ref
                                 }}  
@@ -290,16 +290,6 @@ export default class FirstOne extends Component {
                                 onBuffer={this.onBuffer}             
                                 style={styles.backgroundVideo}        
                             />
-                            <TouchableOpacity >
-                                <Slider
-                                    style={{width:width*0.8,marginTop:width*0.4}}
-                                    //value={50}
-                                    maximumValue={this.state.duration}
-                                    step={1}
-                                    onValueChange={value=>this.setState({currentTime:value})}
-                                        
-                                />  
-                            </TouchableOpacity>
                             {   
                                                        
                                 <TouchableOpacity onPress={() => this.play()} style={styles.pause}>
