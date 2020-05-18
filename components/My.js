@@ -15,13 +15,10 @@ const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
 import { Actions} from 'react-native-router-flux';
 import Prompt from './Prompt'
-<<<<<<< HEAD
 import  {DeviceEventEmitter} from 'react-native';
-=======
 import PlayGroup from './PlayGroup'
 import PlayList from './PlayList';
 
->>>>>>> master
 class My extends Component {
     constructor(){
         super();
