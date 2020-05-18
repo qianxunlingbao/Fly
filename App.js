@@ -28,6 +28,7 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Router, Scene, Tabs, Lightbox, Modal, Actions,BackHandler} from "react-native-router-flux";
 import Recommend from './components/Recommend'
+import Songwordpost from './components/songwordpost'
 import Condition from './components/Condition'
 import My from './components/My'
 import NavBar from './components/NavBar'
@@ -42,18 +43,17 @@ import DongTaiLike from './components/Like'
 import Music from './components/MusicHall'
 import Search from './components/Search'
 import CustomScrollView from './components/CustomScrollView'
-import CustomTabBar from './components/CustomTabBar'
 import SongList from './components/SongList'
-import SongNav from './components/SongNav'
 import Publish from './components/Publish'
 import Login from './components/Login'
 import Register from './components/Register'
-import Songword from './components/Songword'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
 import UserInfo  from './components/UserInfo'
 import ModifyNetName  from './components/ModifyNetName'
+import timestop  from './components/timestop'
+
 
 const App = () => {  
   return (
@@ -88,13 +88,15 @@ const App = () => {
               <Scene key = "search" component={Search} hideNavBar hideTabBar/>
               <Scene key = "songList" component={SongList} hideTabBar  hideNavBar/>
               <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
-              <Scene key = "songword" component={Songword} hideTabBar  hideNavBar/>
+              <Scene key = "songwordpost" component={Songwordpost} hideTabBar  hideNavBar/>
+              <Scene key = "timestop" component={timestop}  hideNavBar hideTabBar/>
             </Scene>
             <Scene key="recommend" title="推荐" 
             icon={()=><Icon name = 'find' size = {30}/>}
             hideNavBar
             >
-              <Scene key = "Recommend" component={Recommend}/>  
+              <Scene key = "Recommend" component={Recommend}/>
+
             </Scene>
             <Scene key="condition" title="动态" 
             icon={()=><Icon name = 'eye' size = {30}/>}
