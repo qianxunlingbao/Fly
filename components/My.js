@@ -8,12 +8,16 @@ import {
     ,Dimensions, 
     TouchableOpacity, 
     FlatList,
-    AsyncStorage
+    AsyncStorage,
+    DeviceEventEmitter
 } from 'react-native'
 const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
 import { Actions} from 'react-native-router-flux';
 import Prompt from './Prompt'
+import PlayGroup from './PlayGroup'
+import PlayList from './PlayList';
+
 class My extends Component {
     constructor(){
         super();
@@ -31,6 +35,7 @@ class My extends Component {
             addflex:'flex',
             modalVisible : false,
             listTitle : '新建歌单',
+            playlistvisible:false
 
                 }
     }
@@ -56,6 +61,11 @@ class My extends Component {
         })
     }
     componentDidMount = () => {
+        this.myplaylist = DeviceEventEmitter.addListener('myplaylist',()=>{
+            this.setState({
+                playlistvisible:!this.state.playlistvisible
+            })
+        })
         AsyncStorage.getItem('login').then(
              (val) => {
                 this.setState({login : JSON.parse(val) == null ?true :JSON.parse(val)});
@@ -83,6 +93,8 @@ class My extends Component {
             <View 
             style={styles.container}
             >
+                <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
+
                 <Prompt 
                 modalVisible = {this.state.modalVisible}
                 listTitle = {this.state.listTitle}
@@ -285,7 +297,11 @@ class My extends Component {
                    
                 </View>
                 </ScrollView>
+                <View style={{position:'absolute',width:'100%',height:'10%',top:'90%'}}>
+                        <PlayGroup/>
+                    </View> 
             </View>
+            
         )
     }
 }

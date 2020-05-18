@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity, SafeAreaView, StatusBar, ScrollVie
 import Icon from 'react-native-vector-icons/Feather'
 import Swiper from 'react-native-swiper'
 import { Actions } from 'react-native-router-flux';
-
 console.disableYellowBox = true;
 
 export default class MusicHall extends Component {
@@ -36,7 +35,8 @@ export default class MusicHall extends Component {
             <>
                 <StatusBar barStyle="dark-content" />
                 <SafeAreaView>
-                    <ScrollView refreshControl={
+                    <ScrollView 
+                    refreshControl={
                         <RefreshControl onRefresh={() => {
                             this.setState({
                                 refreshing: true

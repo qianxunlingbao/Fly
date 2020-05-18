@@ -39,27 +39,19 @@ import MyLike from './components/MyLike'
 import Local from './components/Local'
 import Recent from './components/Recent'
 import Dongtai from './components/Dongtai'
-import Fabu from './components/Fabu'
 import DongTaiLike from './components/Like'
 import Music from './components/MusicHall'
 import Search from './components/Search'
 import CustomScrollView from './components/CustomScrollView'
-import CustomTabBar from './components/CustomTabBar'
 import SongList from './components/SongList'
-import SongNav from './components/SongNav'
 import Publish from './components/Publish'
 import Login from './components/Login'
 import Register from './components/Register'
-import Songword from './components/Songword'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
-<<<<<<< HEAD
-import UserInfo  from './components/UserInfo'
-=======
 import timestop  from './components/timestop'
 
->>>>>>> 5bd94a584fed6141f2a15c705863dbc7beea7a78
 
 const App = () => {  
   return (
@@ -110,7 +102,6 @@ const App = () => {
             >
               <Scene key = "Condition" component={Condition}/>
               <Scene key = "dongTai" component={Dongtai}/>
-              <Scene key = "faBu" component={Fabu}/>
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
               <Scene key="CustomScrollView" component={CustomScrollView} />
               <Scene key="RedAlert" component={RedAlert} />
@@ -129,7 +120,6 @@ const App = () => {
               <Scene key = "addsong" component={AddSong}  title='歌曲管理' hideTabBar/>
               <Scene key = 'login' component = {Login} hideNavBar hideTabBar/>      
               <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
-              <Scene key = 'userinfo' component = {UserInfo}  hideTabBar title = '我的资料'/>      
             </Scene>
           </Tabs>    
           </Scene>
