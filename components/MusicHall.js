@@ -93,23 +93,19 @@ export default class MusicHall extends Component {
                                 </Swiper>
                             </View>
                             <View style={{ width: '90%', height: 70, marginTop: 20, flexDirection: 'row' }}>
-                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={() => Actions.singer()}>
+                                <TouchableOpacity style={{ width: '25%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={() => Actions.singer()}>
                                     <Icon name="user" size={30} color='green' />
                                     <Text>歌手</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={()=>Actions.ranking()}>
+                                <TouchableOpacity style={{ width: '25%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={()=>Actions.ranking()}>
                                     <Icon name="bar-chart-2" size={30} color='green' />
                                     <Text>排行</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={()=>Actions.songlist()}>
+                                <TouchableOpacity style={{ width: '25%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={()=>Actions.songlist()}>
                                     <Icon name="grid" size={30} color='green' />
                                     <Text>分类歌单</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Icon name="activity" size={30} color='green' />
-                                    <Text>电台</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{ width: '20%', height: 70, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity style={{ width: '25%', height: 70, justifyContent: 'center', alignItems: 'center' }} onPress={()=>Actions.listentogether()}>
                                     <Icon name="headphones" size={30} color='green' />
                                     <Text>一起听</Text>
                                 </TouchableOpacity>
@@ -164,7 +160,7 @@ export default class MusicHall extends Component {
                             </View>
                             <View style={{ width: '90%', height: 50, marginTop: 15, alignItems: 'center', flexDirection: 'row' }}>
                                 <Text style={{ fontSize: 21, width: '20%' }}>热门歌曲</Text>
-                                <TouchableOpacity style={{ width: '9%', marginLeft: '71%' }}>
+                                <TouchableOpacity style={{ width: '9%', marginLeft: '71%' }} onPress={()=>Actions.songlist()}>
                                     <Text style={{ fontSize: 15, color: 'gray' }}>更多></Text>
                                 </TouchableOpacity>
                             </View>

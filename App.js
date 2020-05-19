@@ -7,6 +7,7 @@ import SingerDetail from './components/SingerDetail';
 import Ranking from './components/Ranking';
 import RankingDetail from './components/RankingDetail';
 import SongList from './components/SongList';
+import ListenTogether from './components/ListenTogether';
 
 const App = () => {
   return (
@@ -45,6 +46,11 @@ const App = () => {
           <Scene
             key="songlist"
             component={SongList}
+            hideNavBar
+          />
+          <Scene
+            key="listentogether"
+            component={ListenTogether}
             hideNavBar
           />
         </Scene>
