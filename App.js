@@ -53,6 +53,7 @@ import OverLike  from './components/OverLike'
 import UserInfo  from './components/UserInfo'
 import ModifyNetName  from './components/ModifyNetName'
 import timestop  from './components/timestop'
+import CleverKind from './components/CleverKind'
 
 
 const App = () => {  
@@ -122,8 +123,10 @@ const App = () => {
               <Scene key = "addsong" component={AddSong}  title='歌曲管理' hideTabBar/>
               <Scene key = 'login' component = {Login} hideNavBar hideTabBar/>      
               <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
-              <Scene key = 'userinfo' component = {UserInfo}  hideTabBar title = '我的资料'/>      
-              <Scene key = 'modifynetname' component = {ModifyNetName}  hideTabBar title = '修改昵称'/>      
+              <Scene key = 'userinfo' component = {UserInfo}  hideTabBar  title = '我的资料'/>      
+              <Scene key = 'modifynetname' component = {ModifyNetName}  hideTabBar title = '修改昵称'/>
+              <Scene key = 'cleverkind' component = {CleverKind}  hideTabBar title = '智能分类'/>
+
             </Scene>
           </Tabs>    
           </Scene>

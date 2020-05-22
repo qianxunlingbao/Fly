@@ -196,7 +196,8 @@ class My extends Component {
                         }
                         />
                     </View>
-                    <View style={styles.alonekind}>
+                    <View style={styles.alonekind} >
+                        <TouchableOpacity onPress = {()=>Actions.cleverkind()}>
                         <Text style={{fontSize:20,marginTop:10,marginLeft:20}}>智能分类</Text>
                         <View style={{marginTop:10,marginLeft:20,width:width * 0.8 * 0.8 ,height:height * 0.1 * 0.4,flexDirection:'row',alignItems:'center'}}>
                             <TouchableOpacity 
@@ -240,7 +241,23 @@ class My extends Component {
                             }>
                                 <Text  style={{fontSize:16,textAlign:'center'}}>ACG歌曲</Text>
                             </TouchableOpacity>
+                            <TouchableOpacity style={
+                                {
+                                    paddingLeft:10,
+                                    paddingRight:10,
+                                    borderRadius:height * 0.1 *0.2,
+                                    borderWidth:1,
+                                    borderColor:'grey',
+                                    marginRight:10,
+                                    justifyContent:"center",
+                                    alignItems:"center"
+                                }
+                            }>
+                                <Text  style={{fontSize:16,textAlign:'center'}}>...</Text>
+                            </TouchableOpacity>
                         </View>
+
+                        </TouchableOpacity>
                     </View>
                     {
                         this.state.login? 
