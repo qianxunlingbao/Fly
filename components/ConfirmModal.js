@@ -59,7 +59,7 @@ export default class confirmModal extends Component {
           transparent={true}
           visible={this.props.modalVisible}
           onRequestClose={() => {
-            alert("Modal has been closed.");
+            alert("分享还未取消.");
           }}
         >
           <View style={

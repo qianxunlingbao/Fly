@@ -53,6 +53,7 @@ import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
 import OverLike  from './components/OverLike'
 import Huachenyu  from './components/Huachenyu'
+import Weixinyu  from './components/Weixinyu'
 import DongTaiList  from './components/DongTaiList'
 const App = () => {  
   return (
@@ -106,6 +107,7 @@ const App = () => {
               <Scene key="RedAlert" component={RedAlert} />
               <Scene key="OverLike" component={OverLike} />
               <Scene key="huachenyu" component={Huachenyu} />
+              <Scene key="weixinyu" component={Weixinyu} />
               <Scene key="Dongtailiebiao" component={DongTaiList} />
             </Scene>
             <Scene key="my" title="我的"  

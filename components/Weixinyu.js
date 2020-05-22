@@ -26,20 +26,20 @@ export default class Huachenyu extends Component {
         super();
         this.state = {
             data: [
-                {music_name:'树洞',music_value:'欧阳娜娜▪树洞▪《小欢喜》电视剧插曲'},
-                {music_name:'蜕变(Live)',music_value:'欧阳娜娜/R1SE周震南/高嘉朗/张远/Rise…'},
-                {music_name:'小幸运(Live)',music_value:'薛之谦/欧阳娜娜▪《我们的挑战》新春歌会…'},
-                {music_name:'秘语',music_value:'欧阳娜娜/陈飞宇▪秘语▪《秘果》电影悸…'},
-                {music_name:'再谈记忆(Say It Anain)(Live)',music_value:'盘尼西林乐队/欧阳娜娜▪乐队的夏天 第7期'},
-                {music_name:'一心一念',music_value:'欧阳娜娜▪北灵少年志之大主宰 电视剧影视…'},
-                {music_name:'To Me',music_value:'欧阳娜娜▪To Me'},
-                {music_name:'树洞',music_value:'欧阳娜娜▪树洞▪《小欢喜》电视剧插曲'},
-                {music_name:'蜕变(Live)',music_value:'欧阳娜娜/R1SE周震南/高嘉朗/张远/Rise…'},
-                {music_name:'小幸运(Live)',music_value:'薛之谦/欧阳娜娜▪《我们的挑战》新春歌会…'},
-                {music_name:'秘语',music_value:'欧阳娜娜/陈飞宇▪秘语▪《秘果》电影悸…'},
-                {music_name:'再谈记忆(Say It Anain)(Live)',music_value:'盘尼西林乐队/欧阳娜娜▪乐队的夏天 第7期'},
-                {music_name:'一心一念',music_value:'欧阳娜娜▪北灵少年志之大主宰 电视剧影视…'},
-                {music_name:'To Me',music_value:'欧阳娜娜▪To Me'},
+                {music_name:'百花香',music_value:'温暖你的城堡/品味着人世的美好'},
+                {music_name:'余情未了',music_value:'叹人生路兜兜转转/与你余情未了'},
+                {music_name:'恋人心',music_value:'化作风化作雨化作春走向你/梦如声梦如影梦是遥望的掌印'},
+                {music_name:'为你祈祷',music_value:'我用一生一世为你祈祷/祈祷你的身边没有烦恼'},
+                {music_name:'伤离别',music_value:'用一生痴情换/一幕悲剧伤离别/我等你年年花开花谢'},
+                {music_name:'最美的情缘',music_value:'我就化作/化作一只蝴蝶/轻轻落在/落在你指尖'},
+                {music_name:'情花几时开',music_value:'就当从不曾和你相爱/春来花又开'},
+                {music_name:'画颜',music_value:'我 只要你多看一眼我'},
+                {music_name:'默默回味',music_value:'美好的时光/就此悄然搁浅'},
+                {music_name:'做个神仙',music_value:'移山倒海的境界/只为与你风花雪月'},
+                {music_name:'来生愿做一朵莲',music_value:'来生愿做一朵莲/静静盛开在佛前'},
+                {music_name:'红尘雨',music_value:'盘尼西林乐队/欧阳娜娜▪乐队的夏天 第7期'},
+                {music_name:'愿(Live)',music_value:'欧阳娜娜▪北灵少年志之大主宰 电视剧影视…'},
+                {music_name:'红尘来去一场梦',music_value:'欧阳娜娜▪To Me'},
             ],
             num: 1,
             page: 0,
@@ -116,7 +116,7 @@ export default class Huachenyu extends Component {
                                 textAlign:'center',
                                 fontSize:20
                             }}>
-                                欧阳娜娜
+                                魏新雨
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -175,7 +175,7 @@ export default class Huachenyu extends Component {
 
                                 }
                             }
-                            source={require('../images/ouyangnana.png')} 
+                            source={require('../images/weixinyu1.png')} 
                         />
                         <Text style={
                             {
@@ -183,7 +183,7 @@ export default class Huachenyu extends Component {
                                    marginTop:width*0.25,
                                    marginLeft:width*0.05
                             }
-                        }>欧阳娜娜</Text>
+                        }>魏新雨</Text>
                         <Text style={
                             {
                                    fontSize:18,
@@ -268,7 +268,7 @@ export default class Huachenyu extends Component {
                                         marginLeft:width*0.07,
                                         color:this.state.menu[0]?'black':'grey'
                                     }
-                                }>歌曲92</Text>
+                                }>歌曲15</Text>
                             </TouchableOpacity>
                             <TouchableOpacity 
                                 onPress={()=>this.setState(
@@ -285,7 +285,7 @@ export default class Huachenyu extends Component {
                                         color:this.state.menu[1]?'black':'grey',
                                         marginLeft:width*0.05
                                     }
-                                }>专辑12</Text>
+                                }>专辑20</Text>
                             </TouchableOpacity>   
                             <TouchableOpacity 
                                 onPress={()=>this.setState(
@@ -302,7 +302,7 @@ export default class Huachenyu extends Component {
                                         color:this.state.menu[2]?'black':'grey',
                                         marginLeft:width*0.05
                                     }
-                                }>视频157</Text>
+                                }>视频521</Text>
                             </TouchableOpacity>  
                             <TouchableOpacity 
                                 onPress={()=>this.setState(
@@ -319,7 +319,7 @@ export default class Huachenyu extends Component {
                                         color:this.state.menu[3]?'black':'grey',
                                         marginLeft:width*0.05
                                     }
-                                }>动态7</Text>
+                                }>动态125</Text>
                             </TouchableOpacity>  
                             <TouchableOpacity 
                                 onPress={()=>this.setState(
