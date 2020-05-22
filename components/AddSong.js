@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text ,Image, TouchableOpacity } from 'react-native'
+import { Actions } from 'react-native-router-flux';
 
 /**
 *
@@ -33,7 +34,9 @@ class AddSong extends Component {
             <View style={styles.container}>
                {
                    this.props.num == 0?
-                   <TouchableOpacity style={{width:'30%',height:'5%',backgroundColor:'green',justifyContent:"center",
+                   <TouchableOpacity 
+                   onPress = {()=>Actions.addsearchsong()}
+                   style={{width:'30%',height:'5%',backgroundColor:'green',justifyContent:"center",
                    alignItems:"center",borderRadius:50}}>
                        <Text style={{fontSize:20}}>添加歌曲</Text>
                    </TouchableOpacity>

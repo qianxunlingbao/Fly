@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image ,Dimensions,TextInput, TouchableOpacity} from 'react-native'
+import { StyleSheet, View, Text ,Image ,Dimensions,TextInput, TouchableOpacity, Button} from 'react-native'
 const {width,height} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/AntDesign'
 import { Actions } from 'react-native-router-flux'

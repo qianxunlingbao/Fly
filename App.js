@@ -54,7 +54,7 @@ import UserInfo  from './components/UserInfo'
 import ModifyNetName  from './components/ModifyNetName'
 import timestop  from './components/timestop'
 import CleverKind from './components/CleverKind'
-
+import AddSearchSong from './components/AddSearchSong'
 
 const App = () => {  
   return (
@@ -125,7 +125,13 @@ const App = () => {
               <Scene key = 'register' component = {Register} hideNavBar hideTabBar/>      
               <Scene key = 'userinfo' component = {UserInfo}  hideTabBar  title = '我的资料'/>      
               <Scene key = 'modifynetname' component = {ModifyNetName}  hideTabBar title = '修改昵称'/>
-              <Scene key = 'cleverkind' component = {CleverKind}  hideTabBar title = '智能分类'/>
+              <Scene key = 'cleverkind' component = {CleverKind}  hideTabBar title = '智能分类' />
+              <Scene key = 'addsearchsong' component = {AddSearchSong}  hideTabBar title = '将歌曲添加到歌单' 
+              renderLeftButton = {()=><Text></Text>}
+              rightTitle = '完成'
+              onRight = {()=>Actions.pop()}
+              titleStyle={{flex:1,textAlign:'center'}}
+              />
 
             </Scene>
           </Tabs>    
