@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image, Dimensions,TouchableOpacity,Alert,FlatList, AsyncStorage } from 'react-native'
+import { StyleSheet, View, Text ,Image, Dimensions,TouchableOpacity,Alert,FlatList, AsyncStorage, DeviceEventEmitter } from 'react-native'
 const {width,height} = Dimensions.get('window');
+import Icon from "react-native-vector-icons/FontAwesome"
 class Manage extends Component {
     constructor(){
         super();
         this.state = {
-            data :[]
+            data :[],
+            source:[]
         }
     }
     componentDidMount(){
@@ -13,18 +15,47 @@ class Manage extends Component {
             (val) => {
                 this.setState({
                     data : JSON.parse(val)
+                },()=>{
+                    let length = this.state.data.length;
+                    let arr = new Array(length);
+                    arr.fill(0);
+                    this.setState({
+                        source:arr
+                    })
                 })
             }
         )
+    }
+    componentWillUnmount(){
+        DeviceEventEmitter.emit('getsongmenu')
     }
     showAlert(){
         Alert.alert('删除歌单','确定删除选中的歌单',
   [
     {text:"取消", onPress:this.opntion1Selected},
-    {text:"确定", onPress:this.opntion2Selected},
+    {text:"确定", onPress:() => {
+        let arr = this.state.source;
+        let brr = this.state.data.filter((item,index)=>{
+          if(!arr[index]){
+              return item;
+          }
+        })
+        this.setState({
+            data:brr
+        },()=>{
+            let length = this.state.data.length;
+            let arr = new Array(length);
+            arr.fill(0);
+            this.setState({
+                source:arr
+            })
+        })
+        AsyncStorage.setItem('songmenu',JSON.stringify(brr));
+
+    }},
   ],
   {cancelable:true}
-);
+)
     }
     render() {
         return (
@@ -32,7 +63,8 @@ class Manage extends Component {
                 <FlatList
                             data={this.state.data}
                             renderItem={({item,index})=>
-                                <View style={styles.createlist}>
+                                <TouchableOpacity onPress={()=>{let arr = this.state.source;arr[index] = !arr[index];this.setState({source:arr})}}>
+                                    <View style={styles.createlist}>
                                     <View style={{backgroundColor:'blue',width:'20%',height:'90%',borderRadius:10,justifyContent:"center",alignItems:"center"}}>
                                     <Image style={{width:'100%',height:'100%',borderRadius:10}} source = {{uri:`http://49.235.231.110:8802/musicimage/${index + 1}.JPG`}}/>
                                     </View>
@@ -40,7 +72,10 @@ class Manage extends Component {
                                         <Text style={{fontSize:16,marginBottom:10}}>{item.title}</Text>
                                         <Text style={{color:'grey',marginBottom:10}}>{item.num}首</Text>
                                     </View>
+                                    <Icon name={this.state.source[index]?"check-square-o":"square-o"} size={30}  color="#00B4F7" style={styles.checkbox}></Icon>
                                 </View>
+                                </TouchableOpacity>
+                                
                             }
                             />
                 <TouchableOpacity onPress={this.showAlert.bind(this)} style={styles.delete}>
@@ -74,6 +109,11 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         alignItems:'center'
     },
+    checkbox:{
+        position:"absolute",
+        left:width * 0.8 - 30
+
+    }
 })
 
 export default Manage

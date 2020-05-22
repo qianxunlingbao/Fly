@@ -15,7 +15,6 @@ const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
 import { Actions} from 'react-native-router-flux';
 import Prompt from './Prompt'
-import  {DeviceEventEmitter} from 'react-native';
 import PlayGroup from './PlayGroup'
 import PlayList from './PlayList';
 
@@ -78,14 +77,14 @@ class My extends Component {
                 this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
             }
         )
-        AsyncStorage.getItem('songmenu').then(
+        this.getsongmenu = DeviceEventEmitter.addListener('getsongmenu',()=>AsyncStorage.getItem('songmenu').then(
             (val) => {
                 this.setState({
                     createdata : JSON.parse(val) ==null ?'':JSON.parse(val),
                     create : JSON.parse(val) ==null ?'':JSON.parse(val).length
                 })
             }
-        )
+        )) 
         AsyncStorage.getItem('headimage').then(
             (value) => {
                 if(value){
@@ -96,7 +95,7 @@ class My extends Component {
                 
             }
         )
-        this.changeHeadImg = DeviceEventEmitter.addListener('changeHeadImg',()=>{
+        this.changeHeadImg = DeviceEventEmitter.addListener('changeHeadImg',()=>
             AsyncStorage.getItem('headimage').then(
                 (value) => {
                     if(value){
@@ -107,21 +106,23 @@ class My extends Component {
                     
                 }
             )
-        })
+        )
     }
-    componentWillMount(){
+    componentWillUnmount(){
         this.changeHeadImg&&this.changeHeadImg.remove();
+        this.myplaylist&&this.myplaylist.remove();
+        this.getsongmenu&&this.getsongmenu.remove();
     }
     render() {
         return (
             <View 
             style={styles.container}
             >
-                <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
+                <PlayList playlistvisible = {this.state.playlistvisible}  list = {this.state.songs}/>
 
                 <Prompt 
                 modalVisible = {this.state.modalVisible}
-                listTitle = {this.state.listTitle}
+                listTitle = {this.state.listTitle}                                       
                 callback = {this._onPressEmpty}
                 changecallback = {this._changeListtitle}
                 />

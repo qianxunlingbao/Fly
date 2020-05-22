@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage, FlatList} from 'react-native'
+import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage, FlatList,DeviceEventEmitter} from 'react-native'
 class PlayList
  extends Component {
     render() {
@@ -10,7 +10,7 @@ class PlayList
             visible = {this.props.playlistvisible}
             >
                  <View style={styles.container}>
-                     <TouchableOpacity style={{width:'100%',height:'100%'}} onPress = {()=>this.props.backcallback()}>
+                     <TouchableOpacity style={{width:'100%',height:'100%'}} onPress = {()=>DeviceEventEmitter.emit('myplaylist')}>
                         <View style = {{
                             width:'100%',
                             height:'40%',
