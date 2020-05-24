@@ -8,61 +8,8 @@ class timestop extends Component {
         super(props);
         
         this.state = {
-            rate: 1,
-            paused: true,
-            muted: true,
-            seconds: 0, //秒数
-            totalMin: '', //总分钟
-            totalSec: '', //总分钟秒数
-            nowMin: '00', //当前分钟
-            nowSec: '00', //当前秒钟
-            maximumValue: 0, //滑块最大值,
-            songs: [],   //歌曲id数据源
-            playModel: 1,  // 播放模式  1:列表循环    2:随机    4:单曲循环
-            btnModel: "", //播放模式按钮背景图
-            song_id: '',     //歌曲id
-            title: '',       //歌曲名字
-            author: '',      //歌曲作者
-            file_link: '',   //歌曲播放链接
-            songLyr: [],     //当前歌词
-            sliderValue: 0,    //Slide的value
-            pause: false,       //歌曲播放/暂停
-            currentTime: 0.0,   //当前时间
-            duration: 0.0,     //歌曲时间
-			currentIndex: 0,    //当前第几首
-			photo:require('../images/loop.png'),
-			clicknum3:0,
-			collect:0,
-			clicknum2:0,
-			music_name:'',
-            music_author:'',
-            playlistvisible:false,
-            song:'',
-            move:0,
-            index:0,
-            color:['#fff','#000','#000'],
-            moveclick:false,
-            nowsong:0,
-            modalVisible:false,
-            songword:[],
-            volume:1,
-            sliderValuevolume: 0,    //Slide的value
-            modalVisible1:false,
-            modalVisible4:true,
             xuanzhong:[''],
-            indexsong:0,
-            xuezhongT:[],
-            tong:[],
-            op:true,
-            modalVisible5:false,
-            modalVisible6:false,
-            modalVisible7:false,
-            modalVisible8:false,
-            modalVisible9:false,
             checksong:[],
-            bc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png'),require('../images/4.png')],
-            backc:require('../images/1.png'),
-            fontcolor:'black',
             stoptime:[false,'']
         }
     }
@@ -111,12 +58,10 @@ class timestop extends Component {
          else{
              this.state.stoptime[0]=true
          }
-         
          if(i==0)this.state.stoptime[1]=15
          if(i==1)this.state.stoptime[1]=30
          if(i==2)this.state.stoptime[1]=45
          if(i==3)this.state.stoptime[1]=60
-
         for(var j=0;j<this.state.songword.length;j++){
             if(this.state.xuanzhong[j]!='#527d50'){
                 this.state.xuanzhong[j]=''
@@ -125,22 +70,12 @@ class timestop extends Component {
 
            
         }
-         if(this.state.xuanzhong[i]=='#527d50')
-         {
-            
-             this.state.xuanzhong[i]='#487346'
-             this.state.checksong[i]=''
-         }
-         else{
             for(var j=0;j<this.state.xuanzhong.length;j++){
                 if(j!=i)
                 this.state.xuanzhong[j]=''
             }
             this.state.xuanzhong[i]='#527d50'
             this.state.checksong[i]=this.state.songword[i]
-
-         }
-         console.log(this.state.stoptime)
         this.setState({
             op:!this.state.op
         })
@@ -151,31 +86,6 @@ class timestop extends Component {
           this.setState({modalVisible4: visible,
         });
       }
-      setModalVisible5(visible) {
-          this.state.modalVisible5=visible
-        this.setState({modalVisible5: this.state.modalVisible5,
-      });
-    }
-    setModalVisible6(visible) {
-        this.state.modalVisible6=visible
-        this.setState({modalVisible6: this.state.modalVisible6,
-      });
-    }
-    setModalVisible7(visible) {
-        this.state.modalVisible7=visible
-        this.setState({modalVisible7: this.state.modalVisible7,
-      });
-    }
-    setModalVisible8(visible) {
-        this.state.modalVisible8=visible
-        this.setState({modalVisible8: visible,
-      });
-    }
-    setModalVisible9(visible) {
-        this.state.modalVisible9=visible
-        this.setState({modalVisible9: this.state.modalVisible9,
-      });
-    }
      backgroundcolor(a){
         if(a!=undefined){
             this.state.backc=this.state.bc[a]

@@ -55,9 +55,7 @@ import ModifyNetName  from './components/ModifyNetName'
 import timestop  from './components/timestop'
 import CleverKind from './components/CleverKind'
 import AddSearchSong from './components/AddSearchSong'
-import Huachenyu  from './components/Huachenyu'
-import Weixinyu  from './components/Weixinyu'
-import DongTaiList  from './components/DongTaiList'
+
 const App = () => {  
   return (
     <>
@@ -111,9 +109,6 @@ const App = () => {
               <Scene key="CustomScrollView" component={CustomScrollView} />
               <Scene key="RedAlert" component={RedAlert} />
               <Scene key="OverLike" component={OverLike} />
-              <Scene key="huachenyu" component={Huachenyu} />
-              <Scene key="weixinyu" component={Weixinyu} />
-              <Scene key="Dongtailiebiao" component={DongTaiList} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}

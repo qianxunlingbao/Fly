@@ -21,6 +21,7 @@ import Video from 'react-native-video';
 import {Actions} from 'react-native-router-flux';
 // import { Slider } from 'react-native-elements'
 import Sound from 'react-native-sound'
+import Swiper from 'react-native-swiper';
 import PlayList from './PlayList';
 let lyrObj = []   // 存放歌词
 let {width, height} = Dimensions.get('window');
@@ -87,11 +88,41 @@ export default class Doc extends Component{
             bc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png'),require('../images/4.png')],
             backc:require('../images/1.png'),
             fontcolor:'black',
+            nowfengmian:['方形封面',require('../images/ye1.png'),width*0.05],
+            checkyemian:[['方形封面',require('../images/ye1.png'),width*0.05],['旋转封面',require('../images/ye2.png'),width*0.49],['静态封面',require('../images/ye3.png'),width*0.49]],
+            firstfengmian:['方形封面',require('../images/2.jpg'),width*0.05,0.4*width],
+            Rotate:'0deg',
+            movepicture:0,
+            Rotategif:'0deg',
+            clickgif:true,
+            indexpicture:0
         }
     }
     //设置进度条和播放时间的变化
+   
+
     setTime(data) {
         let sliderValue = parseInt(this.state.currentTime);
+        if(this.state.firstfengmian[0]=='旋转封面')
+        {
+            
+            
+            if(this.state.paused){
+                var rotate
+                 rotate=sliderValue%10
+                 this.state.firstfengmian[1]=require('../images/2.jpg')
+                 this.state.firstfengmian[3]=0.4*width
+                 this.state.Rotate=rotate*36+'deg'
+            }
+          
+          
+        }
+        else{
+            
+            this.state.firstfengmian[1]=require('../images/2.jpg')
+            this.state.firstfengmian[3]=0.4*width
+            this.state.Rotate=0+'deg'
+        }
         let min = Math.floor(sliderValue / 60);
         let second = sliderValue - min * 60;
         min = min >= 10 ? min : "0" + min;
@@ -104,6 +135,7 @@ export default class Doc extends Component{
                     this.refs.swiper_ScrollView.scrollTo({ x:0, y:width*0.08*i , animated: true })
                 }
             }
+           
         this.setState({
         slideValue: sliderValue,
         currentTime: data.currentTime,
@@ -227,9 +259,20 @@ export default class Doc extends Component{
 		}
     }
     play(){
+        this.state.paused=!this.state.paused
+      
+       
+        if(this.state.currentTime>0&&this.state.firstfengmian[0]=='旋转封面'){
+           
+            this.state.firstfengmian[1]=require('../images/2.gif')
+            let sliderValue = parseInt(this.state.currentTime);
+            var rotate=sliderValue%10
+            this.state.Rotategif=36*rotate+'deg'
+            this.state.firstfengmian[3]=0.5*width
+        }
+       
         this.setState({
-            paused:!this.state.paused,
-            playIcon: this.state.paused ? 'pause' : 'play',
+            paused:this.state.paused,
             rate:this.state.rate
         })
     }
@@ -309,6 +352,21 @@ export default class Doc extends Component{
             })     
         }
     }
+    movepicture(a){
+        //if(a==this.state.songlist.length&&this.state.indexpicture==0)
+        //上一首
+        //if(a<this.state.indexpicture)
+        //上一首
+        //if(a>this.state.indexpicture)
+        //下一首
+        //if(this.state.indexpicture==this.state.songlist.length&&a==0)
+        //下一首
+
+        this.state.indexpicture=a;
+
+         console.log(a)     
+        
+    }
     clickred(){
         this.state.collect=!this.state.collect
         this.setState({
@@ -378,8 +436,6 @@ export default class Doc extends Component{
 	   // 返回数组，不然怎么显示出来
 	   return allChild;
      }
-      //默认模态视图不可见
-      //修改模态视图可见性
       setModalVisible() {
           this.state.modalVisible=!this.state.modalVisible
           this.setState({modalVisible:this.state.modalVisible});
@@ -444,10 +500,48 @@ export default class Doc extends Component{
         })
      }
       //修改模态视图可见性
- 
+      setModalVisible4(visible,b) {
+       if(b==1){
+        this.state.firstfengmian[0]=this.state.nowfengmian[0]
+        this.state.firstfengmian[2]=this.state.nowfengmian[2]
+       }
+        this.setState({modalVisible4: visible,
+      });
+    }
+    setModalVisible5(visible) {
+        this.setState({modalVisible5: visible,
+      });
+    }
+    fengmian(f){
+        if(f!=undefined){
+            if(f==0)
+            {
+                this.state.nowfengmian[0]=this.state.checkyemian[0][0]
+                this.state.nowfengmian[1]=this.state.checkyemian[0][1]
+                this.state.nowfengmian[2]=this.state.checkyemian[0][2]
+
+            }
+            if(f==1)
+            {
+                this.state.nowfengmian[0]=this.state.checkyemian[1][0]
+                this.state.nowfengmian[1]=this.state.checkyemian[1][1]
+                this.state.nowfengmian[2]=this.state.checkyemian[1][2]
+
+            }
+            if(f==2)
+            {
+                this.state.nowfengmian[0]=this.state.checkyemian[2][0]
+                this.state.nowfengmian[1]=this.state.checkyemian[2][1]
+                this.state.nowfengmian[2]=this.state.checkyemian[2][2]
+            }
+        }
+        this.setState({nowfengmian: this.state.nowfengmian,
+        });
+    }
 		render() {
-        let time = this.state;
+            
 		return (
+            
 			<View style={styles.container}>
 			
 				<View style={{width:width,height:0.05*height,flexDirection:'row'}}>
@@ -535,11 +629,12 @@ export default class Doc extends Component{
                         </ScrollView>
                     </View>
                     <View style={{width:width}}>
-                    <View style={{width:width,height:0.95*height,marginTop:-0.015*height}}>
-                        <View style={{flex:30,justifyContent:'center',}}>
-                            <View style={{width:width*0.90,height:0.45*height,marginLeft:'7.5%'}}>
-                                <Image style={{width:'95%',height:'100%',
-                                borderRadius:width*0.05}} source={require('../images/2.png')} />
+                    <View style={{width:width,height:0.95*height,marginTop:-0.015*height,}}>
+                        <View style={{flex:30,justifyContent:'center',alignItems: 'center'}}>
+                            <View style={{width:width*0.72,height:width*0.72,justifyContent:'center',alignItems: 'center',backgroundColor:'#000',borderRadius:this.state.firstfengmian[2]}}>
+                               
+                                <Image style={{width:this.state.firstfengmian[3],height:this.state.firstfengmian[3],transform:[{rotate:this.state.paused?this.state.Rotate:this.state.Rotategif }]}} source={this.state.firstfengmian[1]} />
+
                             </View>
                         </View>
                         <View style={{width:width,height:0.2*height,flexDirection:'row',}} >
@@ -699,14 +794,13 @@ export default class Doc extends Component{
                                                         </TouchableOpacity>
                                                     </View>
                                                     <View style={{width:0.2*width,}}>
-
                                                         <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={() => { this.setModalVisible2(true) }}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/HQ.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>音质</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}}   onPress={() => { this.setModalVisible5(true) }}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/DM.png')} />
                                                             </View>
@@ -728,13 +822,13 @@ export default class Doc extends Component{
                                                         </TouchableOpacity>
                                                     </View>
                                                     <View style={{width:0.2*width,}}>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}  onPress={() => { this.setModalVisible4(true) }}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/player.png')} />
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>播放器样式</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.report({music_name:this.state.music_name})}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.07*width}} source={require('../images/Report.png')} />
                                                             </View>
@@ -993,7 +1087,183 @@ export default class Doc extends Component{
                         </View>
                     </Modal>
                </View>
-  
+               <View>
+                    <Modal
+                    animationType = {"slide"}
+                    transparent = {true}
+                    visible = {this.state.modalVisible4}
+                    >  
+                    <View style = {{
+                            width:'100%',
+                                height:'100%',
+                                position:'absolute',
+                                top:'0%',
+                                paddingLeft:'5%',
+                                backgroundColor:'#fff',
+                                opacity:1,
+                                justifyContent:'center', alignItems: 'center'
+                            }}>
+                        <View style = {{
+                            width:'100%',
+                                height:'10%',
+                                position:'absolute',                                
+                                backgroundColor:'#fff',
+                                opacity:1,
+                                flexDirection:'row',
+                                top:'0%',
+                                paddingTop:'3%'
+                            }}>
+                            <TouchableOpacity style={{}} onPress={() => { this.setModalVisible4(false,0) }}>
+                            <Text style={{color:'#000',fontSize:15}}>取消</Text>
+                            </TouchableOpacity>
+                            <Text style={{color:'#000',fontSize:20,marginLeft:0.3*width}}>播放器样式</Text>
+                            <TouchableOpacity style={{alignItems: 'center',marginLeft:0.3*width}}  onPress={() => {this.setModalVisible4(false,1) }}>
+                            <Text style={{color:'#000',fontSize:15}}>完成</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style = {{
+                            width:'77%',
+                                height:'60%',
+                                position:'absolute',
+                                top:'10%',
+                                
+                                alignItems: 'center',
+                                opacity:1
+                            }}>
+                            <Image style={{width:0.6*width,height:1.77*width*0.6}} source={this.state.nowfengmian[1]} />
+                            <Text style={{color:'#666'}}>{this.state.nowfengmian[0]}</Text>
+                        </View>
+                        <View style = {{
+                            width:'100%',
+                                height:'20%',
+                                position:'absolute',                                
+                                backgroundColor:'#fff',
+                                top:0.73*height,
+                                opacity:1,
+                                flexDirection:'row',
+                                alignItems: 'center'
+                            }}>
+                            <TouchableOpacity style={{alignItems: 'center',marginLeft:0.072*width}}  onPress={() => { this.fengmian(0) }}>
+                                <Image style={{width:0.2*width,height:1.77*width*0.2}} source={this.state.checkyemian[0][1]} />
+                                <Text style={{color:'#666'}}>{this.state.checkyemian[0][0]}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{alignItems: 'center',marginLeft:0.1*width}} onPress={() => { this.fengmian(1) }}>
+                                <Image style={{width:0.2*width,height:1.77*width*0.2}} source={this.state.checkyemian[1][1]} />
+                                <Text style={{color:'#666'}}>{this.state.checkyemian[1][0]}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{alignItems: 'center',marginLeft:0.1*width}} onPress={() => { this.fengmian(2) }}>
+                                <Image style={{width:0.2*width,height:1.77*width*0.2}} source={this.state.checkyemian[2][1]} />
+                                <Text style={{color:'#666'}}>{this.state.checkyemian[2][0]}</Text>
+                            </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+            </View>
+            <View>
+                    <Modal
+                    animationType = {"slide"}
+                    transparent = {true}
+                    visible = {this.state.modalVisible5}
+                    >  
+                    <View style = {{
+                            width:'100%',
+                                height:'100%',
+                                position:'absolute',
+                                top:'0%',
+                                paddingLeft:'5%',
+                                backgroundColor:'#fff',
+                                opacity:1,
+                                justifyContent:'center', alignItems: 'center'
+                            }}>
+                        <View style = {{
+                            width:'100%',
+                                height:'10%',
+                                position:'absolute',                                
+                                backgroundColor:'#fff',
+                                opacity:1,
+                                flexDirection:'row',
+                                top:'0%',
+                                paddingTop:'3%'
+                            }}>
+
+                            <Text style={{color:'#000',fontSize:20,marginLeft:0.4*width}}>驾驶模式</Text>
+                            <TouchableOpacity style={{alignItems: 'center',marginLeft:0.3*width}}  onPress={() => {this.setModalVisible5(false) }}>
+                            <Text style={{color:'#000',fontSize:15}}>X</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style = {{
+                            width:'77%',
+                                height:'60%',
+                                position:'absolute',
+                                top:'10%',
+                                
+                                alignItems: 'center',
+                                opacity:1
+                            }}>
+      <View style={{width:width*0.90,height:0.45*height,justifyContent:'center',alignItems: 'center',marginLeft:0.05*width}}>
+      <Swiper 
+            style={{alignItems: 'center',justifyContent:'center'}} 
+            width = {0.5*width}
+            height = {0.5*width}
+            horizonal={true}   //水平轮播
+            loop = {true}     //若为false，滑动到最后一张就不再滑到第一张，待会测试
+                 // 开始显示的图片
+            autoplay = {false}  //是否自动轮播
+            ref='Swiper'               
+            autoplayDirection = {false}  //控制轮播是否循环
+            showButtoms = {true} //是否显示控制按钮
+            index={0}
+            paginationStyle = {{bottom: 10}} 
+            showsPagination = {false}  //是否显示dot
+            
+            onMomentumScrollEnd= {(event) => {
+
+            }} //
+            loadMinimalSize={this.state.indexpicture}
+            onIndexChanged = {(index) => { this.movepicture(index);
+        }}  
+           
+        >
+            
+            <Image style={{width:0.5*width,height:width*0.5,
+                                borderRadius:0.45*width}} source={this.state.bc[0]} />
+                                <Image style={{width:0.5*width,height:width*0.5,
+                                borderRadius:0.45*width}} source={this.state.bc[1]} />
+                                <Image style={{width:0.5*width,height:width*0.5,
+                                borderRadius:0.45*width}} source={this.state.bc[2]} />
+        </Swiper>
+
+                          
+                                
+                            </View>
+                        </View>
+                        <View style = {{
+                            width:'100%',
+                                height:'20%',
+                                position:'absolute',                                
+                                backgroundColor:'blue',
+                                top:'70%',
+                                opacity:1,
+                                flexDirection:'row',
+                                alignItems: 'center',
+                                justifyContent:'center'
+                            }}>
+
+                            <TouchableOpacity  onPress={() => this.nextAction(this.state.currentIndex - 1)} >
+                            <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/back.png' )} />
+                            </TouchableOpacity>
+                          
+                            <TouchableOpacity onPress={() => this.play()} style={{width:0.17*width,height:0.17*width,marginTop:-0*width,color:'#fff'}}>
+                            <Image style={{width:0.15*width,height:0.15*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
+                            </TouchableOpacity>
+                            
+                            <TouchableOpacity   onPress={() => this.nextAction(this.state.currentIndex + 1)} >
+                            <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/next.png' )} />
+                            </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+            </View>             
                 <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
         </View>
 	
