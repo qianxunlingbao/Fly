@@ -32,6 +32,10 @@ export default class Like extends Component {
     }
     componentDidMount = ()=>{
         //this.setState.num++;
+        //http://49.235.231.110:8800/musicword 评论
+        //word_id music_id user_id word_value word_goodcounts
+        //dynamic_id user_id dynamic_value dynamic_img dynamic_goodcounts
+        //http://49.235.231.110:8800/dynamic 动态
         fetch('http://49.235.231.110:8800/music')
             .then(res=>res.json())
             .then(res=>{
@@ -67,10 +71,11 @@ export default class Like extends Component {
                 <ScrollView>
                     <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
                         <View style={{width:width*0.1,height:width*0.1}}>
-                            <TouchableOpacity 
-                                onPress={()=>Actions.Condition()}
-                            >
-                                <Image style={{width:width*0.1,height:width*0.1}} source={require('../images/fanhui.png')} />
+                            <TouchableOpacity onPress={()=>Actions.Condition()}>
+                                <Text style={{
+                                    textAlign:"center",
+                                    fontSize:25,marginTop:width*0.01
+                                }}>〈</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{width:width*0.4,height:width*0.1,marginLeft:width*0.30,marginTop:-width*0.09}}>
@@ -79,7 +84,7 @@ export default class Like extends Component {
                                 {
                                     width:width*0.2,
                                     marginLeft:width*0.21,
-                                    marginTop:-width*0.1,
+                                    marginTop:-width*0.102,
                                     height:width*0.1
                                 }
                             } onPress={()=>Actions.OverLike()}>

@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Dimensions,
     Image,
+    Slider,
     TextInput,
     ScrollView,
     FlatList,
@@ -100,6 +101,13 @@ export default class FirstOne extends Component {
     constructor(props){
         super(props)
         this.state={
+            activePanel: 0,                   //当前active的面板
+            brr: [],
+            currentTime: 0.0,                 //当前播放的时间
+            sliderValue: 0,                   //进度条的进度
+            duration: 0.0,                    //总时长
+            tits: [],
+            arr: [],
             rate: 1,
             paused: true,
             playIcon: 'play',
@@ -114,9 +122,36 @@ export default class FirstOne extends Component {
             tianjiaguanzhu: '+关注',
             isAdd: false,
             dianzanshu:20,
-            pinglunshu:4
+            pinglunshu:4,
+            dianzan: '点赞',
+            jingxuan: '精选',
+            pinglun: '评论',
+            img: require('../images/huitailang.png'),
+            title: '灰太狼一号',
         }
     }
+    //格式化音乐播放的时间为0：00
+    formatMediaTime(duration) {
+        let min = Math.floor(duration / 60);
+        let second = duration - min * 60;
+        min = min >= 10 ? min : "0" + min;
+        second = second >= 10 ? second : "0" + second;
+        return min + ":" + second;
+    }
+    
+    //设置进度条和播放时间的变化
+    setTime(data) {
+        let sliderValue = parseInt(this.state.currentTime);
+        this.setState({
+        sliderValue: sliderValue,
+        currentTime: data.currentTime
+        });
+    }
+
+    //设置总时长
+    setDuration(duration) {
+        this.setState({ duration: duration.duration });
+      }
     dianzan(){
         this.setState({    
             dianzanshu: this.state.dianzanshu+1
@@ -149,6 +184,20 @@ export default class FirstOne extends Component {
             isAdd:!this.state.isAdd,
             tianjiaguanzhu: this.state.isAdd ? '+关注' : '已关注'
         })
+    }
+    componentDidMount = ()=>{
+        //this.setState.num++;
+        //http://49.235.231.110:8800/musicword 评论
+        //word_id music_id user_id word_value word_goodcounts
+        //dynamic_id user_id dynamic_value dynamic_img dynamic_goodcounts
+        //http://49.235.231.110:8800/dynamic 动态
+        fetch('http://49.235.231.110:8800/dynamic')
+            .then(res => res.json())
+            .then(res => {
+                this.setState({
+                    tits: res.data
+                });
+            })
     }
     componentWillUnmount(){
         this.setState({
@@ -223,24 +272,31 @@ export default class FirstOne extends Component {
                         showsHorizontalScrollIndicator={false}
                     >
                         <View style={{width:width*0.8,marginLeft:width*0.1,marginRight:width*0.1,height:height*0.3,justifyContent:'center',alignItems:'center'}}>
-                            <Video source={{uri: 'https://qianxunlingbao.github.io/Movie-test/%E7%B4%AB%E9%99%8C%E5%AD%90%E5%A2%A8%E6%99%B4-%E3%80%90%E5%B0%81%E8%8C%97%E5%9B%A7%E8%8F%8C%E3%80%91%E6%89%AC%E5%B7%9E%E6%9B%B2(%E8%B6%85%E6%B8%85).mp4'}}   // Can be a URL or a local file.
+                            
+                            <Video source={{uri: 'https://qianxunlingbao.github.io/Movie-test/%E6%9C%80%E5%90%8E%E4%B8%80%E6%AC%A1%E7%9A%84%E5%88%86%E7%A6%BB.mp4'}}   // Can be a URL or a local file.
                                 ref={(ref) => {
                                     this.player = ref
                                 }}  
                                 rate={this.state.rate}   
                                 muted={this.state.muted}  
                                 repeat={true}    
+                                resizeMode="contain"
                                 paused={this.state.paused} 
-                                playInBackground={false}                          
+                                playInBackground={false}   
+                                //onLoadStart={this.loadStart} 
+                                onLoad={data=>this.setDuration(data)}   
+                                onProgress={e=>this.setTime(e)}              
                                 onError={this.videoError}
                                 onBuffer={this.onBuffer}             
                                 style={styles.backgroundVideo}        
                             />
-                            {
+                            {   
+                                                       
                                 <TouchableOpacity onPress={() => this.play()} style={styles.pause}>
                                     <Icon name={this.state.playIcon} size={18} />
                                 </TouchableOpacity>
                             }
+                            
                         </View>
                         <View style={{
                             width:width*0.8,
@@ -274,70 +330,76 @@ export default class FirstOne extends Component {
                         </View>
                     </ScrollView>
                 </View>
-                <View style={styles.touxiangfanwei}>
-                    <ScrollView    
-                            pagingEnabled={true} 
+                    <View style={styles.touxiangfanwei}>
+                        <ScrollView
+                            pagingEnabled={true}
                             horizontal={true}
                             showsHorizontalScrollIndicator={false}
                         >
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/huachenyu.png')} />
-                            <TouchableOpacity>
-                                <Text>华晨宇</Text>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/weixinyu.png')} />
-                            <Text>魏新雨</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/weichen.png')} />
-                            <Text>魏晨</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/zhangliangyin.png')} />
-                            <Text>张靓颖</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/punch.png')} />
-                            <Text>punch</Text>
-                        </View>    
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/pikaqiu2.png')} />
-                            <Text>皮卡丘</Text>
-                        </View> 
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/pikaqiu1.png')} />
-                            <Text>皮卡丘</Text>
-                        </View>
-                        <View style={styles.slide2}>
-                            <Image style={styles.touxiang} source={require('../images/pikaqiu3.png')} />
-                            <Text>皮卡丘</Text>
-                        </View>              
-                    </ScrollView>
-                </View>
+                            <View style={styles.slide2}>
+                                <TouchableOpacity onPress={() => Actions.huachenyu()}>
+                                    <Image style={styles.touxiang} source={require('../images/huachenyu.png')} />
+                                    <Text style={{ textAlign: 'center' }}>欧阳娜娜</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.slide2}>
+                                <TouchableOpacity onPress={() => Actions.weixinyu()}>
+                                    <Image style={styles.touxiang} source={require('../images/weixinyu.png')} />
+                                    <Text style={{ textAlign: 'center' }}>魏新雨</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.slide2}>
+                                <TouchableOpacity onPress={this.lunbo}>
+                                    <Image style={styles.touxiang} source={require('../images/weichen.png')} />
+                                    <Text style={{ textAlign: 'center' }}>魏晨</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styles.slide2}>
+                                <Image style={styles.touxiang} source={require('../images/zhangliangyin.png')} />
+                                <Text>张靓颖</Text>
+                            </View>
+                            <View style={styles.slide2}>
+                                <Image style={styles.touxiang} source={require('../images/punch.png')} />
+                                <Text>punch</Text>
+                            </View>
+                            <View style={styles.slide2}>
+                                <Image style={styles.touxiang} source={require('../images/pikaqiu2.png')} />
+                                <Text>皮卡丘</Text>
+                            </View>
+                            <View style={styles.slide2}>
+                                <Image style={styles.touxiang} source={require('../images/pikaqiu1.png')} />
+                                <Text>皮卡丘</Text>
+                            </View>
+                            <View style={styles.slide2}>
+                                <Image style={styles.touxiang} source={require('../images/pikaqiu3.png')} />
+                                <Text>皮卡丘</Text>
+                            </View>
+                        </ScrollView>
+                    </View>
+
                 <View>
                 <FlatList 
                     style={{backgroundColor: '#F4F4F4'}}
-                    data={goods}
+                    data={this.state.tits}
                     numColumns={1}
+                    //dynamic_id user_id dynamic_value dynamic_img dynamic_goodcounts
                     renderItem={({item})=>(
                         <View style={styles.good}>
                             <View style={{width:'100%',height:height*0.07}}>
                                 <Image 
                                     resizeMode="contain"
-                                    source={item.img}
+                                    source={this.state.img}
                                     style={styles.touxiang1}
                                 />
                                 <Text
                                     style={styles.mingzi}
-                                >{item.title}</Text>  
+                                >{this.state.title}</Text>  
                                 <TouchableOpacity style={styles.jiaguanzhu} onPress={() => this.tianjiaguanzhu()}>
                                     <Text>{this.state.tianjiaguanzhu}</Text>
                                 </TouchableOpacity>
                             </View>
                             <View>
-                                <Text>{item.wenzi}</Text>
+                                <Text>{item.dynamic_value}</Text>
                             </View>
                             <View style={{
                                 width:'100%',
@@ -347,18 +409,18 @@ export default class FirstOne extends Component {
                                         width:'100%',
                                         height:height*0.3
                                         }} 
-                                        source={item.images} />
+                                        source={{uri:item.dynamic_img}} />
                             </View>
                             <View>
                                 <Text>
-                                    {item.jingxuan}
+                                    {this.state.jingxuan}
                                 </Text>
                                 
-                                <TouchableOpacity style={styles.dianzan} onPress={()=>this.dianzan()}>
-                                    <Text>{item.dianzan}{this.state.dianzanshu}</Text>
+                                <TouchableOpacity style={styles.dianzan} onPress={()=>item.dynamic_goodcounts++}>
+                                    <Text>{this.state.dianzan}{item.dynamic_goodcounts}</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity style={styles.dianzan1} onPress={()=>Actions.CustomScrollView()}>
-                                    <Text>{item.pinglun}{this.state.pinglunshu} </Text>
+                                    <Text>{this.state.pinglun}{this.state.pinglunshu} </Text>
                                 </TouchableOpacity>
                             </View>
                             
