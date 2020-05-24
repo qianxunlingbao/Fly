@@ -132,7 +132,6 @@ const App = () => {
               onRight = {()=>Actions.pop()}
               titleStyle={{flex:1,textAlign:'center'}}
               />
-
             </Scene>
           </Tabs>    
           </Scene>
