@@ -32,7 +32,7 @@ class SongList extends Component {
                 <Icon name="arrowleft" size={30} onPress={()=>Actions.Music()} />
                 <View style={{width:'80%',height:height * 0.04,marginLeft:40,backgroundColor:'white',borderRadius:20,flexDirection:'row',alignItems:'center',paddingLeft:10}}>
                 <Icon name="search1" size={22} color="rgb(215,215,215)" />
-                <TextInput style={{width:'85%',height:height * 0.04,fontSize:17}} >{this.props.search}</TextInput>  
+                <TextInput style={{width:'85%',height:height * 0.05,fontSize:16}} >{this.props.search}</TextInput>  
                 <Icon name="close" size={20}  color="gray" onPress={()=>Actions.pop()} />
                 </View> 
                 </View>

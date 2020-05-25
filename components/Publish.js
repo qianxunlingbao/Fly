@@ -16,6 +16,7 @@ import {
     Modal,
     AsyncStorage,
     TouchableWithoutFeedback,
+    DeviceEventEmitter
 } from 'react-native';
 import Video from 'react-native-video';
 import {Actions} from 'react-native-router-flux';
@@ -23,6 +24,7 @@ import {Actions} from 'react-native-router-flux';
 import Sound from 'react-native-sound'
 import Swiper from 'react-native-swiper';
 import PlayList from './PlayList';
+import {nplaylist,likelist} from './DS'
 let lyrObj = []   // 存放歌词
 let {width, height} = Dimensions.get('window');
 let mp3 = "";
@@ -172,8 +174,7 @@ export default class Doc extends Component{
     loadSongInfo = (index) => {
 		var that = this;
         //加载歌曲
-				let bitrate;
-					bitrate=this.state.songs[index].music_value;
+				let bitrate = this.state.songs[index].music_value;
 				let music_name=this.state.songs[index].music_name;
                 let music_author=this.state.songs[index].music_author;
                 this.state.music=this.state.songs[index].music_value;
@@ -192,7 +193,7 @@ export default class Doc extends Component{
 	  if(songArry.every(chongfu)){
 		  that.setState({
 			  songs : [...that.state.songs,that.props.data]
-		  },()=>{console.log('songs',that.state.songs);AsyncStorage.setItem('playlist',JSON.stringify(that.state.songs));that.loadSongInfo(that.state.songs.length - 1)})
+		  },()=>{that.loadSongInfo(that.state.songs.length - 1)})
 	  }else{
 		  for(var i = 0; i < songArry.length;i++){
 			  if(songArry[i].music_id == that.props.data.music_id){
@@ -203,6 +204,7 @@ export default class Doc extends Component{
 	  }
     }
     componentDidMount() {
+        nplaylist.push(this.props.data);
         AsyncStorage.getItem('playlist').then(
             (value) => {
                 this.setState({
@@ -210,7 +212,12 @@ export default class Doc extends Component{
                 })
             }
         )
-		this.onGetMusicLists();
+        this.onGetMusicLists();
+        this.myplaylist = DeviceEventEmitter.addListener('myplaylist',()=>{
+            this.setState({
+                playlistvisible:!this.state.playlistvisible
+            })
+        })
     }
     // 上下一曲
     nextAction = (index) => {
@@ -260,10 +267,7 @@ export default class Doc extends Component{
     }
     play(){
         this.state.paused=!this.state.paused
-      
-       
         if(this.state.currentTime>0&&this.state.firstfengmian[0]=='旋转封面'){
-           
             this.state.firstfengmian[1]=require('../images/2.gif')
             let sliderValue = parseInt(this.state.currentTime);
             var rotate=sliderValue%10
@@ -276,7 +280,8 @@ export default class Doc extends Component{
             rate:this.state.rate
         })
     }
-    componentWillUpdate() {
+    componentWillUnmount() {
+        this.myplaylist&&this.myplaylist.remove();
     }
     moveclick(){
         this.state.moveclick=true;
@@ -371,6 +376,10 @@ export default class Doc extends Component{
         this.state.collect=!this.state.collect
         this.setState({
             collect:this.state.collect
+        },()=>{
+            if(this.state.collect){
+                likelist.push(this.props.data);
+            }
         })
     }
     renderChildView(p){
@@ -538,6 +547,7 @@ export default class Doc extends Component{
         this.setState({nowfengmian: this.state.nowfengmian,
         });
     }
+   
 		render() {
             
 		return (
@@ -644,7 +654,7 @@ export default class Doc extends Component{
                             <Text  style={{color:'#ccc'}}>{this.state.songword[this.state.nowsong]}</Text>
                             </View>
                             <TouchableOpacity   style={{width:0.15*width,height:0.15*height}} onPress={()=>{this.clickred()}}>
-                            <Image style={{width:'46%',height:'20%'}} source={this.state.collect?require('../images/heart.png' ):require('../images/redheart.png')} />
+                            <Image style={{width:'46%',height:'20%'}} source={this.state.collect?require('../images/redheart.png'):require('../images/heart.png' )} />
                             </TouchableOpacity>
                         </View>
                         <View style={{width:width,height:0.07*height,flexDirection:'row',justifyContent:'center', alignItems: 'center'}}>
@@ -1264,7 +1274,7 @@ export default class Doc extends Component{
                         </View>
                     </Modal>
             </View>             
-                <PlayList playlistvisible = {this.state.playlistvisible} backcallback = {this._backplay} list = {this.state.songs}/>
+                <PlayList playlistvisible = {this.state.playlistvisible} currentIndex = {this.state.currentIndex} />
         </View>
 	
 

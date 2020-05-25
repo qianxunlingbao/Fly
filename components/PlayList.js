@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage, FlatList,DeviceEventEmitter} from 'react-native'
+import {nplaylist} from './DS'
 class PlayList
  extends Component {
     render() {
@@ -27,7 +28,7 @@ class PlayList
                                     </Text>
                                 </View>
                                 <FlatList
-                                data = {this.props.list}
+                                data = {nplaylist.items}
                                 style = {{width:'100%',height:'100%'}}
                                 renderItem = {
                                     ({item,index}) => 

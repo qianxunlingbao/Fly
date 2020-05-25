@@ -55,7 +55,12 @@ import ModifyNetName  from './components/ModifyNetName'
 import timestop  from './components/timestop'
 import CleverKind from './components/CleverKind'
 import AddSearchSong from './components/AddSearchSong'
-
+import Singer from './components/Singer';
+import SingerDetail from './components/SingerDetail';
+import Ranking from './components/Ranking';
+import RankingDetail from './components/RankingDetail';
+import HallSongList from './components/HallSongList';
+import ListenTogether from './components/ListenTogether';
 const App = () => {  
   return (
     <>
@@ -87,6 +92,12 @@ const App = () => {
            >
               <Scene key = "Music" component={Music} hideNavBar/>
               <Scene key = "search" component={Search} hideNavBar hideTabBar/>
+              <Scene key="singer" component={Singer} hideNavBar/>
+              <Scene key="singerdetail" component={SingerDetail} hideNavBar/>
+              <Scene key="ranking" component={Ranking} hideNavBar />
+              <Scene key="rankingdetail" component={RankingDetail} hideNavBar/>
+              <Scene key="hallsonglist" component={HallSongList} hideNavBar/>
+              <Scene key="listentogether" component={ListenTogether} hideNavBar/>
               <Scene key = "songList" component={SongList} hideTabBar  hideNavBar/>
               <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
               <Scene key = "songwordpost" component={Songwordpost} hideTabBar  hideNavBar/>

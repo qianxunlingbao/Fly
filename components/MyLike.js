@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text ,Image, TouchableOpacity,FlatList } from 'react-native'
 import {Router, Scene} from "react-native-router-flux";
+import {likelist} from './DS'
 
 class MyLike extends Component {
     constructor(){
@@ -23,7 +24,17 @@ class MyLike extends Component {
                         <Text style={{color:this.state.threeColor[2]?'green':'black'}}>歌单</Text>
                     </TouchableOpacity>
                 </View>
-                <Scene/>
+                <FlatList
+                                data = {likelist.items}
+                                style = {{width:'100%',height:'100%'}}
+                                renderItem = {
+                                    ({item,index}) => 
+                                    <View   style = {{paddingLeft:10,marginBottom:10}}>
+                                        <Text>{item.music_name}</Text>
+                                        <Text>{item.music_author}</Text>
+                                    </View>
+                                }
+                                />
             </View>
         )
     }
