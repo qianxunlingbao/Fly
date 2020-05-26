@@ -107,13 +107,6 @@ const App = () => {
               <Scene key = "songwordpost" component={Songwordpost} hideTabBar  hideNavBar/>
               <Scene key = "timestop" component={timestop}  hideNavBar hideTabBar/>
             </Scene>
-            <Scene key="recommend" title="推荐" 
-            icon={()=><Icon name = 'find' size = {30}/>}
-            hideNavBar
-            >
-              <Scene key = "Recommend" component={Recommend}/>
-
-            </Scene>
             <Scene key="condition" title="动态" 
             icon={()=><Icon name = 'eye' size = {30}/>}
             hideNavBar
