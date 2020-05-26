@@ -16,4 +16,6 @@ class List{
 }
 const nplaylist = new List();
 const likelist = new List();
-export {nplaylist,likelist};
+const recentplay = new List();
+const addmenusong = new List();
+export {nplaylist,likelist,recentplay,addmenusong};

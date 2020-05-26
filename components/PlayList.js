@@ -3,6 +3,9 @@ import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,Asyn
 import {nplaylist} from './DS'
 class PlayList
  extends Component {
+     componentDidMount(){
+         console.log(this.props.currentIndex);
+     }
     render() {
         return (
             <Modal

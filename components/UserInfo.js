@@ -30,6 +30,7 @@ class UserInfo extends Component {
         AsyncStorage.setItem('sex',this.state.sex);
         AsyncStorage.setItem('headimage',this.state.headimage.uri);
         DeviceEventEmitter.emit('changeHeadImg');
+        DeviceEventEmitter.emit('changename');
         this.changeNetName && this.changeNetName.remove();
     }
     componentDidMount(){

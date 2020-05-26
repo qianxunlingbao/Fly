@@ -17,6 +17,7 @@ import { Actions} from 'react-native-router-flux';
 import Prompt from './Prompt'
 import PlayGroup from './PlayGroup'
 import PlayList from './PlayList';
+import {likelist, recentplay} from './DS'
 
 class My extends Component {
     constructor(){
@@ -40,21 +41,24 @@ class My extends Component {
 
                 }
     }
-    _onPressEmpty = () => {
+    _onPressEmpty = (data) => {
         this.setState({
             modalVisible : false,
         })
-        this.setState({
-            create : this.state.create - '0' + 1,
-        },()=>{
-            this.setState(
-                {
-                    createdata :[...this.state.createdata,{key:this.state.create,title : this.state.listTitle,num : 0}]
-                },
-                ()=>AsyncStorage.setItem('songmenu',JSON.stringify(this.state.createdata))
-
-            )
-        })
+        if(data == 1){
+            this.setState({
+                create : this.state.create - '0' + 1,
+            },()=>{
+                this.setState(
+                    {
+                        createdata :[...this.state.createdata,{key:this.state.create,title : this.state.listTitle,num : 0,value:[]}]
+                    },
+                    ()=>AsyncStorage.setItem('songmenu',JSON.stringify(this.state.createdata))
+    
+                )
+            })
+        }
+        
     }
     _changeListtitle = (data) => {
         this.setState({
@@ -62,6 +66,10 @@ class My extends Component {
         })
     }
     componentDidMount = () => {
+        this.setState({
+            like:likelist.items.length,
+            recent:recentplay.items.length
+        })
         this.myplaylist = DeviceEventEmitter.addListener('myplaylist',()=>{
             this.setState({
                 playlistvisible:!this.state.playlistvisible
@@ -72,11 +80,31 @@ class My extends Component {
                 this.setState({login : JSON.parse(val) == null ?true :JSON.parse(val)});
                 }
         )
-        AsyncStorage.getItem('name').then(
-            (val) => {
-                this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
+        AsyncStorage.getItem('netname').then(
+            (value) => {
+                if(value){
+                    this.setState({
+                        name: value
+                    })
+                }else{
+                    AsyncStorage.getItem('name').then(
+                        (val) => {
+                            this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
+                        }
+                    )
+                }
+                
             }
         )
+        AsyncStorage.getItem('songmenu').then(
+            (val) => {
+                this.setState({
+                    createdata : JSON.parse(val) ==null ?'':JSON.parse(val),
+                    create : JSON.parse(val) ==null ?'':JSON.parse(val).length
+                })
+            }
+        )
+        
         this.getsongmenu = DeviceEventEmitter.addListener('getsongmenu',()=>AsyncStorage.getItem('songmenu').then(
             (val) => {
                 this.setState({
@@ -85,6 +113,13 @@ class My extends Component {
                 })
             }
         )) 
+        this.changename = DeviceEventEmitter.addListener('changename',()=>{
+            AsyncStorage.getItem('netname').then(
+                (val) => {
+                    this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
+                }
+            )
+        })
         AsyncStorage.getItem('headimage').then(
             (value) => {
                 if(value){
@@ -112,6 +147,7 @@ class My extends Component {
         this.changeHeadImg&&this.changeHeadImg.remove();
         this.myplaylist&&this.myplaylist.remove();
         this.getsongmenu&&this.getsongmenu.remove();
+        this.changename && this.changename.remove();
     }
     render() {
         return (
@@ -270,7 +306,6 @@ class My extends Component {
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[1]?'black':'grey',marginLeft:20}}>收藏歌单</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-                        onPress = {()=>this.setState({modalVisible : true})}
                         style={{width:'7%',position:this.state.addposition,left:'80%',display:this.state.addflex}} >
                         <Image 
                         source={require('../images/createSong.png')} 
@@ -320,7 +355,7 @@ class My extends Component {
                             data={this.state.createdata}
                             renderItem={({item,index})=>
                                 <View style={styles.createlist}>
-                                    <TouchableOpacity style={styles.createlist} onPress = {() => Actions.addsong({num:item.num})}>
+                                    <TouchableOpacity style={styles.createlist} onPress = {() => Actions.addsong({data:item})}>
                                     <View style={{width:'20%',height:'90%',borderRadius:10,justifyContent:"center",alignItems:"center"}}>
                                         <Image style={{width:'100%',height:'100%',borderRadius:10}} source = {{uri:`http://49.235.231.110:8802/musicimage/${index + 1}.JPG`}}/>
                                     </View>
@@ -339,7 +374,8 @@ class My extends Component {
                    
                 </View>
                 </ScrollView>
-                <View style={{position:'absolute',width:'100%',height:'10%',top:'90%'}}>
+                <View style={{position:'absolute',width:'100%',height:'10%',top:'90%',zIndex
+            :2}}>
                         <PlayGroup/>
                     </View> 
             </View>
@@ -352,6 +388,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems:"center",
+        zIndex:1
     },
     basicinfo:{
         backgroundColor:'white',

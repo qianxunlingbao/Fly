@@ -24,7 +24,7 @@ import {Actions} from 'react-native-router-flux';
 import Sound from 'react-native-sound'
 import Swiper from 'react-native-swiper';
 import PlayList from './PlayList';
-import {nplaylist,likelist} from './DS'
+import {nplaylist,likelist,recentplay} from './DS'
 let lyrObj = []   // 存放歌词
 let {width, height} = Dimensions.get('window');
 let mp3 = "";
@@ -181,7 +181,8 @@ export default class Doc extends Component{
                 this.setState({
                     music_name: music_name,     //歌曲名
                     music_author: music_author,   //歌手
-                    file_link: bitrate,   //播放链接
+                    file_link: bitrate,   //播放链接,
+                    currentIndex:index
                 }) 
     }
     onGetMusicLists = () => {
@@ -205,6 +206,7 @@ export default class Doc extends Component{
     }
     componentDidMount() {
         nplaylist.push(this.props.data);
+        recentplay.push(this.props.data);
         AsyncStorage.getItem('playlist').then(
             (value) => {
                 this.setState({
@@ -215,7 +217,7 @@ export default class Doc extends Component{
         this.onGetMusicLists();
         this.myplaylist = DeviceEventEmitter.addListener('myplaylist',()=>{
             this.setState({
-                playlistvisible:!this.state.playlistvisible
+                playlistvisible:false
             })
         })
     }

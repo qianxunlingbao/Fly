@@ -35,16 +35,16 @@ export default class Prompt extends Component {
                       >
                           <Text style={{textAlign:"center",fontSize:20,marginTop:20}}>新建歌单</Text>
                           <TextInput 
-                          style = {{height:'25%',width:'80%',backgroundColor:'#eee',borderRadius:20,marginTop:5}}
+                          style = {{height:'30%',width:'80%',backgroundColor:'#eee',borderRadius:20,marginTop:5}}
                           onChangeText = {(val) => this.props.changecallback(val)}
         >{this.props.listTitle}</TextInput>
                           <Devide style={{width:'100%',height:1,backgroundColor:'#eeeeee',marginTop:10}}/>
-                          <View style={{flexDirection:'row',justifyContent:"space-around",width:'90%',height:42,alignItems:'center'}}>
-                          <TouchableOpacity onPress={()=>{this.props.callback('0000')}}>
+                          <View style={{flexDirection:'row',justifyContent:"space-around",width:'90%',height:'18%',alignItems:"center"}}>
+                          <TouchableOpacity  onPress={()=>{this.props.callback(0)}}>
                               <Text>取消</Text>
                           </TouchableOpacity>
-                          <Devide style={{width:1,height:42,backgroundColor:'#eee'}}/>
-                          <TouchableOpacity onPress={()=>{this.props.callback()}}>
+                          <Devide style={{width:1,height:'100%',backgroundColor:'#eee'}}/>
+                          <TouchableOpacity onPress={()=>{this.props.callback(1)}}>
                               <Text>确定</Text>
                           </TouchableOpacity>
                           </View>

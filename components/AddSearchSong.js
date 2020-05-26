@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image,TextInput,Dimensions, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text ,Image,TextInput,Dimensions,DeviceEventEmitter, FlatList, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 const {width,height} = Dimensions.get('window');
+import {addmenusong} from './DS'
 class AddSearchSong extends Component {
 
     constructor(){
@@ -23,6 +24,9 @@ class AddSearchSong extends Component {
             }
         getMusic();
     }
+    componentWillUnmount(){
+        DeviceEventEmitter.emit('addlistsong');
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -30,7 +34,7 @@ class AddSearchSong extends Component {
                 <Icon name="search1" size={22} color="rgb(215,215,215)" />
                 <TextInput placeholder="请输入歌曲、歌手或专辑" placeholderTextColor="rgb(165,165,165)"  onChangeText = {(val)=>{
                     let arr = this.state.data.filter((item)=>{
-                        if(item.music_name.indexOf(val)!= -1){
+                        if(val&&item.music_name.indexOf(val)!= -1){
                             return item;
                         }
                     })
@@ -46,7 +50,7 @@ class AddSearchSong extends Component {
                 <View style={{width:width,height:height * 0.05,borderBottomWidth:1,borderBottomColor:'grey'}}>
                     <Text >{item.music_name}</Text>
                     <Text >{item.music_author}</Text>
-                    <TouchableOpacity style={{position:"absolute",left:width * 0.9,top:10}}>
+                    <TouchableOpacity style={{position:"absolute",left:width * 0.9,top:10}} onPress = {()=>addmenusong.push(item)}>
                         <Text>+</Text>
                     </TouchableOpacity>
                 </View>}

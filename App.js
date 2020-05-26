@@ -15,7 +15,9 @@ import {
   Text,
   StatusBar,
   Dimensions,
-  TextInput
+  TextInput,
+  BackHandler,
+  ToastAndroid
 } from 'react-native';
 
 import {
@@ -26,7 +28,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Router, Scene, Tabs, Lightbox, Modal, Actions,BackHandler} from "react-native-router-flux";
+import {Router, Scene, Tabs, Lightbox, Modal, Actions} from "react-native-router-flux";
 import Recommend from './components/Recommend'
 import Songwordpost from './components/songwordpost'
 import Condition from './components/Condition'
@@ -62,24 +64,26 @@ import RankingDetail from './components/RankingDetail';
 import HallSongList from './components/HallSongList';
 import ListenTogether from './components/ListenTogether';
 const App = () => {  
+  let now = new Date().getTime();
   return (
     <>
       <Router
       backAndroidHandler={()=>{
-        if(Actions.currentScene != 'home'){
-          Actions.pop();
-          return true;
-        }else{
-          if(new Date().getTime()-now<2000){
-            BackHandler.exitApp();
-          }else{
-            ToastAndroid.show('确定要退出吗',100);
-            now = new Date().getTime();
-            return true;
+          if(Actions.currentScene == 'home'){
+            if(new Date().getTime() - now < 2000){
+              BackHandler.exitApp();
+            }else{
+              ToastAndroid.show('确定要退出吗',50);
+              now = new Date().getTime();
+              return true;
+    
+            }
           }
+          
+          
         }
         
-      }}
+      }
       >
         <Scene key = 'root' >
         <Tabs key='tabbar'
