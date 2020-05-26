@@ -17,7 +17,8 @@ import {
     AsyncStorage,
     TouchableWithoutFeedback,
     DeviceEventEmitter,
-    ToastAndroid
+    ToastAndroid,
+    ImageBackground
 } from 'react-native';
 import Video from 'react-native-video';
 import {Actions} from 'react-native-router-flux';
@@ -88,8 +89,8 @@ export default class Doc extends Component{
             modalVisible8:false,
             modalVisible9:false,
             checksong:[],
-            bc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png'),require('../images/4.png')],
-            backc:require('../images/1.png'),
+            bc:require('../images/normal.png'),
+            backc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png')],
             fontcolor:'black',
             nowfengmian:['方形封面',require('../images/ye1.png'),width*0.05],
             checkyemian:[['方形封面',require('../images/ye1.png'),width*0.05],['旋转封面',require('../images/ye2.png'),width*0.49],['静态封面',require('../images/ye3.png'),width*0.49]],
@@ -98,7 +99,12 @@ export default class Doc extends Component{
             movepicture:0,
             Rotategif:'0deg',
             clickgif:true,
-            indexpicture:0
+            indexpicture:0,
+            xuangif:require('../images/normal.png'),
+            gifname:['摩天轮','光炫','打击','射线'],
+            nowbc:require('../images/31.gif'),
+            nowbccheck:'',
+            nowgifname:'',
         }
     }
     //设置进度条和播放时间的变化
@@ -277,7 +283,7 @@ export default class Doc extends Component{
             let sliderValue = parseInt(this.state.currentTime);
             var rotate=sliderValue%10
             this.state.Rotategif=36*rotate+'deg'
-            this.state.firstfengmian[3]=0.5*width
+            this.state.firstfengmian[3]=0.27*width
         }
        
         this.setState({
@@ -366,19 +372,7 @@ export default class Doc extends Component{
             })     
         }
     }
-    movepicture(a){
-        //if(a==this.state.songlist.length&&this.state.indexpicture==0)
-        //上一首
-        //if(a<this.state.indexpicture)
-        //上一首
-        //if(a>this.state.indexpicture)
-        //下一首
-        //if(this.state.indexpicture==this.state.songlist.length&&a==0)
-        //下一首
-        this.setState({
-            indexpicture:a
-        })        
-    }
+    
     clickred(){
         this.state.collect=!this.state.collect
         this.setState({
@@ -554,13 +548,51 @@ export default class Doc extends Component{
         this.setState({nowfengmian: this.state.nowfengmian,
         });
     }
-   
+    setModalVisible6(visible) {
+        if(this.state.backc==this.state.xuangif)
+        this.state.nowbccheck='正在使用'
+        else{
+            this.state.nowbccheck='立即使用'
+
+        }
+      if(this.state.nowbccheck=='正在使用')
+      this.state.bc=this.state.xuangif
+
+        this.setState({modalVisible6: visible,
+      });
+    }
+    setModalVisible7(visible,a) {
+     if(a==31){this.state.xuangif=require('../images/31.gif')
+    this.state.nowgifname=this.state.gifname[0]}
+     if(a==32){this.state.xuangif=require('../images/32.gif')
+     this.state.nowgifname=this.state.gifname[1]}
+     if(a==33){this.state.xuangif=require('../images/33.gif')
+     this.state.nowgifname=this.state.gifname[2]}
+     if(a==34){this.state.xuangif=require('../images/34.gif')
+     this.state.nowgifname=this.state.gifname[3]}
+     this.setState({modalVisible7: visible,
+     });
+    }
+    checkphto(){
+        if(this.state.backc==this.state.xuangif)
+        this.state.nowbccheck='正在使用'
+        else{
+            this.state.nowbccheck='立即使用'
+            this.state.backc=this.state.xuangif
+        }
+        this.setState({nowbccheck:this.state.nowbccheck,
+        });
+
+    }
+
+
 		render() {
             
 		return (
             
 			<View style={styles.container}>
-			
+			<ImageBackground style={{flex:1}}
+                                                    source={this.state.bc}>
 				<View style={{width:width,height:0.05*height,flexDirection:'row'}}>
 					<TouchableOpacity   style={{flex:1,marginLeft:'7%',justifyContent:'center'}}  onPress={()=>Actions.pop()}>
 					<Image style={{width:'35%',height:'20%'}} source={require('../images/down.png')} />
@@ -825,7 +857,7 @@ export default class Doc extends Component{
                                                         </TouchableOpacity>
                                                     </View>
                                                     <View style={{width:0.2*width,}}>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}}    onPress={() => { this.setModalVisible6(true) }}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.07*width}} source={require('../images/PT.png')} />
                                                             </View>
@@ -1179,7 +1211,7 @@ export default class Doc extends Component{
                     </Modal>
             </View>
             <View>
-                    <Modal
+            <Modal
                     animationType = {"slide"}
                     transparent = {true}
                     visible = {this.state.modalVisible5}
@@ -1190,15 +1222,18 @@ export default class Doc extends Component{
                                 position:'absolute',
                                 top:'0%',
                                 paddingLeft:'5%',
-                                backgroundColor:'#fff',
+                                backgroundColor:'#888',
                                 opacity:1,
-                                justifyContent:'center', alignItems: 'center'
+                                justifyContent:'center',                                
+                              
+                                alignItems: 'center'
+
                             }}>
                         <View style = {{
                             width:'100%',
                                 height:'10%',
                                 position:'absolute',                                
-                                backgroundColor:'#fff',
+                               
                                 opacity:1,
                                 flexDirection:'row',
                                 top:'0%',
@@ -1207,83 +1242,395 @@ export default class Doc extends Component{
 
                             <Text style={{color:'#000',fontSize:20,marginLeft:0.4*width}}>驾驶模式</Text>
                             <TouchableOpacity style={{alignItems: 'center',marginLeft:0.3*width}}  onPress={() => {this.setModalVisible5(false) }}>
-                            <Text style={{color:'#000',fontSize:15}}>X</Text>
+                            <Image style={{width:0.05*width,height:width*0.05}} source={require('../images/x.png')} />
+                            <Image/>
                             </TouchableOpacity>
                         </View>
                         <View style = {{
                             width:'77%',
-                                height:'60%',
+                                height:'20%',
                                 position:'absolute',
                                 top:'10%',
                                 
                                 alignItems: 'center',
                                 opacity:1
                             }}>
-      <View style={{width:width*0.90,height:0.45*height,justifyContent:'center',alignItems: 'center',marginLeft:0.05*width}}>
-      <Swiper 
-            style={{alignItems: 'center',justifyContent:'center'}} 
-            width = {0.5*width}
-            height = {0.5*width}
-            horizonal={true}   //水平轮播
-            loop = {true}     //若为false，滑动到最后一张就不再滑到第一张，待会测试
-                 // 开始显示的图片
-            autoplay = {false}  //是否自动轮播
-            ref='Swiper'               
-            autoplayDirection = {false}  //控制轮播是否循环
-            showButtoms = {true} //是否显示控制按钮
-            index={0}
-            paginationStyle = {{bottom: 10}} 
-            showsPagination = {false}  //是否显示dot
-            
-            onMomentumScrollEnd= {(event) => {
-
-            }} //
-            loadMinimalSize={this.state.indexpicture}
-            onIndexChanged = {(index) => { this.movepicture(index);
-        }}  
-           
-        >
-            
-            <Image style={{width:0.5*width,height:width*0.5,
-                                borderRadius:0.45*width}} source={this.state.bc[0]} />
-                                <Image style={{width:0.5*width,height:width*0.5,
-                                borderRadius:0.45*width}} source={this.state.bc[1]} />
-                                <Image style={{width:0.5*width,height:width*0.5,
-                                borderRadius:0.45*width}} source={this.state.bc[2]} />
-        </Swiper>
-
-                          
-                                
+                        <View style={{width:width*0.90,height:0.45*height,justifyContent:'center',alignItems: 'center'}}>
+                           <Text style={{fontSize:30,color:'#fff',marginTop:-0.5*width}}>{this.state.music_name}</Text>
                             </View>
                         </View>
                         <View style = {{
                             width:'100%',
-                                height:'20%',
+                                height:'50%',
                                 position:'absolute',                                
-                                backgroundColor:'blue',
-                                top:'70%',
+                                top:'50%',
                                 opacity:1,
                                 flexDirection:'row',
                                 alignItems: 'center',
-                                justifyContent:'center'
+                                justifyContent:'center',
+                                marginTop:'-40%'
                             }}>
 
                             <TouchableOpacity  onPress={() => this.nextAction(this.state.currentIndex - 1)} >
-                            <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/back.png' )} />
+                            <Image style={{width:0.2*width,height:0.2*width}} source={require('../images/back.png' )} />
                             </TouchableOpacity>
                           
-                            <TouchableOpacity onPress={() => this.play()} style={{width:0.17*width,height:0.17*width,marginTop:-0*width,color:'#fff'}}>
-                            <Image style={{width:0.15*width,height:0.15*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
+                            <TouchableOpacity onPress={() => this.play()} >
+                            <Image style={{width:0.3*width,height:0.3*width,marginLeft:0.1*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
                             </TouchableOpacity>
                             
-                            <TouchableOpacity   onPress={() => this.nextAction(this.state.currentIndex + 1)} >
-                            <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/next.png' )} />
+                            <TouchableOpacity   onPress={() => this.nextAction(this.state.currentIndex + 1) }  >
+                            <Image style={{width:0.2*width,height:0.2*width,marginLeft:0.1*width}} source={require('../images/next.png' )} />
                             </TouchableOpacity>
                             </View>
                         </View>
                     </Modal>
-            </View>             
+            </View>  
+            <View>
+        <Modal
+                                   animationType = {"slide"}
+                                   transparent = {true}
+                                   visible = {this.state.modalVisible6}
+                                   >  
+
+                                   <View style = {{
+                                           width:'100%',
+                                               height:'100%',
+                                               position:'absolute',
+                                               top:'0%',
+
+                                               backgroundColor:'#888',
+                                               opacity:1,
+                                               justifyContent:'center',                                
+
+                                               alignItems: 'center'
+
+                                           }}>
+
+                                       <View style = {{
+                                           width:'100%',
+                                               height:'25%',
+                                               position:'absolute',                                
+
+                                               opacity:1,
+
+                                               top:'0%',
+                                               paddingTop:'3%'
+                                           }}>
+                                               <View style={{ flexDirection:'row',}}> 
+                                               <TouchableOpacity style={{alignItems: 'center'}}  onPress={() => {this.setModalVisible6(false) }}>
+                                                <Image style={{width:0.05*width,height:width*0.05,marginLeft:0.05*width}} source={require('../images/return.png')} />
+                                           </TouchableOpacity>
+                                           <Text style={{color:'#FFF',fontSize:20,marginLeft:0.3*width}}>主题中心</Text>
+                                               </View>
+
+                                           <View>
+                                           <ScrollView
+
+                                            horizontal={true}
+                                            //  禁用水平滚动条
+                                            showsHorizontalScrollIndicator={false}>
+                                               <View style={{flexDirection:'row',width:width,height:0.8*width,paddingLeft:0.05*width,marginLeft:-0.1*width}}>
+
+                                                    <Image style={{marginLeft:0.1*width,width:0.9*width,height:0.36*width,borderRadius:width*0.02}} source={require('../images/head2.jpg')} />
+                                               </View>
+                                               <View style={{flexDirection:'row',width:width,height:0.8*width,paddingLeft:0.05*width,marginLeft:0.1*width}}>
+
+                                                    <Image style={{width:0.9*width,height:0.36*width,borderRadius:width*0.02}} source={require('../images/head1.jpg')} />
+                                               </View>
+                                           </ScrollView>
+                                           </View>
+
+
+                                       </View>
+                                       <View style = {{
+                                           width:'100%',
+                                               height:'80%',
+                                               position:'absolute',
+                                               top:'24.5%',
+                                               backgroundColor:'#fff',
+                                               alignItems: 'center',
+                                               opacity:1
+                                           }}>
+                                               <ScrollView
+                                                showsHorizontalScrollIndicator={false}
+                                               >
+                                               <View style={{width:width,height:0.3*height}} >
+                                                    <View style={{width:width, flexDirection:'row',paddingLeft:0.05*width,alignItems: 'center', 
+                                                    paddingTop:0.02*width,marginBottom:0.01*width  }}> 
+                                                    <Text style={{fontSize:20}}>新品速递</Text>
+                                                    </View>
+                                                    <ScrollView
+
+                                                        horizontal={true}
+                                                        //  禁用水平滚动条
+                                                        showsHorizontalScrollIndicator={false}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:-0.1*width}}>
+
+                                                                <Image style={{marginLeft:0.1*width,width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/11.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.2*width,color:'green'}}>vip</Text>
+                                                        </View>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:0.07*width}}>
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/12.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.1*width,color:'green'}}>vip</Text>
+
+                                                        </View>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:-0.02*width}}>
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/13.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.1*width,color:'green'}}>vip</Text>
+
+                                                        </View>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:-0.02*width}}>
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/14.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.1*width,color:'green'}}>vip</Text>
+
+                                                        </View>
+                                                    </ScrollView>
+                                               </View>
+                                               <View style={{width:width,height:0.3*height}} >
+                                                    <View style={{width:width, flexDirection:'row',paddingLeft:0.05*width,alignItems: 'center', 
+                                                    paddingTop:0.02*width,marginBottom:0.01*width  }}> 
+                                                    <Text style={{fontSize:20}}>明星广场</Text>
+                                                    </View>
+                                                    <ScrollView
+
+                                                        horizontal={true}
+                                                        //  禁用水平滚动条
+                                                        showsHorizontalScrollIndicator={false}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:-0.1*width}}>
+
+                                                                <Image style={{marginLeft:0.1*width,width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/21.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.2*width,color:'green'}}>vip</Text>
+                                                        </View>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:0.07*width}}>
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/22.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.1*width,color:'green'}}>vip</Text>
+
+                                                        </View>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:-0.02*width}}>
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/23.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.1*width,color:'green'}}>vip</Text>
+
+                                                        </View>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,marginLeft:-0.02*width}}>
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/14.jpg')} />
+                                                                <Text style={{width:0.3*width,height:0.15*width,fontSize:20,marginLeft:0.1*width,color:'green'}}>vip</Text>
+
+                                                        </View>
+                                                    </ScrollView>
+                                               </View>
+                                               <View style={{width:width,height:0.3*height}} >
+                                                    <View style={{width:width, flexDirection:'row',paddingLeft:0.05*width,alignItems: 'center', 
+                                                    paddingTop:0.02*width,marginBottom:0.01*width  }}> 
+                                                    <Text style={{fontSize:20}}>免费专区</Text>
+
+                                                    </View>
+                                                    <ScrollView
+
+                                                        horizontal={true}
+                                                        //  禁用水平滚动条
+                                                        showsHorizontalScrollIndicator={false}>
+                                                              <TouchableOpacity onPress={() => { this.setModalVisible7(true,31) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/31.gif')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,32) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/32.gif')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,33) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/33.gif')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,34) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/34.gif')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                    </ScrollView>
+                                               </View>
+                                               </ScrollView>
+                                       </View>
+
+                                       </View>
+                                   </Modal>
+        </View>
+
+                                   <View>
+                                   <Modal
+                                   animationType = {"slide"}
+                                   transparent = {true}
+                                   visible = {this.state.modalVisible7}
+                                   >  
+
+                                   <View style = {{
+                                           width:'100%',
+                                               height:'100%',
+                                               position:'absolute',
+                                               top:'0%',
+
+                                               backgroundColor:'#888',
+                                               opacity:1,
+                                               justifyContent:'center',                                
+
+                                               alignItems: 'center'
+
+                                           }}>
+                                        <View style = {{
+                                           width:'100%',
+                                               height:'8%',
+                                               position:'absolute',                                
+
+                                               opacity:1,
+
+                                               top:'0%',
+                                               paddingTop:'3%'
+                                           }}>
+                                               <View style={{ flexDirection:'row',}}> 
+                                               <TouchableOpacity style={{alignItems: 'center'}}  onPress={() => {this.setModalVisible7(false) }}>
+                                                <Image style={{width:0.05*width,height:width*0.05,marginLeft:0.05*width}} source={require('../images/return.png')} />
+                                           </TouchableOpacity>
+                                           <Text style={{color:'#FFF',fontSize:20,marginLeft:0.35*width}}>{this.state.nowgifname}</Text>
+                                               </View>
+
+                                           <View>
+
+                                           </View>
+
+
+                                       </View>
+                                       <View style = {{
+                                           width:'100%',
+                                               height:'50%',
+                                               position:'absolute',                                
+
+                                               opacity:1,
+
+                                               top:'40%',
+                                               justifyContent:'center',                                
+
+                                               alignItems: 'center'
+                                           }}>
+                                               <View style={{width:width,height:0.58*height,alignItems: 'center'}}>
+                                               <ImageBackground style={{width:0.7*width,height:0.58*height}}
+                                                    source={this.state.xuangif}>
+                                                    <View  style={{justifyContent:'center', alignItems: 'center',flexDirection:'row',marginTop:0.05*width}}>
+
+                                                        <Text style={{color:'#fff'}}>推荐</Text>
+
+                                                        <Text style={{color:'#fff'}}>  |  </Text>
+
+                                                        <Text style={{color:'#fff'}}>歌曲</Text>
+
+                                                        <Text style={{color:'#fff'}}>  |  </Text>
+
+                                                        <Text style={{color:'#fff'}}>歌词</Text>
+
+                                                    </View>
+                                                    <View style={{width:width,height:0.95*height,alignItems: 'center',marginTop:0.05*width}}>
+
+
+                                                        <Image style={{width:width*0.45,height:width*0.45,borderRadius:0.25*width,marginLeft:-0.3*width}} source={require('../images/2.png')} />
+
+
+                                                <View style={{width:0.7*width,height:0.2*height,flexDirection:'row',marginLeft:-0.2*width}} >
+                                                    <View style={{flex:5,flexDirection:'column',marginLeft:'7%'}} >
+                                                    <Text  style={{color:'#fff',fontSize:20,paddingBottom:'2%'}}>Perfect</Text>
+                                                    <Text  style={{color:'#ccc',paddingBottom:'2%'}}>Ed Sheeran</Text>
+                                                    <Text  style={{color:'#ccc'}}>I see my future in your eyes</Text>
+                                                    </View>
+                                                    <View  style={{width:0.2*width,height:0.2*height,flexDirection:'row'}} >
+                                                    <Image style={{width:0.05*width,height:0.05*width}} source={require('../images/heart.png' )} />
+
+                                                    </View>
+                                              </View>
+                                                <View style={{marginLeft:-0.15*width,marginTop:-0.09*height}}>
+                                                    <View style={{flexDirection:'row',marginBottom:0.03*width}}>
+                                                        <Image style={{width:0.05*width,height:0.05*width}}  source={require('../images/mike.png' )} />
+                                                        <Image style={{width:0.05*width,height:0.05*width,marginLeft:0.12*width}} source={require('../images/download.png' )} />
+                                                        <Image  style={{width:0.05*width,height:0.05*width,marginLeft:0.12*width}}  source={require('../images/remark.png' )} />
+                                                        <Image  style={{width:0.05*width,height:0.05*width,marginLeft:0.12*width}}  source={require('../images/ellipsis.png' )} />
+                                                    </View>
+
+                                                    <View style={{width:0.7*width,height:0.1*height,marginLeft:-0.02*width}}> 
+                                                    <Slider
+                                                                        width={0.6*width}
+                                                                            ref='slider'
+                                                                            // disabled //禁止滑动
+                                                                            thumbTintColor={'#fff'}
+                                                                            maximumTrackTintColor={'#ccc'} //右侧轨道的颜色
+                                                                            minimumTrackTintColor={'#fff'} //左侧轨道的颜色
+                                                                            value={5}
+                                                                            maximumValue={20}
+                                                                            step={1}
+
+                                                                        />
+                                                                            <Text style={{color:'#fff',marginLeft:0.02*width}}>1:10</Text> 
+                                                                            <View style={{flexDirection:'row',marginLeft:0.02*width,alignItems: 'center'}}>
+                                                                            <Image style={{width:0.05*width,height:0.04*width}} source={require('../images/loop.png')} />
+                                                                            <Image style={{width:0.05*width,height:0.05*width,marginLeft:0.07*width}} source={require('../images/back.png' )} />
+                                                                            <Image style={{width:0.07*width,height:0.07*width,marginLeft:0.07*width}} source={require('../images/broadcast.png' )} />
+                                                                            <Image style={{width:0.05*width,height:0.05*width,marginLeft:0.07*width}} source={require('../images/next.png' )} />
+                                                                            <Image style={{width:0.05*width,height:0.05*width,marginLeft:0.07*width}} source={require('../images/list.png' )} />
+                                                                            </View>
+                                                                            </View>
+                                                                        </View>
+                                                            </View>
+                                                </ImageBackground>
+                                                <View style={{width:width,height:0.1*height,backgroundColor:'#FFF'}}>
+
+                                                </View>
+                                               </View>
+
+
+                                                <View style={{width:width,height:0.5*height,backgroundColor:'#fff',alignItems: 'center'}}>
+                                                <TouchableOpacity onPress={() => { this.checkphto() }}>
+                                                    <View style={{width:0.7*width,marginLeft:0.2*width,
+                                                    flexDirection:'row',borderWidth: 1,height:0.05*height, 
+                                                    justifyContent:'center', alignItems: 'center',
+                                                                    borderTopLeftRadius: 0.15*width,
+                                                                    borderTopRightRadius:  0.15*width,
+                                                                    borderBottomRightRadius:  0.15*width,
+                                                                    borderBottomLeftRadius:  0.15*width,
+                                                                    borderColor: "#000",
+                                                                    marginTop:0.1*width,
+                                                                    marginLeft:-0.02*width
+
+                                                        }}>
+                                                    <Text style={{marginLeft:0.01*width, fontSize:18,color:"#000"}}>{this.state.nowbccheck}</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                                </View>
+
+                                       </View>
+
+
+
+                                       </View>
+
+
+
+                                   </Modal>
+                                   </View>             
                 <PlayList playlistvisible = {this.state.playlistvisible} currentIndex = {this.state.currentIndex} />
+                </ImageBackground>
         </View>
 	
 
