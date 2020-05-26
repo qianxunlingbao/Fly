@@ -75,6 +75,12 @@ class My extends Component {
                 playlistvisible:!this.state.playlistvisible
             })
         })
+        this.likeandrecent = DeviceEventEmitter.addListener('likeandrecent',()=>{
+            this.setState({
+                like:likelist.items.length,
+                recent:recentplay.items.length
+            })
+        })
         AsyncStorage.getItem('login').then(
              (val) => {
                 this.setState({login : JSON.parse(val) == null ?true :JSON.parse(val)});

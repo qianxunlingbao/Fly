@@ -29,7 +29,7 @@ class MyLike extends Component {
                                 style = {{width:'100%',height:'100%'}}
                                 renderItem = {
                                     ({item,index}) => 
-                                    <View   style = {{paddingLeft:10,marginBottom:10}}>
+                                    <View   style = {{paddingLeft:15,marginTop:10,borderBottomWidth:0.5}}>
                                         <Text>{item.music_name}</Text>
                                         <Text>{item.music_author}</Text>
                                     </View>

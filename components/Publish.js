@@ -16,7 +16,8 @@ import {
     Modal,
     AsyncStorage,
     TouchableWithoutFeedback,
-    DeviceEventEmitter
+    DeviceEventEmitter,
+    ToastAndroid
 } from 'react-native';
 import Video from 'react-native-video';
 import {Actions} from 'react-native-router-flux';
@@ -172,21 +173,25 @@ export default class Doc extends Component{
         this.setState({ duration: duration.duration });
     }
     loadSongInfo = (index) => {
-		var that = this;
+        var that = this;
+        nplaylist.push(that.state.songs[index]);
+        recentplay.push(that.state.songs[index]);
+
         //加载歌曲
-				let bitrate = this.state.songs[index].music_value;
-				let music_name=this.state.songs[index].music_name;
-                let music_author=this.state.songs[index].music_author;
-                this.state.music=this.state.songs[index].music_value;
-                this.setState({
+				let bitrate = that.state.songs[index].music_value;
+				let music_name=that.state.songs[index].music_name;
+                let music_author=that.state.songs[index].music_author;
+                let music=that.state.songs[index].music_value;
+                that.setState({
                     music_name: music_name,     //歌曲名
                     music_author: music_author,   //歌手
                     file_link: bitrate,   //播放链接,
-                    currentIndex:index
+                    currentIndex:index,
+                    music:music
                 }) 
     }
     onGetMusicLists = () => {
-	var that = this;
+    var that = this;
 	  let songArry = [...this.state.songs];
 	  function chongfu(additem){
 		return additem.music_id != that.props.data.music_id;
@@ -205,16 +210,15 @@ export default class Doc extends Component{
 	  }
     }
     componentDidMount() {
-        nplaylist.push(this.props.data);
-        recentplay.push(this.props.data);
+        var that = this;
         AsyncStorage.getItem('playlist').then(
             (value) => {
-                this.setState({
-                    songs : JSON.stringify(value) == null ? [] : JSON.stringify(value)
-                })
+                that.setState({
+                    songs : JSON.parse(value) == null ? [] : JSON.parse(value)
+                },()=>that.onGetMusicLists())
             }
         )
-        this.onGetMusicLists();
+        
         this.myplaylist = DeviceEventEmitter.addListener('myplaylist',()=>{
             this.setState({
                 playlistvisible:false
@@ -223,9 +227,8 @@ export default class Doc extends Component{
     }
     // 上下一曲
     nextAction = (index) => {
-        this.recover()
         lyrObj = [];
-        if (index == 10) {
+        if (index == this.state.songs.length) {
             index = 0 //如果是最后一首就回到第一首
 		}
 		if (index == -1) {
@@ -281,9 +284,13 @@ export default class Doc extends Component{
             paused:this.state.paused,
             rate:this.state.rate
         })
+
+        DeviceEventEmitter.emit('changegroup',{uri:`http://49.235.231.110:8802/musicimage/${this.state.songs[this.state.currentIndex].music_id + 1}.JPG`},`${this.state.songs[this.state.currentIndex].music_name}-${this.state.songs[this.state.currentIndex].music_author}`)
     }
     componentWillUnmount() {
         this.myplaylist&&this.myplaylist.remove();
+        AsyncStorage.setItem('playlist',JSON.stringify(this.state.songs))
+        DeviceEventEmitter.emit('likeandrecent');
     }
     moveclick(){
         this.state.moveclick=true;
@@ -368,11 +375,9 @@ export default class Doc extends Component{
         //下一首
         //if(this.state.indexpicture==this.state.songlist.length&&a==0)
         //下一首
-
-        this.state.indexpicture=a;
-
-         console.log(a)     
-        
+        this.setState({
+            indexpicture:a
+        })        
     }
     clickred(){
         this.state.collect=!this.state.collect
@@ -936,9 +941,11 @@ export default class Doc extends Component{
                                 paused={this.state.paused}
                                 onBuffer={this.onBuffer}
                                 style={styles.backgroundVideo}
-                                onLoad={data => this.setDuration(data)}
+                                onLoad={(data) => {this.setDuration(data);ToastAndroid.show('加载完成',200);this.play()}}
+                                onLoadStart = {()=>ToastAndroid.show('加载中',200)}
                                 volume={this.state.volume}
                                 playInBackground={true}
+                                playWhenInactive ={true}
                                 onProgress={e => this.setTime(e)}
                                 />
                             </View>

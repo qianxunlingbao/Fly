@@ -57,7 +57,7 @@ class AddSong extends Component {
                        <FlatList
                 data = {this.state.songs}
                 renderItem = {({item})=>
-                <View style={{width:width,height:height * 0.05,borderBottomWidth:1,borderBottomColor:'grey'}}>
+                <View style={{marginTop:10,paddingLeft:15,width:width,height:height * 0.05,borderBottomWidth:1,borderBottomColor:'grey'}}>
                     <Text >{item.music_name}</Text>
                     <Text >{item.music_author}</Text>
                 </View>}

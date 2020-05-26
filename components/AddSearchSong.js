@@ -47,11 +47,11 @@ class AddSearchSong extends Component {
                 <FlatList
                 data = {this.state.value}
                 renderItem = {({item})=>
-                <View style={{width:width,height:height * 0.05,borderBottomWidth:1,borderBottomColor:'grey'}}>
+                <View style={{paddingLeft:15,width:width,height:height * 0.05,borderBottomWidth:1,borderBottomColor:'grey'}}>
                     <Text >{item.music_name}</Text>
                     <Text >{item.music_author}</Text>
-                    <TouchableOpacity style={{position:"absolute",left:width * 0.9,top:10}} onPress = {()=>addmenusong.push(item)}>
-                        <Text>+</Text>
+                    <TouchableOpacity style={{position:"absolute",left:width * 0.9,top:10}} onPress = {()=>{addmenusong.push(item)}}>
+                        <Text style={{fontSize:20}}>+</Text>
                     </TouchableOpacity>
                 </View>}
                 />

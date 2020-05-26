@@ -18,9 +18,14 @@ class PlayGroup extends Component {
         this.changegroup = DeviceEventEmitter.addListener('changegroup',(picture,words)=>{
             this.setState({
                 describle:words,
-                icon:picture
+                icon:picture,
+                position:["relative","absolute"],
+                display:["none","flex"]
             })
         })
+    }
+    componentWillUnmount(){
+        this.changegroup && this.changegroup.remove();
     }
     render() {
         return (
@@ -36,10 +41,8 @@ class PlayGroup extends Component {
                     <Image style={{width:width * 0.1,height:width * 0.1}} source={this.state.icon}/>
                     </View>
                     <Text style={{position:"absolute",left:width*0.14}}>{this.state.describle}</Text>
-                    <TouchableOpacity onPress = {()=>{let arr = [...this.state.position];[arr[0],arr[1]] = [arr[1],arr[0]];let brr = [...this.state.display];[brr[0],brr[1]] = [brr[1],brr[0]];this.setState({
-                        position:arr,
-                        display:brr
-                    })}} style={{justifyContent:"center",alignItems:"center",position:"absolute",left:width*0.8}}>
+                    <TouchableOpacity 
+                    style={{justifyContent:"center",alignItems:"center",position:"absolute",left:width*0.8}}>
                         <Icon name='play-circle' size={width*0.07} color="green" style={{position:this.state.position[0],display:this.state.display[0]}}/>
                         <Icon name='pause-circle' size={width*0.07} color="green" style={{position:this.state.position[1],display:this.state.display[1]}}/>
                     </TouchableOpacity>
