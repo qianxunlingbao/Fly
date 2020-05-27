@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Dimensions,Text ,Image,Modal,ScrollView,TouchableOpacity, } from 'react-native'
+import { StyleSheet, View, Dimensions,Text ,Image,Modal,ScrollView,TouchableOpacity,AsyncStorage, ToastAndroid} from 'react-native'
 import { Actions } from 'react-native-router-flux';
 import { black } from 'ansi-colors';
+import ImagePicker from 'react-native-image-picker';
+
 let {width, height} = Dimensions.get('window');
+const options = {
+    title: 'Select Avatar',
+    customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
+};
+
 class songwordpost extends Component {
     constructor(props) {
         super(props);
@@ -63,10 +74,52 @@ class songwordpost extends Component {
             bc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png'),require('../images/4.png')],
             backc:require('../images/1.png'),
             fontcolor:'black',
+            imageUrl:'',
+            t:'0'
         }
     }
     //默认模态视图不可见
-
+    componentDidMount(){
+        AsyncStorage.getItem('photo').then((res)=>{
+            if(res){
+                this.setState({imageUrl:{uri:res}})
+            }
+            else{
+                this.setState({imageUrl:''})
+            }
+        });
+        AsyncStorage.getItem('t').then((res)=>{
+            if(res === '1'){
+                this.setState({t:res})
+            }else{
+                this.setState({t:'0'})
+            }
+        })
+    }
+    
+    takephoto = ()=>{
+        ImagePicker.showImagePicker(options, (response) => {
+            
+            if (response.didCancel) {
+              return;
+            } else if (response.error) {
+              console.log('Error:', response.error);
+            } else if (response.customButton) {
+              console.log('custom:', response.customButton);
+            } else {
+                //const source = { uri: response.uri };
+                
+                this.setState({
+                    imageUrl: { uri: response.uri },
+                    t:'1'
+                });
+                
+                AsyncStorage.setItem('photo',this.state.imageUrl.uri);
+                AsyncStorage.setItem('t','1');
+                
+            }
+          });
+    }
     renderChildView(p){
         // 数组
         if(p==undefined)
@@ -163,7 +216,16 @@ class songwordpost extends Component {
         });
       }
       setModalVisible5(visible) {
-          this.state.modalVisible5=visible
+        for(var i=0; i<this.state.songword.length; i++){
+            if (this.state.checksong[i]==''&&visible==true||this.state.checksong[i]==undefined){
+            
+               }
+               else{
+                this.state.modalVisible5=visible
+               }
+        }
+     
+         
         this.setState({modalVisible5: this.state.modalVisible5,
       });
     }
@@ -183,12 +245,14 @@ class songwordpost extends Component {
       });
     }
     setModalVisible9(visible) {
+        this.state.checksong[i]!=''
         this.state.modalVisible9=visible
         this.setState({modalVisible9: this.state.modalVisible9,
       });
     }
      backgroundcolor(a){
         if(a!=undefined){
+            this.state.imageUrl=''
             this.state.backc=this.state.bc[a]
             this.setState({
                 backc:this.state.backc
@@ -204,7 +268,10 @@ class songwordpost extends Component {
         }
      }
       render() {
+          if(this.state.imageUrl!='')
+        this.state.backc=this.state.imageUrl
           return (
+
               <View>
 
                                 <View>
@@ -260,7 +327,10 @@ class songwordpost extends Component {
                                                 // scrollEnabled={false}
                                                 >
                                                     <View style={{width:0.65*width,height:0.65*width,marginTop:0.1*width}} >
-                                                        <Image style={{width:0.65*width,height:0.65*width,borderRadius:width*0.02}} source={this.state.backc} />
+                                                    <TouchableOpacity   >
+                               <Image  style={{width:0.65*width,height:0.65*width,borderRadius:width*0.02}} source={this.state.backc}  />
+                                </TouchableOpacity>
+                                                      
                                                     </View>
                                                 {this.renderChildView()} 
                                                 <View style={{width:0.65*width,height:0.15*width,marginTop:0.1*width}} >
@@ -366,9 +436,9 @@ class songwordpost extends Component {
                                                         <Image style={{width:0.2*width,height:0.2*width}} source={require('../images/3.png')} />
                                                         </View>
                                                     </TouchableOpacity>
-                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={() => { this.backgroundcolor(3) }}>
-                                                        <View style={{backgroundColor:this.state.bc[0],width:0.2*width,height:0.2*width}}>
-                                                        <Image style={{width:0.2*width,height:0.2*width}} source={require('../images/4.png')} />
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>{this.takephoto()}}>
+                                                        <View style={{justifyContent:'center', alignItems: 'center',backgroundColor:this.state.bc[0],width:0.2*width,height:0.2*width}}>
+                                                       <Text style={{fontSize:15,color:'#fff'}}>添加图片</Text>
                                                         </View>
                                                     </TouchableOpacity>
                                                     </View>
