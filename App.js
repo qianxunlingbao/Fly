@@ -44,7 +44,7 @@ import Dongtai from './components/Dongtai'
 import DongTaiLike from './components/Like'
 import Music from './components/MusicHall'
 import Search from './components/Search'
-import CustomScrollView from './components/CustomScrollView'
+import Addpinglun from './components/Addpinglun'
 import SongList from './components/SongList'
 import Publish from './components/Publish'
 import Login from './components/Login'
@@ -66,6 +66,7 @@ import ListenTogether from './components/ListenTogether';
 import Huachenyu  from './components/Huachenyu'
 import Weixinyu  from './components/Weixinyu'
 import Weichen  from './components/Weichen'
+import Pinglun  from './components/PingLun'
 import DongTaiList  from './components/DongTaiList'
 const App = () => {  
   let now = new Date().getTime();
@@ -118,13 +119,14 @@ const App = () => {
               <Scene key = "Condition" component={Condition}/>
               <Scene key = "dongTai" component={Dongtai}/>
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
-              <Scene key="CustomScrollView" component={CustomScrollView} />
+              <Scene key="Addpinglun" component={Addpinglun} />
               <Scene key="RedAlert" component={RedAlert} />
               <Scene key="OverLike" component={OverLike} />
               <Scene key="huachenyu" component={Huachenyu} />
               <Scene key="weixinyu" component={Weixinyu} />
               <Scene key="weichen" component={Weichen} />
               <Scene key="Dongtailiebiao" component={DongTaiList} />
+              <Scene key="pinglun" component={Pinglun} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}

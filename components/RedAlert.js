@@ -188,7 +188,7 @@ export default class RedAlert extends Component {
                                 width: width * 0.3,
                                 marginTop: -height * 0.03
                             }}
-                                onPress={() => Actions.Condition()
+                                onPress={() => Actions.pop()
                                 }>
                                 <Text style={{
                                     position: 'absolute',

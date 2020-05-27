@@ -71,7 +71,7 @@ export default class Like extends Component {
                 <ScrollView>
                     <View style={{width:width,height:width*0.1,backgroundColor:'white'}}>
                         <View style={{width:width*0.1,height:width*0.1}}>
-                            <TouchableOpacity onPress={()=>Actions.Condition()}>
+                            <TouchableOpacity onPress={()=>Actions.pop()}>
                                 <Text style={{
                                     textAlign:"center",
                                     fontSize:25,marginTop:width*0.01

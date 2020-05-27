@@ -419,7 +419,7 @@ export default class FirstOne extends Component {
                                 <TouchableOpacity style={styles.dianzan} onPress={()=>item.dynamic_goodcounts++}>
                                     <Text>{this.state.dianzan}{item.dynamic_goodcounts}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity style={styles.dianzan1} onPress={()=>Actions.CustomScrollView()}>
+                                <TouchableOpacity style={styles.dianzan1} onPress={()=>Actions.pinglun()}>
                                     <Text>{this.state.pinglun}{this.state.pinglunshu} </Text>
                                 </TouchableOpacity>
                             </View>
