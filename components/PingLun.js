@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component } from 'react';
 import {
     StyleSheet,
     View,
@@ -19,7 +19,6 @@ const { width, scale, height } = Dimensions.get('window');
 
 const s = width / 640;
 
-
 export default class DongTaiList extends Component {
     //构造函数
     constructor(props) {
@@ -28,7 +27,7 @@ export default class DongTaiList extends Component {
             isAdd: false
         };
     }
-
+    
     componentDidMount() {
         fetch('http://49.235.231.110:8800/musicword')
             .then(res => res.json())
@@ -37,8 +36,17 @@ export default class DongTaiList extends Component {
                     data: res.data//将评论数据赋值给worddata
                 })
             })
+            
     }
-
+    componentWillMount(){
+        fetch('http://49.235.231.110:8800/musicword')
+            .then(res => res.json())
+            .then(res => {
+                this.setState({
+                    data: res.data//将评论数据赋值给worddata
+                })
+            })
+    }
     //组件渲染
     render() {
         return (
@@ -78,9 +86,11 @@ export default class DongTaiList extends Component {
                     </View>
                 </View>
                 <FlatList
+                    
                     data={this.state.data}
                     renderItem={({ item, index }) =>
-                        <View style={
+                        <View 
+                        style={
                             {
                                 flex: 1,
                                 flexDirection: 'row',
@@ -98,7 +108,23 @@ export default class DongTaiList extends Component {
                                 {
                                     marginTop: -width * 0.05
                                 }
-                            }>
+                            }
+                                key={index}
+                                onPress={()=>{
+                                    console.log(index)
+                                    fetch(`http://49.235.231.110:8800/deleteWord/${this.state.data[index].word_id}`)
+                                    .then(()=>{
+                                        fetch('http://49.235.231.110:8800/musicword')
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            this.setState({
+                                                data: res.data//将评论数据赋值给worddata
+                                            })
+                                        })
+                                    })
+                                    
+                                }}
+                            >
                                 <Image style={
                                     {
                                         width: width * 0.1,
@@ -116,7 +142,7 @@ export default class DongTaiList extends Component {
 
                             <Text style={
                                 {
-                                    width: width * 0.2,
+                                    width: width * 0.4,
                                     marginTop: width * 0.07,
                                     marginLeft: -width * 0.02
                                 }
@@ -125,7 +151,7 @@ export default class DongTaiList extends Component {
                                 this.state.isAdd == false ?
                                     <TouchableOpacity style={
                                         {
-                                            marginLeft: width * 0.35
+                                            marginLeft: width * 0.15
                                         }
 
                                     }
@@ -142,13 +168,13 @@ export default class DongTaiList extends Component {
                                                 width: width * 0.05,
                                                 height: width * 0.05,
                                                 marginLeft: width * 0.03,
-                                                marginTop: -width * 0.047
+                                                marginTop: -width * 0.045
                                             }
                                         } source={require('../images/heart.png')} />
                                     </TouchableOpacity> :
                                     <TouchableOpacity style={
                                         {
-                                            marginLeft: width * 0.35
+                                            marginLeft: width * 0.15
                                         }
 
                                     }
@@ -165,7 +191,7 @@ export default class DongTaiList extends Component {
                                                 width: width * 0.06,
                                                 height: width * 0.05,
                                                 marginLeft: width * 0.03,
-                                                marginTop: -width * 0.05
+                                                marginTop: -width * 0.047
                                             }
                                         } source={require('../images/like.png')} />
                                     </TouchableOpacity>
