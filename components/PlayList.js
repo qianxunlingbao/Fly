@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage, FlatList} from 'react-native'
-
-/**
-*
-* @ author: 
-* @ email: 
-* @ data: 2020-04-27 16:02
-*/
+import { StyleSheet, View, Text ,Image ,Modal, TouchableOpacity, ScrollView,AsyncStorage, FlatList,DeviceEventEmitter} from 'react-native'
+import {nplaylist} from './DS'
 class PlayList
  extends Component {
+     componentDidMount(){
+         console.log(this.props.currentIndex);
+     }
     render() {
         return (
             <Modal
@@ -17,7 +14,7 @@ class PlayList
             visible = {this.props.playlistvisible}
             >
                  <View style={styles.container}>
-                     <TouchableOpacity style={{width:'100%',height:'100%'}} onPress = {()=>this.props.backcallback()}>
+                     <TouchableOpacity style={{width:'100%',height:'100%'}} onPress = {()=>DeviceEventEmitter.emit('myplaylist')}>
                         <View style = {{
                             width:'100%',
                             height:'40%',
@@ -34,7 +31,7 @@ class PlayList
                                     </Text>
                                 </View>
                                 <FlatList
-                                data = {this.props.list}
+                                data = {nplaylist.items}
                                 style = {{width:'100%',height:'100%'}}
                                 renderItem = {
                                     ({item,index}) => 

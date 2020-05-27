@@ -8,12 +8,17 @@ import {
     ,Dimensions, 
     TouchableOpacity, 
     FlatList,
-    AsyncStorage
+    AsyncStorage,
+    DeviceEventEmitter
 } from 'react-native'
 const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
 import { Actions} from 'react-native-router-flux';
 import Prompt from './Prompt'
+import PlayGroup from './PlayGroup'
+import PlayList from './PlayList';
+import {likelist, recentplay} from './DS'
+
 class My extends Component {
     constructor(){
         super();
@@ -31,24 +36,29 @@ class My extends Component {
             addflex:'flex',
             modalVisible : false,
             listTitle : '新建歌单',
+            headImg:require('../images/16.png'),
+            playlistvisible:false
 
                 }
     }
-    _onPressEmpty = () => {
+    _onPressEmpty = (data) => {
         this.setState({
             modalVisible : false,
         })
-        this.setState({
-            create : this.state.create - '0' + 1,
-        },()=>{
-            this.setState(
-                {
-                    createdata :[...this.state.createdata,{key:this.state.create,title : this.state.listTitle,num : 0}]
-                },
-                ()=>AsyncStorage.setItem('songmenu',JSON.stringify(this.state.createdata))
-
-            )
-        })
+        if(data == 1){
+            this.setState({
+                create : this.state.create - '0' + 1,
+            },()=>{
+                this.setState(
+                    {
+                        createdata :[...this.state.createdata,{key:this.state.create,title : this.state.listTitle,num : 0,value:[]}]
+                    },
+                    ()=>AsyncStorage.setItem('songmenu',JSON.stringify(this.state.createdata))
+    
+                )
+            })
+        }
+        
     }
     _changeListtitle = (data) => {
         this.setState({
@@ -56,14 +66,40 @@ class My extends Component {
         })
     }
     componentDidMount = () => {
+        this.setState({
+            like:likelist.items.length,
+            recent:recentplay.items.length
+        })
+        this.myplaylist = DeviceEventEmitter.addListener('myplaylist',()=>{
+            this.setState({
+                playlistvisible:!this.state.playlistvisible
+            })
+        })
+        this.likeandrecent = DeviceEventEmitter.addListener('likeandrecent',()=>{
+            this.setState({
+                like:likelist.items.length,
+                recent:recentplay.items.length
+            })
+        })
         AsyncStorage.getItem('login').then(
              (val) => {
                 this.setState({login : JSON.parse(val) == null ?true :JSON.parse(val)});
                 }
         )
-        AsyncStorage.getItem('name').then(
-            (val) => {
-                this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
+        AsyncStorage.getItem('netname').then(
+            (value) => {
+                if(value){
+                    this.setState({
+                        name: value
+                    })
+                }else{
+                    AsyncStorage.getItem('name').then(
+                        (val) => {
+                            this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
+                        }
+                    )
+                }
+                
             }
         )
         AsyncStorage.getItem('songmenu').then(
@@ -74,18 +110,61 @@ class My extends Component {
                 })
             }
         )
-    }
-    componentWillMount = () => {
         
+        this.getsongmenu = DeviceEventEmitter.addListener('getsongmenu',()=>AsyncStorage.getItem('songmenu').then(
+            (val) => {
+                this.setState({
+                    createdata : JSON.parse(val) ==null ?'':JSON.parse(val),
+                    create : JSON.parse(val) ==null ?'':JSON.parse(val).length
+                })
+            }
+        )) 
+        this.changename = DeviceEventEmitter.addListener('changename',()=>{
+            AsyncStorage.getItem('netname').then(
+                (val) => {
+                    this.setState({name :JSON.parse(val) == null?'': JSON.parse(val)})
+                }
+            )
+        })
+        AsyncStorage.getItem('headimage').then(
+            (value) => {
+                if(value){
+                    this.setState({
+                        headImg: {uri : value}
+                    })
+                }
+                
+            }
+        )
+        this.changeHeadImg = DeviceEventEmitter.addListener('changeHeadImg',()=>
+            AsyncStorage.getItem('headimage').then(
+                (value) => {
+                    if(value){
+                        this.setState({
+                            headImg: {uri : value}
+                        })
+                    }
+                    
+                }
+            )
+        )
+    }
+    componentWillUnmount(){
+        this.changeHeadImg&&this.changeHeadImg.remove();
+        this.myplaylist&&this.myplaylist.remove();
+        this.getsongmenu&&this.getsongmenu.remove();
+        this.changename && this.changename.remove();
     }
     render() {
         return (
             <View 
             style={styles.container}
             >
+                <PlayList playlistvisible = {this.state.playlistvisible}  list = {this.state.songs}/>
+
                 <Prompt 
                 modalVisible = {this.state.modalVisible}
-                listTitle = {this.state.listTitle}
+                listTitle = {this.state.listTitle}                                       
                 callback = {this._onPressEmpty}
                 changecallback = {this._changeListtitle}
                 />
@@ -102,8 +181,9 @@ class My extends Component {
                             </TouchableOpacity>
                         </View> 
                         :<View style={styles.uphalf}>
-                        <TouchableOpacity style={styles.headImg}>
-                            <Image source = {require('../images/16.png')} style={{width:height * 0.2 * 0.3,
+                            <TouchableOpacity style={styles.uphalf} onPress = {()=>{Actions.userinfo()}}>
+                            <TouchableOpacity style={styles.headImg}>
+                            <Image source = {this.state.headImg} style={{width:height * 0.2 * 0.3,
         height:height * 0.2 * 0.3,
         borderRadius:height * 0.2 * 0.3 * 0.5,}}/>
                         </TouchableOpacity>
@@ -111,6 +191,7 @@ class My extends Component {
                         <Image style={{width:25,height:25,marginLeft:10}} source={require('../images/diamond.png')}/>
                         <Image style={{width:25,height:25}} source={require('../images/ear.png')}/>
                         <Image style={{width:25,height:25,marginLeft:width*0.8*0.3}} source={require('../images/email.png')}/>
+                            </TouchableOpacity>
                         </View> 
                     }
                 
@@ -157,7 +238,8 @@ class My extends Component {
                         }
                         />
                     </View>
-                    <View style={styles.alonekind}>
+                    <View style={styles.alonekind} >
+                        <TouchableOpacity onPress = {()=>Actions.cleverkind()}>
                         <Text style={{fontSize:20,marginTop:10,marginLeft:20}}>智能分类</Text>
                         <View style={{marginTop:10,marginLeft:20,width:width * 0.8 * 0.8 ,height:height * 0.1 * 0.4,flexDirection:'row',alignItems:'center'}}>
                             <TouchableOpacity 
@@ -201,7 +283,23 @@ class My extends Component {
                             }>
                                 <Text  style={{fontSize:16,textAlign:'center'}}>ACG歌曲</Text>
                             </TouchableOpacity>
+                            <TouchableOpacity style={
+                                {
+                                    paddingLeft:10,
+                                    paddingRight:10,
+                                    borderRadius:height * 0.1 *0.2,
+                                    borderWidth:1,
+                                    borderColor:'grey',
+                                    marginRight:10,
+                                    justifyContent:"center",
+                                    alignItems:"center"
+                                }
+                            }>
+                                <Text  style={{fontSize:16,textAlign:'center'}}>...</Text>
+                            </TouchableOpacity>
                         </View>
+
+                        </TouchableOpacity>
                     </View>
                     {
                         this.state.login? 
@@ -214,7 +312,6 @@ class My extends Component {
                         <Text style={{fontSize:20,textAlign:'center',color:this.state.menu[1]?'black':'grey',marginLeft:20}}>收藏歌单</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-                        onPress = {()=>this.setState({modalVisible : true})}
                         style={{width:'7%',position:this.state.addposition,left:'80%',display:this.state.addflex}} >
                         <Image 
                         source={require('../images/createSong.png')} 
@@ -264,7 +361,7 @@ class My extends Component {
                             data={this.state.createdata}
                             renderItem={({item,index})=>
                                 <View style={styles.createlist}>
-                                    <TouchableOpacity style={styles.createlist} onPress = {() => Actions.addsong({num:item.num})}>
+                                    <TouchableOpacity style={styles.createlist} onPress = {() => Actions.addsong({data:item})}>
                                     <View style={{width:'20%',height:'90%',borderRadius:10,justifyContent:"center",alignItems:"center"}}>
                                         <Image style={{width:'100%',height:'100%',borderRadius:10}} source = {{uri:`http://49.235.231.110:8802/musicimage/${index + 1}.JPG`}}/>
                                     </View>
@@ -283,7 +380,12 @@ class My extends Component {
                    
                 </View>
                 </ScrollView>
+                <View style={{position:'absolute',width:'100%',height:'10%',top:'90%',zIndex
+            :2}}>
+                        <PlayGroup/>
+                    </View> 
             </View>
+            
         )
     }
 }
@@ -292,6 +394,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems:"center",
+        zIndex:1
     },
     basicinfo:{
         backgroundColor:'white',
@@ -357,7 +460,6 @@ const styles = StyleSheet.create({
         width:height * 0.2 * 0.3,
         height:height * 0.2 * 0.3,
         borderRadius:height * 0.2 * 0.3 * 0.5,
-        backgroundColor:'blue',
         marginLeft:width*0.8*0.05,
         justifyContent:"center",
         alignItems:"center"

@@ -349,7 +349,7 @@ export default class FirstOne extends Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.slide2}>
-                                <TouchableOpacity onPress={this.lunbo}>
+                                <TouchableOpacity onPress={() => Actions.weichen()}>
                                     <Image style={styles.touxiang} source={require('../images/weichen.png')} />
                                     <Text style={{ textAlign: 'center' }}>魏晨</Text>
                                 </TouchableOpacity>
