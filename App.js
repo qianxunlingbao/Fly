@@ -63,6 +63,10 @@ import Ranking from './components/Ranking';
 import RankingDetail from './components/RankingDetail';
 import HallSongList from './components/HallSongList';
 import ListenTogether from './components/ListenTogether';
+import Huachenyu  from './components/Huachenyu'
+import Weixinyu  from './components/Weixinyu'
+import Weichen  from './components/Weichen'
+import DongTaiList  from './components/DongTaiList'
 const App = () => {  
   let now = new Date().getTime();
   return (
@@ -117,6 +121,10 @@ const App = () => {
               <Scene key="CustomScrollView" component={CustomScrollView} />
               <Scene key="RedAlert" component={RedAlert} />
               <Scene key="OverLike" component={OverLike} />
+              <Scene key="huachenyu" component={Huachenyu} />
+              <Scene key="weixinyu" component={Weixinyu} />
+              <Scene key="weichen" component={Weichen} />
+              <Scene key="Dongtailiebiao" component={DongTaiList} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}
