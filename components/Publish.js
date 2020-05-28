@@ -154,9 +154,9 @@ export default class Doc extends Component{
         'http://music.163.com/song/media/outer/url?id=22707008.mp3',
         'http://music.163.com/song/media/outer/url?id=36019301.mp3',
         'http://music.163.com/song/media/outer/url?id=1319265452.mp3'
-    ,'http://music.163.com/song/media/outer/url?id=1313898281.mp3'
-    ,'http://music.163.com/song/media/outer/url?id=1308556737.mp3'
-    ,'http://music.163.com/song/media/outer/url?id=549680151.mp3'],
+        ,'http://music.163.com/song/media/outer/url?id=1313898281.mp3'
+        ,'http://music.163.com/song/media/outer/url?id=1308556737.mp3'
+        ,'http://music.163.com/song/media/outer/url?id=549680151.mp3'],
         nowintentphto:'',
         nowtext:'',
         nowcheckmuisc:'',
@@ -479,10 +479,7 @@ export default class Doc extends Component{
 		this.state.time=time;
 		var index=0;
         // 遍历
-        if(this.state.listname[0]==this.state.datalistname[6]){
-            this.state.songword=['纯音乐请欣赏']
-            this.state.time=['00:00']
-        }
+      
         for(var j=0;j<time.length;j++){
             if(this.state.time[j]==this.state.nowMin+':'+this.state.nowSec)
             {
@@ -685,11 +682,14 @@ checkmusic(a){
     if(a!=undefined){
         
        if(this.state.listname[0]==this.state.datalistname[6]){
+ 
             for(var i=0;i<12;i++){
                 if(a==i){
                     this.state.music=this.state.listmusic[i];
                     this.state.music_author=this.state.nowlisttext1[a]
                     this.state.music_name=this.state.nowlisttext[a]
+                    this.state.songword=['纯音乐请欣赏']
+            this.state.time=['00:00']
                     console.log(this.state.muisc,123)
                 }
             }
@@ -897,7 +897,7 @@ qiehuan(){
                             <View style={{height:height*0.3,width:width*0.9,borderRadius:width*0.02
                             ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
                             <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>相关视频</Text> 
-                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}}  onPress={() => { this.setModalVisible9(true) }}>
+                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}}  onPress={()=>{Actions.reportss({id:[this.state.music_name,this.state.music_author]})}}>
                                 <Image  style={{width:0.3*width,height:0.15*width,borderRadius:0.01*width}}  source={{uri:this.state.intnetphoto[0]}} />
                                 <View>
                                 <Text style={{color:'#fff',marginLeft:0.03*width}}>{this.state.music_name}</Text>
@@ -905,7 +905,7 @@ qiehuan(){
                                 </View>
                                 
                             </TouchableOpacity>
-                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}}  onPress={() => { this.setModalVisible9(true) }}>
+                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}}  onPress={()=>{Actions.reportss()}}>
                                 <Image  style={{width:0.3*width,height:0.15*width,borderRadius:0.01*width}}  source={{uri:this.state.intnetphoto[1]}} />
                                 <View>
                                 <Text style={{color:'#fff',marginLeft:0.03*width}}>{this.state.music_name}（KTV版）</Text>
@@ -939,7 +939,7 @@ qiehuan(){
                         </View>
                         <View style={{width:width,height:0.07*height,flexDirection:'row',justifyContent:'center', alignItems: 'center'}}>
 
-                            <TouchableOpacity  style={{width:0.1*width,height:0.1*width}} >
+                            <TouchableOpacity  style={{width:0.1*width,height:0.1*width}} onPress={()=>{Actions.PingLun()}}>
                                 <Image  style={{width:0.1*width,height:0.1*width}}  source={require('../images/remark.png' )} />
                             </TouchableOpacity>
                             <TouchableOpacity   style={{width:0.1*width,height:0.1*width,marginLeft:0.5*width}}  onPress={() => { this.setModalVisible(true) }}>
