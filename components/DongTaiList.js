@@ -76,7 +76,7 @@ export default class DongTaiList extends Component {
             </TouchableOpacity>
           </View>
           <View style={{ width: width * 0.4, height: width * 0.1, marginLeft: width * 0.45, marginTop: -width * 0.09 }}>
-            <TouchableOpacity onPress={() => Actions.dongTaiLike()}>
+            <TouchableOpacity>
               <Text style={{ fontSize: 30, color: '#AAAAAA' }}>动态 </Text>
             </TouchableOpacity>
           </View>
@@ -124,7 +124,7 @@ export default class DongTaiList extends Component {
                       height: height * 0.25,
                       position: 'relative'
                     }}
-                    source = {{uri:`http://49.235.231.110:8802/musicimage/${index + 1}.JPG`}}
+                      source={{ uri: `http://49.235.231.110:8802/musicimage/${index + 1}.JPG` }}
                     />
                   </Button>
                 </View>

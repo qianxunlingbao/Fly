@@ -1,4 +1,4 @@
-import React, {Component } from 'react';
+import React, { Component } from 'react';
 import {
     StyleSheet,
     View,
@@ -9,7 +9,8 @@ import {
     FlatList,
     Image,
     Dimensions,
-    Animated
+    Animated,
+    ImageBackground
 } from 'react-native';
 import Button from 'react-native-button';
 
@@ -27,7 +28,7 @@ export default class DongTaiList extends Component {
             isAdd: false
         };
     }
-    
+
     componentDidMount() {
         fetch('http://49.235.231.110:8800/musicword')
             .then(res => res.json())
@@ -36,9 +37,9 @@ export default class DongTaiList extends Component {
                     data: res.data//将评论数据赋值给worddata
                 })
             })
-            
+
     }
-    componentWillMount(){
+    componentWillMount() {
         fetch('http://49.235.231.110:8800/musicword')
             .then(res => res.json())
             .then(res => {
@@ -46,6 +47,11 @@ export default class DongTaiList extends Component {
                     data: res.data//将评论数据赋值给worddata
                 })
             })
+    }
+    changeSelected() {
+        this.setState(previousState => ({
+            isAdd: !previousState.isAdd
+        }))
     }
     //组件渲染
     render() {
@@ -67,138 +73,153 @@ export default class DongTaiList extends Component {
                     </View>
                     <View style={
                         {
-                            width:width*0.1,
-                            height:width*0.1,
-                            marginTop:-width*0.1,
-                            marginLeft:width*0.85
+                            width: width * 0.1,
+                            height: width * 0.1,
+                            marginTop: -width * 0.1,
+                            marginLeft: width * 0.85
                         }
                     }>
-                        <TouchableOpacity 
-                            onPress={()=>Actions.Addpinglun()}
+                        <TouchableOpacity
+                            onPress={() => Actions.Addpinglun()}
                         >
                             <Text style={
                                 {
-                                    fontSize:25
+                                    fontSize: 25
                                 }
                             }>+</Text>
                         </TouchableOpacity>
-                        
+
                     </View>
                 </View>
-                <FlatList
-                    
-                    data={this.state.data}
-                    renderItem={({ item, index }) =>
-                        <View 
-                        style={
-                            {
-                                flex: 1,
-                                flexDirection: 'row',
-                                width: width * 0.8,
-                                height: height * 0.1,
-                                //justifyContent:'center',
-                                alignItems: 'center',
-                                marginTop: 20,
-                                marginLeft: width * 0.1,
-                                borderBottomColor:'green',
-                                borderBottomWidth:2
-                            }
-                        }>
-                            <TouchableOpacity style={
-                                {
-                                    marginTop: -width * 0.05
-                                }
-                            }
-                                key={index}
-                                onPress={()=>{
-                                    console.log(index)
-                                    fetch(`http://49.235.231.110:8800/deleteWord/${this.state.data[index].word_id}`)
-                                    .then(()=>{
-                                        fetch('http://49.235.231.110:8800/musicword')
-                                        .then(res => res.json())
-                                        .then(res => {
-                                            this.setState({
-                                                data: res.data//将评论数据赋值给worddata
-                                            })
-                                        })
-                                    })
-                                    
-                                }}
-                            >
-                                <Image style={
-                                    {
-                                        width: width * 0.1,
-                                        height: width * 0.1
-                                    }
-                                } source={require('../images/punch.png')} />
-                            </TouchableOpacity>
-
-                            <Text style={
-                                {
-                                    marginTop: -width * 0.05,
-                                    marginLeft: width * 0.03
-                                }
-                            }>{item.user_id}</Text>
-
-                            <Text style={
-                                {
-                                    width: width * 0.4,
-                                    marginTop: width * 0.07,
-                                    marginLeft: -width * 0.02
-                                }
-                            }>{item.word_value}</Text>
-                            {
-                                this.state.isAdd == false ?
-                                    <TouchableOpacity style={
-                                        {
-                                            marginLeft: width * 0.15
-                                        }
-
-                                    }
-                                        onPress={(index) => {
-                                            this.setState({
-                                                isAdd: true
-                                            })
-                                            item.word_goodcounts++
-                                        }}
-                                    >
-                                        <Text>{item.word_goodcounts}</Text>
-                                        <Image style={
-                                            {
-                                                width: width * 0.05,
-                                                height: width * 0.05,
-                                                marginLeft: width * 0.03,
-                                                marginTop: -width * 0.045
-                                            }
-                                        } source={require('../images/heart.png')} />
-                                    </TouchableOpacity> :
-                                    <TouchableOpacity style={
-                                        {
-                                            marginLeft: width * 0.15
-                                        }
-
-                                    }
-                                        onPress={() => {
-                                            this.setState({
-                                                isAdd: false
-                                            })
-                                            item.word_goodcounts--
-                                        }}
-                                    >
-                                        <Text>{item.word_goodcounts}</Text>
-                                        <Image style={
-                                            {
-                                                width: width * 0.06,
-                                                height: width * 0.05,
-                                                marginLeft: width * 0.03,
-                                                marginTop: -width * 0.047
-                                            }
-                                        } source={require('../images/like.png')} />
-                                    </TouchableOpacity>
-                            }
-                        </View>
+                <ImageBackground style={
+                    {
+                        flex: 1,
+                        width: width
                     }
-                />
+                }
+                    source={require('../images/2.png')}
+                >
+                    <FlatList
+                        data={this.state.data}
+                        refreshing={this.state.isAdd}
+                        onRefresh={() => {
+                            fetch('http://49.235.231.110:8800/musicword')
+                                .then(res => res.json())
+                                .then(res => {
+                                    this.setState({
+                                        data: res.data//将评论数据赋值给worddata
+                                    })
+                                })
+                        }}
+                        renderItem={({ item, index }, key = { index }) =>
+                            <View
+                                style={
+                                    {
+                                        flex: 1,
+                                        flexDirection: 'row',
+                                        width: width * 0.8,
+                                        height: height * 0.1,
+                                        alignItems: 'center',
+                                        marginTop: 20,
+                                        marginLeft: width * 0.1,
+                                        borderBottomColor: 'green',
+                                        borderBottomWidth: 2
+                                    }
+                                }>
+                                <TouchableOpacity style={
+                                    {
+                                        marginTop: -width * 0.05
+                                    }
+                                }
+
+                                >
+                                    <Image style={
+                                        {
+                                            width: width * 0.1,
+                                            height: width * 0.1
+                                        }
+                                    } source={require('../images/punch.png')} />
+                                </TouchableOpacity>
+
+                                <Text style={
+                                    {
+                                        marginTop: -width * 0.05,
+                                        marginLeft: width * 0.03
+                                    }
+                                }>{item.user_id}</Text>
+
+                                <Text style={
+                                    {
+                                        width: width * 0.4,
+                                        marginTop: width * 0.07,
+                                        marginLeft: -width * 0.02
+                                    }
+                                }>{item.word_value}</Text>
+                                {
+                                    this.state.isAdd == false ?
+                                        <TouchableOpacity style={
+                                            {
+                                                marginLeft: width * 0.15
+                                            }
+
+                                        }
+                                            onPress={() => {
+                                                this.setState({
+                                                    isAdd: true
+                                                })
+                                                item.word_goodcounts++
+                                            }}      
+                                        >
+                                            <Text>{item.word_goodcounts}</Text>
+
+                                        </TouchableOpacity> :
+                                        <TouchableOpacity style={
+                                            {
+                                                marginLeft: width * 0.15
+                                            }
+
+                                        }
+                                            onPress={() => {
+                                                this.setState({
+                                                    isAdd: false
+                                                })
+                                                item.word_goodcounts--
+                                            }}
+                                        >
+                                            <Text>{item.word_goodcounts}</Text>
+
+                                        </TouchableOpacity>
+                                }
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        console.log(index)
+                                        fetch(`http://49.235.231.110:8800/deleteWord/${this.state.data[index].word_id}`)
+                                            .then(() => {
+                                                fetch('http://49.235.231.110:8800/musicword')
+                                                    .then(res => res.json())
+                                                    .then(res => {
+                                                        this.setState({
+                                                            data: res.data//将评论数据赋值给worddata
+                                                        })
+                                                    })
+                                            })
+
+                                    }}
+                                >
+                                    <Image style={
+                                        {
+                                            width: width * 0.06,
+                                            height: width * 0.06
+                                        }
+
+                                    }
+                                        source={require('../images/rubbish.png')}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        }
+                    />
+                </ImageBackground>
             </View>
         );
     }

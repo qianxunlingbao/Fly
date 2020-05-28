@@ -68,6 +68,7 @@ import Weixinyu  from './components/Weixinyu'
 import Weichen  from './components/Weichen'
 import Pinglun  from './components/PingLun'
 import DongTaiList  from './components/DongTaiList'
+import Shipin  from './components/ShiPin'
 const App = () => {  
   let now = new Date().getTime();
   return (
@@ -127,6 +128,7 @@ const App = () => {
               <Scene key="weichen" component={Weichen} />
               <Scene key="Dongtailiebiao" component={DongTaiList} />
               <Scene key="pinglun" component={Pinglun} />
+              <Scene key="shipin" component={Shipin} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}
