@@ -67,6 +67,10 @@ import Huachenyu  from './components/Huachenyu'
 import Weixinyu  from './components/Weixinyu'
 import Weichen  from './components/Weichen'
 import DongTaiList  from './components/DongTaiList'
+import report from './components/report';
+import PingLun from './components/PingLun';
+import Addpinglun from './components/Addpinglun';
+import reportss from './components/reportss';
 const App = () => {  
   let now = new Date().getTime();
   return (
@@ -110,6 +114,12 @@ const App = () => {
               <Scene key = "publish" component={Publish} hideTabBar  hideNavBar/>
               <Scene key = "songwordpost" component={Songwordpost} hideTabBar  hideNavBar/>
               <Scene key = "timestop" component={timestop}  hideNavBar hideTabBar/>
+              <Scene key = "report" component={report}  hideNavBar hideTabBar/>
+              <Scene key = "reportss" component={reportss} hideNavBar hideTabBar/>
+              
+              <Scene key = "PingLun" component={PingLun}  hideNavBar hideTabBar/>
+              <Scene key = "Addpinglun" component={Addpinglun}  hideNavBar hideTabBar/>
+
             </Scene>
             <Scene key="condition" title="动态" 
             icon={()=><Icon name = 'eye' size = {30}/>}
