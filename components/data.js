@@ -630,7 +630,24 @@ var data = {
 '02:27','02:30','02:33','02:38','02:42','02:47','02:49','02:55','02:57','03:02','03:06','03:09','03:12','03:17','03:20',
 '03:24','03:55','03:58','04:03','04:06','04:10','04:13','04:18','04:21','04:25','04:27','04:30','04:34','04:38','04:42',
 '04:44','04:49','04:53','04:56','05:02','05:06','05:21','05:25','05:36','05:39']
-]
+],
+musictimes:['2007年06月02日发行','2015年03月27日发行','2016年06月27日发行',
+'2018年02月11日发行','2010年09月09日发行','2017年03月28日发行','2016年05月04日发行',
+'2018年07月12日发行','2009年01月01日发行','2017年11月28日发行','2018年06月05日发行','2020年05月20日发行'],
+musicphto:[require('../images/xusong.jpg'),require('../images/zhaozhao.jpg')
+,require('../images/yidong.jpg'),require('../images/chinian.jpg'),
+require('../images/lironghao.jpg'),require('../images/xusong.jpg'),
+require('../images/yidong.jpg'),require('../images/xusong.jpg'),
+require('../images/tianzhen.jpg'),
+require('../images/xuezhiqian.jpg'),require('../images/liuxin.jpg'),
+require('../images/maobuyi.jpg')],
+photo:[require('../images/1.jpg'),require('../images/2.jpg')
+,require('../images/3.jpg'),require('../images/4.jpg'),
+require('../images/5.jpg'),require('../images/6.jpg'),
+require('../images/7.jpg'),require('../images/8.jpg'),
+require('../images/9.jpg'),
+require('../images/10.jpg'),require('../images/111.jpg'),
+require('../images/112.jpg')],
             
 };
 module.exports = data;

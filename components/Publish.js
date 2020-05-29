@@ -89,6 +89,9 @@ export default class Doc extends Component{
             modalVisible7:false,
             modalVisible8:false,
             modalVisible9:false,
+            modalVisible10:false,
+            modalVisible11:false,
+            modalVisible12:false,
             checksong:[],
             bc:require('../images/normal.png'),
             backc:[require('../images/1.png'),require('../images/2.png'),require('../images/3.png')],
@@ -170,12 +173,22 @@ export default class Doc extends Component{
         ,['七月新上','Kyle Xian'],['女王蜂    ','Kyle Xian']],
         nowlisttext:[''],
         nowlisttext1:[''],
+        geshou:require('../images/xu.png'),
+    opacitybca:1,
+    musicauthorp:[require('../images/xu.png'),require('../images/zhao.png'),
+    require('../images/tian.png'),require('../images/yi.png'),require('../images/xue.png')
+    ,require('../images/mao.png'),require('../images/liu.png')],
+    faxing:'',
+    music_authorph:'',
+    music_authorph1:'',
+    fontcolor:'#fff',
+    
         }
     }
     //设置进度条和播放时间的变化
    
 
-    setTime(data) {
+    setTime(dat) {
         let sliderValue = parseInt(this.state.currentTime);
         if(this.state.firstfengmian[0]=='旋转封面')
         {
@@ -184,7 +197,7 @@ export default class Doc extends Component{
             if(this.state.paused){
                 var rotate
                  rotate=sliderValue%10
-                 this.state.firstfengmian[1]=require('../images/2.jpg')
+                 this.state.firstfengmian[1]=data.photo[this.state.songs[this.state.currentIndex].music_id-1];
                  this.state.firstfengmian[3]=0.4*width
                  this.state.Rotate=rotate*36+'deg'
             }
@@ -193,7 +206,7 @@ export default class Doc extends Component{
         }
         else{
             
-            this.state.firstfengmian[1]=require('../images/2.jpg')
+        this.state.firstfengmian[1]=data.photo[this.state.songs[this.state.currentIndex].music_id-1];
             this.state.firstfengmian[3]=0.4*width
             this.state.Rotate=0+'deg'
         }
@@ -212,7 +225,7 @@ export default class Doc extends Component{
            
         this.setState({
         slideValue: sliderValue,
-        currentTime: data.currentTime,
+        currentTime: dat.currentTime,
         nowMin:this.state.nowMin,
         nowsec:this.state.nowSec
         });
@@ -248,6 +261,12 @@ export default class Doc extends Component{
         nplaylist.push(that.state.songs[index]);
         recentplay.push(that.state.songs[index]);
         //加载歌曲
+        this.state.songword=data.musiclist[that.state.songs[index].music_id-1];
+        this.state.time=data.musictime[that.state.songs[index].music_id-1];
+        this.state.faxing=data.musictimes[that.state.songs[index].music_id-1];
+        this.state.music_authorph1=data.photo[that.state.songs[index].music_id-1];
+        this.state.firstfengmian[1]=data.photo[that.state.songs[index].music_id-1];
+        this.state.music_authorph=data.musicphto[that.state.songs[index].music_id-1];
 				let bitrate = that.state.songs[index].music_value;
 				let music_name=that.state.songs[index].music_name;
                 let music_author=that.state.songs[index].music_author;
@@ -257,7 +276,8 @@ export default class Doc extends Component{
                     music_author: music_author,   //歌手
                     file_link: bitrate,   //播放链接,
                     currentIndex:index,
-                    music:music
+                    music:music,
+                   
                 }) 
     }
     onGetMusicLists = () => {
@@ -469,14 +489,15 @@ if(this.state.songword==''){
             }
         }
 	   for(var i=0; i<this.state.time.length; i++){
-           
+         
             var c=width*0.1
 
             if(this.state.nowsong==i){
+
                 allChild.push(
                     //  循环排列的view中必须有唯一表示
                       <View key={i} style={{ width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
-                         <Text style={{flex:1,color:'#fff',fontSize:20}}>{this.state.songword[i]}</Text>
+                         <Text style={{flex:1,color:this.state.fontcolor,fontSize:20}}>{this.state.songword[i]}</Text>
                       </View>
                   );
                }
@@ -605,7 +626,10 @@ if(this.state.songword==''){
 
         }
       if(this.state.nowbccheck=='正在使用')
+      {
       this.state.bc=this.state.xuangif
+          this.state.opacitybca=0.5
+      }
 
         this.setState({modalVisible6: visible,
       });
@@ -618,6 +642,22 @@ if(this.state.songword==''){
      if(a==33){this.state.xuangif=require('../images/33.gif')
      this.state.nowgifname=this.state.gifname[2]}
      if(a==34){this.state.xuangif=require('../images/34.gif')
+     this.state.nowgifname=this.state.gifname[3]}
+     if(a==1){this.state.xuangif=require('../images/d1.jpg')
+    this.state.nowgifname=this.state.gifname[0]}
+     if(a==2){this.state.xuangif=require('../images/d2.jpg')
+     this.state.nowgifname=this.state.gifname[1]}
+     if(a==3){this.state.xuangif=require('../images/d3.jpg')
+     this.state.nowgifname=this.state.gifname[2]}
+     if(a==4){this.state.xuangif=require('../images/d4.jpg')
+     this.state.nowgifname=this.state.gifname[3]}
+     if(a==5){this.state.xuangif=require('../images/d5.jpg')
+    this.state.nowgifname=this.state.gifname[0]}
+     if(a==6){this.state.xuangif=require('../images/d6.jpg')
+     this.state.nowgifname=this.state.gifname[1]}
+     if(a==7){this.state.xuangif=require('../images/d7.jpg')
+     this.state.nowgifname=this.state.gifname[2]}
+     if(a==8){this.state.xuangif=require('../images/d8.jpg')
      this.state.nowgifname=this.state.gifname[3]}
      this.setState({modalVisible7: visible,
      });
@@ -648,6 +688,48 @@ if(this.state.songword==''){
         this.setState({modalVisible9: visible,
         });
        }
+       setModalVisible10(visible,a) {
+        musicauthorp:[require('../images/xu.png'),require('../images/zhao.png'),
+        require('../images/tian.png'),require('../images/yi.png'),require('../images/xue.png')
+        ,require('../images/mao.png'),require('../images/liu.png')]
+        if(this.state.music_author=='许嵩')
+        this.state.geshou=this.state.musicauthorp[0]
+        if(this.state.music_author=='赵照')
+        this.state.geshou=this.state.musicauthorp[1]
+        if(this.state.music_author=='田震')
+        this.state.geshou=this.state.musicauthorp[2]
+        if(this.state.music_author=='以冬')
+        this.state.geshou=this.state.musicauthorp[3]
+        if(this.state.music_author=='薛之谦')
+        this.state.geshou=this.state.musicauthorp[4]
+        if(this.state.music_author=='毛不易')
+        this.state.geshou=this.state.musicauthorp[5]
+        if(this.state.music_author=='刘心')
+        this.state.geshou=this.state.musicauthorp[6]
+        this.setState({modalVisible10: visible,
+        });
+       }
+       setModalVisible11(visible,a) {
+        this.state.nowintentphto=this.state.intnetphotos[a]
+       this.state.nowtext=this.state.listname[a]
+
+      if(this.state.listname[0]==this.state.datalistname[6]){
+          for(var i=0;i<this.state.textlist1.length;i++){
+            this.state.nowlisttext[i]=this.state.textlist1[i][0]
+            this.state.nowlisttext1[i]=this.state.textlist1[i][1]
+            
+          }
+       }
+       else{
+        for(var i=0;i<this.state.textlist1.length;i++){
+            this.state.nowlisttext[i]=this.state.textlist[i][0]
+            this.state.nowlisttext1[i]=this.state.textlist[i][1]
+
+          }
+    }
+        this.setState({modalVisible11: visible,
+        });
+       }
     checkphto(){
         if(this.state.backc==this.state.xuangif)
         this.state.nowbccheck='正在使用'
@@ -659,6 +741,19 @@ if(this.state.songword==''){
         });
 
     }
+    setModalVisible12(visible,a) {
+        
+        this.setState({modalVisible12: visible,
+        });
+       }
+    fontcolor(fc){
+        if(fc!=undefined){
+            this.state.fontcolor=fc
+            this.setState({
+                fc:this.state.fontcolor
+            })
+        }
+     }
 checkmusic(a){
     var a=a
     if(a!=undefined){
@@ -672,7 +767,6 @@ checkmusic(a){
                     this.state.music_name=this.state.nowlisttext[a]
                     this.state.songword=['纯音乐请欣赏']
             this.state.time=['00:00']
-                    console.log(this.state.muisc,123)
                 }
             }
            
@@ -729,8 +823,8 @@ checkmusic(a){
             }
             this.state.songword=data.musiclist[a-1];
             this.state.time=data.musictime[a-1];
-            this.state.music_author=this.state.nowlisttext1[a-1]
-            this.state.music_name=this.state.nowlisttext[a-1]
+            this.state.music_author=this.state.songs[a-1].music_author
+            this.state.music_name=this.state.songs[a-1].music_name
         }
         this.setState({muisc:this.state.music,
         });
@@ -776,8 +870,6 @@ qiehuan(){
 
 }
 		render() {
-            console.log(this.state.muisc)
-
 		return (
 			<View style={styles.container}>
 			<ImageBackground style={{flex:1}}
@@ -834,15 +926,35 @@ qiehuan(){
                         <View >
                         
                             <View style={{height:height*0.12,backgroundColor:'#999',width:width*0.9,borderRadius:width*0.02
-                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
-                            <Text style={{fontSize:25,color:'#fff'}}>当你老了</Text>
-                            <Text style={{fontSize:10,color:'#ccc'}}>2015年03月27日发行  歌曲详情</Text>
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02,opacity:this.state.opacitybca}}>
+                            <Text style={{fontSize:25,color:'#fff'}}>{this.state.music_name}</Text>
+                            <Text style={{fontSize:10,color:'#ccc'}}>{this.state.faxing} 歌曲详情</Text>
                             <View style={{borderTopColor:'#fff',borderTopWidth:1,marginTop:height*0.01,marginBottom:height*0.01}}>
                             </View>
-                            <Text style={{fontSize:13,color:'#fff'}}>歌手：赵照                                                                   专辑：当你老了</Text>
+                            <View style={{flexDirection:'row'}}>
+                               <TouchableWithoutFeedback   onPress={() => { this.setModalVisible10(true) }}>
+                                   <View style={{flexDirection:'row',alignItems:'center'}}>
+                                   <Image style={{width:0.05*width,height:0.05*width}} source={this.state.music_authorph} />
+
+                                    <Text style={{fontSize:13,color:'#fff',marginLeft:0.01*width}}>歌手：{this.state.music_author}</Text>
+                                   </View>
+
+
+                               </TouchableWithoutFeedback >
+                               <TouchableWithoutFeedback   onPress={() => { this.setModalVisible11(true) }}>
+                               <View style={{flexDirection:'row',alignItems:'center',marginLeft:0.3*width}}>
+                               <Image style={{width:0.05*width,height:0.05*width}} source={this.state.music_authorph1} />
+
+                                    <Text style={{fontSize:13,color:'#fff',marginLeft:0.01*width}}>  专辑：{this.state.music_name}</Text>
+
+                               </View>
+                               
+                               </TouchableWithoutFeedback>
+
+                            </View>
                             </View>
                             <View style={{height:height*0.2,backgroundColor:'#999',width:width*0.9,borderRadius:width*0.02
-                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02,opacity:this.state.opacitybca}}>
                             <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>相关歌曲</Text>
                             <Text style={{fontSize:18,color:'#ccc',marginBottom:height*0.01}}>2015年03月27日发行  歌曲详情</Text>
                             <Text style={{fontSize:18,color:'#ccc',marginBottom:height*0.01}}>别哭，我最爱的人-水木年华</Text>
@@ -850,9 +962,9 @@ qiehuan(){
                             <Text style={{fontSize:18,color:'#ccc',marginBottom:height*0.01}}>未给姐姐递出的信-赵雷</Text>
                             </View>
                             <View style={{height:height*0.12,backgroundColor:'#999',width:width*0.9,borderRadius:width*0.02
-                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
+                            ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02,opacity:this.state.opacitybca}}>
                             <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>其他版本</Text>
-                            <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>当你老了（原唱：赵照）</Text>
+                            <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>{this.state.music_name}（原唱：{this.state.music_author}）</Text>
                             <Text style={{fontSize:13,color:'#ccc',marginBottom:height*0.01}}>秋叶牧阳：青春之歌</Text>                          
                             </View>
                             <View style={{height:height*0.35,width:width*0.9,borderRadius:width*0.02
@@ -975,7 +1087,7 @@ qiehuan(){
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>分享</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}}   onPress={() => { this.setModalVisible10(true) }}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/musicor.png')} />
                                                             </View>
@@ -989,7 +1101,7 @@ qiehuan(){
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>加到歌单</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}}   onPress={() => { this.setModalVisible11(true) }}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/Album.png')} />
                                                             </View>
@@ -1058,7 +1170,7 @@ qiehuan(){
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>倍速播放</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.songwordpost()}>
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.songwordpost({music:this.state.music_name})}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/bill.jpg')} />
                                                             </View>
@@ -1249,10 +1361,12 @@ qiehuan(){
                             </View>
                         </View>
                         <View style={{flex:4,flexDirection:'row'}}>
-                            <View style={{flex:2}}>
-                            </View>
-                            <View style={{flex:2,marginLeft:width*0.6,justifyContent:'center', alignItems: 'center'}}>
-                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,marginTop:-0.05*width,color:'#fff'}}>
+
+                            <View style={{width:width, alignItems: 'center',flexDirection:'row'}}>
+                                <TouchableOpacity onPress={() => this.setModalVisible12(true)} style={{width:0.1*width,marginLeft:width*0.2,height:0.1*width,marginTop:-0.05*width,color:'#fff'}}>
+                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/wordshe.png')} />
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,marginLeft:width*0.4,height:0.1*width,marginTop:-0.05*width,color:'#fff'}}>
                                 <Image style={{width:0.1*width,height:0.1*width}} source={this.state.paused?require('../images/broadcast.png' ):require('../images/suspend.png')} />
                                 </TouchableOpacity>
                             </View>
@@ -1684,6 +1798,69 @@ qiehuan(){
                                                         <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
 
                                                                 <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/34.gif')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,1) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d1.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,1) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d1.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,2) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d2.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,3) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d3.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,4) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d4.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,5) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d5.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,6) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d6.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,7) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d7.jpg')} />
+
+                                                        </View>
+                                                        </TouchableOpacity>                                                     
+                                                        <TouchableOpacity onPress={() => { this.setModalVisible7(true,8) }}>
+                                                        <View style={{width:0.3*width,height:0.8*width,paddingLeft:0.05*width,}}  >
+
+                                                                <Image style={{width:0.25*width,height:0.35*width,borderRadius:width*0.02}} source={require('../images/d8.jpg')} />
 
                                                         </View>
                                                         </TouchableOpacity>
@@ -2200,7 +2377,307 @@ qiehuan(){
 
 
                                    </Modal>
-                                   </View>                      
+                                   </View>
+                                   <View>
+                                   <Modal
+                                   animationType = {"slide"}
+                                   transparent = {true}
+                                   visible = {this.state.modalVisible10}
+                                   >  
+
+<TouchableOpacity style={{width:'100%',height:'100%'}} onPress={() => { this.setModalVisible10(false) }}>
+                                                            <View style = {{
+                                                                    width:'100%',
+                                                                        height:'50%',
+                                                                        position:'absolute',
+                                                                        top:'0%',
+                                                                        justifyContent:"center",
+                                                                        alignItems:"center",
+                                                                        backgroundColor:'#000',
+                                                                        opacity:0.5
+                                                                    }}>
+                                                                    </View>
+                                                                    </TouchableOpacity>
+                                                                <View style = {{
+                                                                    width:'100%',
+                                                                        height:'50%',
+                                                                        position:'absolute',
+                                                                        top:'50%',
+                                                                        paddingLeft:width*0.04,
+                                                                        backgroundColor:'#fff',
+                                                                        opacity:1
+                                                                    }}>
+                                                                                <View style={{height:0.07*height,justifyContent:'center'}}>
+                                                                                <Text style={{color:'#444',}}>{this.state.music_author}</Text>
+                                                                                </View>
+                                                                               <View style={{width:width,height:0.6*width}}>
+                                                                               <Image style={{width:0.7*width,height:0.7*width}} source={this.state.geshou} />
+                                                                               </View>
+                                                                               
+                                                                    </View>
+
+
+                                   </Modal>
+                                   </View> 
+                                   <View>
+                                   <Modal
+                                   animationType = {"slide"}
+                                   transparent = {true}
+                                   visible = {this.state.modalVisible11}
+                                   >  
+
+                                   <View style = {{
+                                           width:'100%',
+                                               height:'100%',
+                                               position:'absolute',
+                                               top:'0%',
+
+                                               backgroundColor:'#888',
+                                               opacity:1,
+                                               justifyContent:'center',                                
+
+                                               alignItems: 'center'
+
+                                           }}>
+                                        <View style = {{
+                                           width:'100%',
+                                               height:'8%',
+                                               position:'absolute',                                
+
+                                               opacity:1,
+
+                                               top:'0%',
+                                               paddingTop:'3%'
+                                           }}>
+                                               <View style={{ flexDirection:'row',}}> 
+                                               <TouchableOpacity style={{alignItems: 'center'}}  onPress={() => {this.setModalVisible11(false) }}>
+                                                <Image style={{width:0.05*width,height:width*0.05,marginLeft:0.05*width,marginTop:0.05*width}} source={require('../images/return.png')} />
+                                           </TouchableOpacity>
+                                           <View style={{marginLeft:0.2*width,flexDirection:'row',alignItems:'center'}}>
+                                           <Image  style={{width:0.15*width,height:0.15*width,borderRadius:0.01*width}} source={this.state.music_authorph1} />
+                                            <Text style={{color:'#fff',marginLeft:0.03*width,fontSize:20}}>{this.state.music_author}</Text>
+                                           </View>
+                                
+                                               </View>
+
+                                           <View>
+
+                                           </View>
+
+
+                                       </View>
+                                       <View style = {{
+                                           width:'100%',
+                                               height:'100%',
+                                               position:'absolute',                                
+                                        backgroundColor:'#fff',
+                                               opacity:1,
+                                               backgroundColor:'#888',
+                                               top:'12%',
+                                              
+                                           }}>
+                                            <View style={{backgroundColor:'#fff',height:height,paddingTop:0.02*height}}>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(1)}}>
+                                                <Text  style={{fontSize:20,color:'#000'}}>1</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[0]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[0]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(2)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>2</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[1]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[1]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(3)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>3</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[2]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[2]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(4)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>4</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[3]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[3]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(5)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>5</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>   {this.state.nowlisttext[4]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[4]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(6)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>6</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[5]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[5]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(7)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>7</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[6]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[6]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(8)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>8</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[7]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[7]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(9)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>9</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>   {this.state.nowlisttext[8]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[8]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(10)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>10</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}> {this.state.nowlisttext[9]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[9]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(11)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>11</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[10]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[10]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={{marginLeft:0.1*width,flexDirection:'row',height:0.07*height}} onPress={() => {this.checkmusic(12)}}>
+                                            <Text  style={{fontSize:20,color:'#000'}}>12</Text>
+                                                <View style={{marginTop:-0.015*width,marginLeft:0.05*width}}>
+                                                <Text style={{fontSize:20,color:'#000'}}>  {this.state.nowlisttext[11]}</Text>
+                                                <Text style={{fontSize:12,color:'#000',marginLeft:0.03*width}}>{this.state.nowlisttext1[11]}</Text>
+                                                </View>
+                                                <TouchableOpacity onPress={() => this.play()} style={{width:0.1*width,height:0.1*width,color:'#000',marginLeft:0.5*width}}>
+                                                <Image style={{width:0.1*width,height:0.1*width}} source={require('../images/broadcast1.png' )} />
+                                                </TouchableOpacity>
+
+                                            </TouchableOpacity>
+                                            </View>
+
+                                          
+
+                                       </View>
+
+
+
+                                       </View>
+
+
+
+                                   </Modal>
+                                   </View>  
+                                   <View>
+                               <Modal
+                                animationType = {"slide"}
+                                transparent = {true}
+                                visible = {this.state.modalVisible12}
+                                >  
+                                <View
+                                            style = {{
+                                                width:'100%',
+                                                    height:'80%',
+                                                    position:'absolute',
+                                                    top:'0%',
+                                                    paddingLeft:0.1*width,
+                                                    backgroundColor:'#000',
+                                                    opacity:0,
+                                                    justifyContent:'center', alignItems: 'center'
+                                                    
+                                                }}>
+
+                                                    <TouchableOpacity style={{width:'100%',height:'100%'}}  onPress={() => { this.setModalVisible12(false) }}>
+					                                  
+                                                    </TouchableOpacity>
+                                                </View>
+                                <View
+                                            style = {{
+                                                width:'100%',
+                                                    height:'20%',
+                                                    position:'absolute',
+                                                    top:'80%',
+                                                    paddingLeft:0.1*width,
+                                                    backgroundColor:'#000',
+                                                    opacity:1,
+                                                    justifyContent:'center', alignItems: 'center'
+                                                    
+                                                }}>
+                                                    <View style={{width:0.3*width,height:0.1*width,flexDirection:'row',paddingTop:0.01*width}}>
+                                                    <Text style={{color:"#fff",fontSize:20,width:0.3*width,marginLeft:-0.3*width}}>选择字体颜色</Text>
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginLeft:0.4*width}}  onPress={() => { this.setModalVisible12(false) }}>
+					                                    <Image style={{width:0.05*width,height:0.05*width}} source={require('../images/down.png')} />
+                                                    </TouchableOpacity>
+                                                    </View>
+                                                    <View style={{flexDirection:'row',marginLeft:-0.08*width,marginTop:-0.05*height}}>
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05,}} onPress={() => { this.fontcolor('#fff') }}>
+                                                        <View style={{justifyContent:'center', alignItems: 'center',backgroundColor:'#313131',width:0.2*width,height:0.2*width}}>
+                                                        <Text style={{color:'#fff'}}>白色</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05,marginLeft:0.01*width}} onPress={() => {this.fontcolor('blue')}}>
+                                                        <View style={{justifyContent:'center', alignItems: 'center',backgroundColor:'#313131',width:0.2*width,height:0.2*width}}>
+                                                        <Text style={{color:'blue'}}>蓝色</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05,marginLeft:0.01*width}} onPress={() => {this.fontcolor('red')}}>
+                                                        <View style={{justifyContent:'center', alignItems: 'center',backgroundColor:'#313131',width:0.2*width,height:0.2*width}}>
+                                                        <Text style={{color:'red'}}>红色</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05,marginLeft:0.01*width}} onPress={() => {this.fontcolor('#22d59d') }}>
+                                                        <View style={{justifyContent:'center', alignItems: 'center',backgroundColor:'#313131',width:0.2*width,height:0.2*width}}>
+                                                        <Text style={{color:'#22d59d'}}>浅绿色</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
+                                                    </View>
+                                                </View>
+                                </Modal>
+                               </View>                     
                 <PlayList playlistvisible = {this.state.playlistvisible} currentIndex = {this.state.currentIndex} />
                 </ImageBackground>
         </View>
