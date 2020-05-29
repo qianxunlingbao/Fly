@@ -27,7 +27,7 @@ import Sound from 'react-native-sound'
 import Swiper from 'react-native-swiper';
 import PlayList from './PlayList';
 import {nplaylist,likelist,recentplay} from './DS'
-
+let data = require('./data');
 let lyrObj = []   // 存放歌词
 let {width, height} = Dimensions.get('window');
 let mp3 = "";
@@ -73,7 +73,7 @@ export default class Doc extends Component{
             moveclick:false,
             nowsong:0,
             modalVisible:false,
-            songword:[],
+            songword:[''],
             volume:1,
             sliderValuevolume: 0,    //Slide的value
             modalVisible1:false,
@@ -454,55 +454,37 @@ export default class Doc extends Component{
         if(p==undefined)
         p=0
         var allChild = [];
-		var songword = ['你若化成风', '我幻化成雨', '守护你身边', '一笑为红颜', '你若化成风'
-		, '我幻化成雨', '爱锁在眉间', '似水往昔浮流年', '乖乖 我的小乖乖',
-		 '你的样子太可爱', '追你的男生每个都超级厉害', '我却在考虑怎么Say hi', '害羞的我这样下去要怎么办'
-		, '怎么办 爱情甜又酸', '我不是Boss', '没有超大的House', '如果送你Rose', 
-		'可不可以给我Chance', '不想看时间这么一点一滴飞逝', '老夫子带着假发', '我不要三寸金莲胡话',
-		'想和你跳超短裙的恰恰', '想带你回家见妈妈', '你若化成风', '我幻化成雨',
-		'守护你身边','一笑为红颜','你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年','周末找个借口和你泛舟',
-		'一壶清酒 江水悠悠 我心悠悠','这感情Just for you','表面平静其实内心早已风起云涌',
-		'缘字诀 几番轮回 你锁眉','哎哟你的心情左右我的情绪','虽然有些问题真的很难搞定','我还是充满信心',
-		'老夫子带着假发','我不要三寸金莲胡话','想和你跳超短裙的恰恰','想带你回家见妈妈','你若化成风','我幻化成雨','守护你身边','一笑为红颜',
-		'你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年','你千万不要装酷','呆的像大脑短路','我不收你的礼物','只想收一点点幸福','请领悟',
-		'请拿出速度奉我为公主','别磨蹭的像胖叔叔','有压力也要顶住','坚持自己的道路','真心去付出随时准备自我颠覆','这一首有点复古',
-		'不预示下首的套路','踩着Hip-Hop的鼓点陪你跳恰恰舞','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟嘟嘟嘟嘟',
-		'嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟嘟嘟嘟嘟','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨',
-		'爱锁在眉间','似水往昔浮流年','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年'];
-		var time=['00:06','00:09','00:11','00:14','00:17','00:19','00:22','00:24','00:27','00:29','00:31','00:33','00:35',
-		'00:37','00:40','00:41','00:42','00:43','00:45','00:48','00:50','00:53','00:55','00:58','01:00','01:03','01:06','01:08',
-		'01:11','01:13','01:16','01:19','01:21','01:24','01:26','01:29','01:32','01:35','01:38','01:39','01:42','01:44',
-		'01:47','01:49','01:52','01:55','01:57','02:00','02:02','02:05','02:07','02:10','02:12','02:13','02:14','02:16','02:16',
-		'02:18','02:20','02:22','02:23','02:25','02:27','02:28','02:31','02:32','02:33','02:34','02:36','02:37','02:39','02:41','02:42','02:44','02:45','02:46',
-		'02:47','02:49','02:54','02:57','02:59','03:02','03:04','03:07','03:09','03:12','03:15','03:17','03:20','03:22','03:25','03:27','03:30','03:33'];
-		this.state.songword=songword;
-		this.state.time=time;
+if(this.state.songword==''){
+	this.state.songword=data.musiclist[0];
+		this.state.time=data.musictime[0];
+}
+	
 		var index=0;
         // 遍历
       
-        for(var j=0;j<time.length;j++){
+        for(var j=0;j<this.state.time.length;j++){
             if(this.state.time[j]==this.state.nowMin+':'+this.state.nowSec)
             {
                 this.state.nowsong=j
             }
         }
-	   for(var i=0; i<songword.length; i++){
+	   for(var i=0; i<this.state.time.length; i++){
            
             var c=width*0.1
 
             if(this.state.nowsong==i){
                 allChild.push(
                     //  循环排列的view中必须有唯一表示
-                      <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
-                         <Text style={{flex:1,color:'#fff'}}>{this.state.songword[i]}</Text>
+                      <View key={i} style={{ width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
+                         <Text style={{flex:1,color:'#fff',fontSize:20}}>{this.state.songword[i]}</Text>
                       </View>
                   );
                }
                else{
                 allChild.push(
                     //  循环排列的view中必须有唯一表示
-                      <View key={i} style={{backgroundColor:songword[i], width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
-                         <Text style={{flex:1,color:'#000'}}>{this.state.songword[i]}</Text>
+                      <View key={i} style={{ width:width, height:width*0.08,marginTop:-width*0.08*[index]}}>
+                         <Text style={{flex:1,color:'#000',fontSize:12}}>{this.state.songword[i]}</Text>
                       </View>
                   );
                }
@@ -698,21 +680,24 @@ checkmusic(a){
         else{
             if(a==1){
                 this.state.music='https://music.163.com/song/media/outer/url?id=5255987.mp3'
+
             }
             if(a==2){
                 this.state.music='https://music.163.com/song/media/outer/url?id=26090100.mp3'
+
     
             }
             if(a==3){
-                this.state.music='hhttps://music.163.com/song/media/outer/url?id=418990013.mp3'
-    
+                this.state.music='https://music.163.com/song/media/outer/url?id=418990013.mp3'
+
             }
             if(a==4){
             this.state.music='https://music.163.com/song/media/outer/url?id=537578259.mp3'
-                
+
             }
             if(a==5){
                 this.state.music='https://music.163.com/song/media/outer/url?id=133998.mp3'
+
             }
             
             if(a==6){
@@ -742,8 +727,10 @@ checkmusic(a){
                 this.state.music='https://music.163.com/song/media/outer/url?id=1449782341.mp3'
     
             }
-            this.state.music_author=this.state.nowlisttext1[a]
-            this.state.music_name=this.state.nowlisttext[a]
+            this.state.songword=data.musiclist[a-1];
+            this.state.time=data.musictime[a-1];
+            this.state.music_author=this.state.nowlisttext1[a-1]
+            this.state.music_name=this.state.nowlisttext[a-1]
         }
         this.setState({muisc:this.state.music,
         });
