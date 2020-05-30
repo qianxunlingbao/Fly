@@ -13,6 +13,7 @@ const options = {
       path: 'images',
     },
 };
+let data = require('./data');
 
 class songwordpost extends Component {
     constructor(props) {
@@ -75,7 +76,11 @@ class songwordpost extends Component {
             backc:require('../images/1.png'),
             fontcolor:'black',
             imageUrl:'',
-            t:'0'
+            t:'0',
+            textlist:[['你若成风','许嵩'],['当你老了','赵照']
+            ,['你的故事','以冬'],['谢庸一生','池年'],['老    街    ','李荣浩']
+            ,['如果当时','许嵩'],['未见青老','以冬'],['如约而至','许嵩']
+            ,['铿锵玫瑰','田震'],['像风一样','薛之谦'],['好几年   ','刘心'],['入    海    ','毛不易']],
         }
     }
     //默认模态视图不可见
@@ -125,26 +130,15 @@ class songwordpost extends Component {
         if(p==undefined)
         p=0
         var allChild = [];
-		var songword = ['你若化成风', '我幻化成雨', '守护你身边', '一笑为红颜', '你若化成风'
-		, '我幻化成雨', '爱锁在眉间', '似水往昔浮流年', '乖乖 我的小乖乖',
-		 '你的样子太可爱', '追你的男生每个都超级厉害', '我却在考虑怎么Say hi', '害羞的我这样下去要怎么办'
-		, '怎么办 爱情甜又酸', '我不是Boss', '没有超大的House', '如果送你Rose', 
-		'可不可以给我Chance', '不想看时间这么一点一滴飞逝', '老夫子带着假发', '我不要三寸金莲胡话',
-		'想和你跳超短裙的恰恰', '想带你回家见妈妈', '你若化成风', '我幻化成雨',
-		'守护你身边','一笑为红颜','你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年','周末找个借口和你泛舟',
-		'一壶清酒 江水悠悠 我心悠悠','这感情Just for you','表面平静其实内心早已风起云涌',
-		'缘字诀 几番轮回 你锁眉','哎哟你的心情左右我的情绪','虽然有些问题真的很难搞定','我还是充满信心',
-		'老夫子带着假发','我不要三寸金莲胡话','想和你跳超短裙的恰恰','想带你回家见妈妈','你若化成风','我幻化成雨','守护你身边','一笑为红颜',
-		'你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年','你千万不要装酷','呆的像大脑短路','我不收你的礼物','只想收一点点幸福','请领悟',
-		'请拿出速度奉我为公主','别磨蹭的像胖叔叔','有压力也要顶住','坚持自己的道路','真心去付出随时准备自我颠覆','这一首有点复古',
-		'不预示下首的套路','踩着Hip-Hop的鼓点陪你跳恰恰舞','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟 ','嘟嘟嘟嘟嘟 ','嘟嘟嘟嘟嘟嘟嘟',
-		'嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟','嘟嘟嘟嘟嘟','嘟嘟嘟嘟嘟嘟嘟','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨',
-		'爱锁在眉间','似水往昔浮流年','你若化成风','我幻化成雨','守护你身边','一笑为红颜','你若化成风','我幻化成雨','爱锁在眉间','似水往昔浮流年'];
-			this.state.songword=songword;
-        // 遍历
-        var c=width*0.1
+        console.log(this.props.music)
 
-	   for(var i=0; i<songword.length; i++){
+                    this.state.songword=data.musiclist[this.props.music];
+                    this.state.time=data.musictime[this.props.music];
+                    this.state.music_name=this.state.textlist[this.props.music][1]
+
+ 
+        var c=width*0.1
+	   for(var i=0; i<this.state.songword.length; i++){
            if(this.state.modalVisible5==false)
                         allChild.push(
                             //  循环排列的view中必须有唯一表示 
@@ -157,7 +151,7 @@ class songwordpost extends Component {
                                  flexDirection:'row'
                                  }} >
                                  
-                                    <Text style={{flex:1,color:'#fff',fontSize:18,marginLeft:0.1*width,marginTop:0.025*width}}>{songword[i]}</Text>
+                                    <Text style={{flex:1,color:'#fff',fontSize:18,marginLeft:0.1*width,marginTop:0.025*width}}>{this.state.songword[i]}</Text>
                                     <Image style={{width:0.05*width,height:0.05*width,marginTop:0.025*width,opacity:this.state.xuanzhong[i]=='#527d50'?1:0,marginRight:0.05*width}} source={require('../images/wt.png')} />                                    
                               </View>
                               </TouchableOpacity>
@@ -216,9 +210,10 @@ class songwordpost extends Component {
         });
       }
       setModalVisible5(visible) {
+
+       
         for(var i=0; i<this.state.songword.length; i++){
             if (this.state.checksong[i]==''&&visible==true||this.state.checksong[i]==undefined){
-            
                }
                else{
                 this.state.modalVisible5=visible
@@ -245,7 +240,7 @@ class songwordpost extends Component {
       });
     }
     setModalVisible9(visible) {
-        this.state.checksong[i]!=''
+        
         this.state.modalVisible9=visible
         this.setState({modalVisible9: this.state.modalVisible9,
       });
@@ -334,7 +329,7 @@ class songwordpost extends Component {
                                                     </View>
                                                 {this.renderChildView()} 
                                                 <View style={{width:0.65*width,height:0.15*width,marginTop:0.1*width}} >
-                                                        <Text>你若成风 许嵩</Text>
+                                                        <Text>{this.state.textlist[this.props.music][0]} {this.state.music_name}</Text>
                                                         <Text>微音</Text>
                                                     </View>
                                                 </ScrollView>
@@ -556,8 +551,8 @@ class songwordpost extends Component {
                                             
                                             
                                         }}>
-                                            <Text style={{fontSize:25,color:'#fff'}}>你若成风</Text>
-                                            <Text style={{fontSize:15,color:'#fff',marginTop:0.01*height}}>许嵩</Text>
+                                            <Text style={{fontSize:25,color:'#fff'}}>{this.state.textlist[this.props.music][0]}</Text>
+                                            <Text style={{fontSize:15,color:'#fff',marginTop:0.01*height}}>{this.state.music_name}</Text>
                                         </View>
                                     <View
                                     style = {{

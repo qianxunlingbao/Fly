@@ -98,7 +98,7 @@ export default class Doc extends Component{
             fontcolor:'black',
             nowfengmian:['方形封面',require('../images/ye1.png'),width*0.05],
             checkyemian:[['方形封面',require('../images/ye1.png'),width*0.05],['旋转封面',require('../images/ye2.png'),width*0.49],['静态封面',require('../images/ye3.png'),width*0.49]],
-            firstfengmian:['方形封面',require('../images/2.jpg'),width*0.05,0.4*width],
+            firstfengmian:['方形封面',require('../images/2.jpg'),width*0.05,0.4*width,width*0.05],
             Rotate:'0deg',
             movepicture:0,
             Rotategif:'0deg',
@@ -177,7 +177,7 @@ export default class Doc extends Component{
     opacitybca:1,
     musicauthorp:[require('../images/xu.png'),require('../images/zhao.png'),
     require('../images/tian.png'),require('../images/yi.png'),require('../images/xue.png')
-    ,require('../images/mao.png'),require('../images/liu.png')],
+    ,require('../images/mao.png'),require('../images/liu.png'),require('../images/chi.png')],
     faxing:'',
     music_authorph:'',
     music_authorph1:'',
@@ -195,9 +195,10 @@ export default class Doc extends Component{
             
             
             if(this.state.paused){
+                
                 var rotate
                  rotate=sliderValue%10
-                 this.state.firstfengmian[1]=data.photo[this.state.songs[this.state.currentIndex].music_id-1];
+                 this.state.firstfengmian[1]=data.photo[this.state.currentIndex];
                  this.state.firstfengmian[3]=0.4*width
                  this.state.Rotate=rotate*36+'deg'
             }
@@ -205,10 +206,17 @@ export default class Doc extends Component{
           
         }
         else{
-            
-        this.state.firstfengmian[1]=data.photo[this.state.songs[this.state.currentIndex].music_id-1];
-            this.state.firstfengmian[3]=0.4*width
-            this.state.Rotate=0+'deg'
+            if(this.state.songs[this.state.currentIndex].music_id==0){
+                this.state.firstfengmian[1]=data.photo[this.state.currentIndex];
+                this.state.firstfengmian[3]=0.4*width
+                this.state.Rotate=0+'deg'
+            }
+            else{
+                this.state.firstfengmian[1]=data.photo[this.state.currentIndex];
+                this.state.firstfengmian[3]=0.72*width
+                this.state.Rotate=0+'deg'
+            }
+       
         }
         let min = Math.floor(sliderValue / 60);
         let second = sliderValue - min * 60;
@@ -267,6 +275,16 @@ export default class Doc extends Component{
         this.state.music_authorph1=data.photo[that.state.songs[index].music_id-1];
         this.state.firstfengmian[1]=data.photo[that.state.songs[index].music_id-1];
         this.state.music_authorph=data.musicphto[that.state.songs[index].music_id-1];
+
+        if(that.state.songs[index].music_id-1==0){
+            this.state.firstfengmian[1]=this.state.music_authorph1
+            this.state.firstfengmian[3]=0.4*width
+        }
+        else{
+            this.state.firstfengmian[1]=data.photo[that.state.songs[index].music_id-1];
+            this.state.firstfengmian[3]=0.72*width
+
+        }
 				let bitrate = that.state.songs[index].music_value;
 				let music_name=that.state.songs[index].music_name;
                 let music_author=that.state.songs[index].music_author;
@@ -613,6 +631,7 @@ if(this.state.songword==''){
                 this.state.nowfengmian[0]=this.state.checkyemian[2][0]
                 this.state.nowfengmian[1]=this.state.checkyemian[2][1]
                 this.state.nowfengmian[2]=this.state.checkyemian[2][2]
+                this.state.firstfengmian[4]=this.state.nowfengmian[2]
             }
         }
         this.setState({nowfengmian: this.state.nowfengmian,
@@ -706,6 +725,8 @@ if(this.state.songword==''){
         this.state.geshou=this.state.musicauthorp[5]
         if(this.state.music_author=='刘心')
         this.state.geshou=this.state.musicauthorp[6]
+        if(this.state.music_author=='池年')
+        this.state.geshou=this.state.musicauthorp[7]
         this.setState({modalVisible10: visible,
         });
        }
@@ -1022,7 +1043,7 @@ qiehuan(){
                         <View style={{flex:30,justifyContent:'center',alignItems: 'center'}}>
                             <View style={{width:width*0.72,height:width*0.72,justifyContent:'center',alignItems: 'center',backgroundColor:'#000',borderRadius:this.state.firstfengmian[2]}}>
                                
-                                <Image style={{width:this.state.firstfengmian[3],height:this.state.firstfengmian[3],transform:[{rotate:this.state.paused?this.state.Rotate:this.state.Rotategif }]}} source={this.state.firstfengmian[1]} />
+                                <Image style={{width:this.state.firstfengmian[3],height:this.state.firstfengmian[3],borderRadius:this.state.firstfengmian[4],transform:[{rotate:this.state.paused?this.state.Rotate:this.state.Rotategif }]}} source={this.state.firstfengmian[1]} />
 
                             </View>
                         </View>
@@ -1170,7 +1191,7 @@ qiehuan(){
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>倍速播放</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.songwordpost({music:this.state.music_name})}>
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.songwordpost({music:this.state.currentIndex})}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/bill.jpg')} />
                                                             </View>
