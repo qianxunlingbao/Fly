@@ -177,7 +177,7 @@ export default class Doc extends Component{
     opacitybca:1,
     musicauthorp:[require('../images/xu.png'),require('../images/zhao.png'),
     require('../images/tian.png'),require('../images/yi.png'),require('../images/xue.png')
-    ,require('../images/mao.png'),require('../images/liu.png'),require('../images/chi.png')],
+    ,require('../images/mao.png'),require('../images/liu.png'),require('../images/chi.png'),require('../images/li.png')],
     faxing:'',
     music_authorph:'',
     music_authorph1:'',
@@ -198,7 +198,7 @@ export default class Doc extends Component{
                 
                 var rotate
                  rotate=sliderValue%10
-                 this.state.firstfengmian[1]=data.photo[this.state.currentIndex];
+                 this.state.firstfengmian[1]=data.photo[this.state.songs[this.state.currentIndex].music_id-1];
                  this.state.firstfengmian[3]=0.4*width
                  this.state.Rotate=rotate*36+'deg'
             }
@@ -207,12 +207,13 @@ export default class Doc extends Component{
         }
         else{
             if(this.state.songs[this.state.currentIndex].music_id==0){
-                this.state.firstfengmian[1]=data.photo[this.state.currentIndex];
+                this.state.firstfengmian[1]=data.photo[this.state.songs[this.state.currentIndex].music_id-1];
                 this.state.firstfengmian[3]=0.4*width
+                
                 this.state.Rotate=0+'deg'
             }
             else{
-                this.state.firstfengmian[1]=data.photo[this.state.currentIndex];
+                this.state.firstfengmian[1]=data.photo[this.state.songs[this.state.currentIndex].music_id-1];
                 this.state.firstfengmian[3]=0.72*width
                 this.state.Rotate=0+'deg'
             }
@@ -283,7 +284,6 @@ export default class Doc extends Component{
         else{
             this.state.firstfengmian[1]=data.photo[that.state.songs[index].music_id-1];
             this.state.firstfengmian[3]=0.72*width
-
         }
 				let bitrate = that.state.songs[index].music_value;
 				let music_name=that.state.songs[index].music_name;
@@ -602,6 +602,7 @@ if(this.state.songword==''){
        if(b==1){
         this.state.firstfengmian[0]=this.state.nowfengmian[0]
         this.state.firstfengmian[2]=this.state.nowfengmian[2]
+        this.state.firstfengmian[4]= this.state.firstfengmian[2]
        }
         this.setState({modalVisible4: visible,
       });
@@ -631,7 +632,7 @@ if(this.state.songword==''){
                 this.state.nowfengmian[0]=this.state.checkyemian[2][0]
                 this.state.nowfengmian[1]=this.state.checkyemian[2][1]
                 this.state.nowfengmian[2]=this.state.checkyemian[2][2]
-                this.state.firstfengmian[4]=this.state.nowfengmian[2]
+
             }
         }
         this.setState({nowfengmian: this.state.nowfengmian,
@@ -727,6 +728,8 @@ if(this.state.songword==''){
         this.state.geshou=this.state.musicauthorp[6]
         if(this.state.music_author=='池年')
         this.state.geshou=this.state.musicauthorp[7]
+        if(this.state.music_author=='李荣浩')
+        this.state.geshou=this.state.musicauthorp[8]
         this.setState({modalVisible10: visible,
         });
        }
@@ -1191,7 +1194,7 @@ qiehuan(){
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>倍速播放</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.songwordpost({music:this.state.currentIndex})}>
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.songwordpost({music:this.state.songs[this.state.currentIndex].music_id-1})}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.09*width,height:0.09*width}} source={require('../images/bill.jpg')} />
                                                             </View>
@@ -1233,7 +1236,7 @@ qiehuan(){
                                                             </View>
                                                             <Text style={{color:'#fff',fontSize:15,marginTop:height*0.015}}>播放器样式</Text>
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.report({music_name:this.state.music_name})}>
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center',marginTop:height*0.05}} onPress={()=>Actions.report({music_name:this.state.songs[this.state.currentIndex].music_id-1})}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.07*width}} source={require('../images/Report.png')} />
                                                             </View>
