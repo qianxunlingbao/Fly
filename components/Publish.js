@@ -1020,7 +1020,7 @@ qiehuan(){
                             <View style={{height:height*0.3,width:width*0.9,borderRadius:width*0.02
                             ,paddingLeft:width*0.03,paddingTop:height*0.01,marginBottom:height*0.02}}>
                             <Text style={{fontSize:18,color:'#fff',marginBottom:height*0.01}}>相关视频</Text> 
-                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}}  onPress={()=>{Actions.reportss({id:[this.state.music_name,this.state.music_author]})}}>
+                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}}  onPress={()=>{Actions.reportss({id:[this.state.music_name,this.state.music_author,this.state.songs[this.state.currentIndex].music_id-1]})}}>
                                 <Image  style={{width:0.3*width,height:0.15*width,borderRadius:0.01*width}}  source={{uri:this.state.intnetphoto[0]}} />
                                 <View>
                                 <Text style={{color:'#fff',marginLeft:0.03*width}}>{this.state.music_name}</Text>
@@ -1028,7 +1028,7 @@ qiehuan(){
                                 </View>
                                 
                             </TouchableOpacity>
-                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}}  onPress={()=>{Actions.reportss()}}>
+                            <TouchableOpacity   style={{width:width*0.8,flexDirection:'row',height:0.15*width,alignItems: 'center',marginBottom:0.03*width}} onPress={()=>{Actions.reportss({id:[this.state.music_name,this.state.music_author,this.state.songs[this.state.currentIndex].music_id-1]})}}>
                                 <Image  style={{width:0.3*width,height:0.15*width,borderRadius:0.01*width}}  source={{uri:this.state.intnetphoto[1]}} />
                                 <View>
                                 <Text style={{color:'#fff',marginLeft:0.03*width}}>{this.state.music_name}（KTV版）</Text>

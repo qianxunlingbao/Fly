@@ -411,7 +411,7 @@ changeSelected() {
                               <Text style={{color:'#888'}}>56.8万次播放    2008-01-05</Text>
                               <Text style={{color:'#888'}}>总得分：214.697</Text>
                               <View style={{flexDirection:'row',width:this.state.videowidth}}>
-                              <TouchableOpacity style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}} onPress={()=>Actions.report({music_name:this.state.music_name})}>
+                              <TouchableOpacity style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}} onPress={()=>Actions.report({music_name:this.props.id[2]})}>
                               <Image style={{width:0.03*this.state.videowidth,height:0.03*this.state.videowidth}} source={require('../images/Report.png')} />
                               <Text style={{color:'#888'}}>举报该视频</Text>
                               </TouchableOpacity>
