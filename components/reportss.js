@@ -13,13 +13,16 @@ import {
   TextStyle,
   TouchableWithoutFeedback,
     ToastAndroid,
-    StyleSheet, Dimensions, Toast, ActivityIndicator, Slider,Image,
-    ImageBackground
+    StyleSheet, Dimensions, Toast, ActivityIndicator, Slider,
+    TextInput,
+    Image,
+    Button
 
 } from "react-native";
 import Video from "react-native-video";
 let {width, height} = Dimensions.get('window');
 import {Actions} from 'react-native-router-flux';
+let data = require('./data');
 
 class reportss extends Component {
 
@@ -78,7 +81,6 @@ class reportss extends Component {
       'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=318153788,647856491&fm=26&gp=0.jpg',
       'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2363665936,3469093747&fm=26&gp=0.jpg',
       'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3466220452,2116854941&fm=26&gp=0.jpg'],
-      isAdd: false,
           video:'https://1533543264.github.io/web/dang.mp4',
           videoname:[['当你老了',"许嵩"],['风雨彩虹铿锵玫瑰',"田震"],['如约而至',"许嵩"],
           ['像风一样',"薛之谦"],['好几年',"刘心"],['全世界你最好',"许嵩"],['老街','李荣浩'],['你若成风',"许嵩"]],
@@ -88,24 +90,51 @@ class reportss extends Component {
           'https://levi9420.github.io/Web2-javaScript-/myVideo/haojinian.mp4',
           'https://1533543264.github.io/web/quan.mp4',
           'https://levi9420.github.io/Web2-javaScript-/myVideo/laojie.mp4',
-          'https://levi9420.github.io/Web2-javaScript-/myVideo/niruochengfeng.mp4',]
-
+          'https://levi9420.github.io/Web2-javaScript-/myVideo/niruochengfeng.mp4',],
+          isAdd: false,
+          isloading: false,
+          num: 0,
+          wordId: '',//评论的id
+          musicId: 5,//评论音乐的id
+          userId: 6,//评论者id
+          wordValue: '',//评论内容
+            num1:0,
+            indexdata:0,
         };
       }
       
     componentDidMount() {
-      
-      fetch('http://49.235.231.110:8800/musicword')
-          .then(res => res.json())
-          .then(res => {
-              this.setState({
-                  data: res.data//将评论数据赋值给worddata
-              })
-          })
+    this.state.indexdata=data.musictimes[this.props.id[2]]
+
+        if(!this.state.isloading){
+            return ;
+        }else{
+        fetch('http://49.235.231.110:8800/musicword')
+            .then(res => res.json())
+            .then(res => {
+                this.state.num=res.data.length
+                this.setState({
+                    data: res.data,
+                    num: res.data.length
+                })
+            })
+        }
 
   }
+  add = () => {
+     
+    console.log('添加成功', this.state.num)
+    fetch(`http://49.235.231.110:8800/addWord/${this.state.num+1}/${this.props.id[2]}/${this.state.userId}/${this.state.wordValue}`)
+        .then(() => {
+            
+        });
+        this.state.num++
+       
+}
   componentWillMount() {
-    
+    this.setState({
+        isloading:true
+    })
     this.state.music_name=this.props.id[0]
     this.state.music_author=this.props.id[1]
     this.setState({
@@ -113,30 +142,44 @@ class reportss extends Component {
     })
     if(this.props.id[0]=='当你老了'){
     this.state.video=this.state.videodizhi[0]
+    this.state.indexdata=data.musictimes[0]
     }
     if(this.props.id[0]=='风雨彩虹铿锵玫瑰'){
       this.state.video=this.state.videodizhi[1]
+      this.state.indexdata=data.musictimes[1]
 
     }
     if(this.props.id[0]=='如约而至'){
       this.state.video=this.state.videodizhi[2]
+    this.state.indexdata=data.musictimes[2]
+
   }
     if(this.props.id[0]=='像风一样'){
       this.state.video=this.state.videodizhi[3]
+    this.state.indexdata=data.musictimes[3]
+
     }
     if(this.props.id[0]=='好几年'){
       this.state.video=this.state.videodizhi[4]
+    this.state.indexdata=data.musictimes[4]
+
     }
     if(this.props.id[0]=='全世界你最好'){
       this.state.video=this.state.videodizhi[5]
+    this.state.indexdata=data.musictimes[5]
+
     }
     
     if(this.props.id[0]=='老街'){
       this.state.video=this.state.videodizhi[6]
+    this.state.indexdata=data.musictimes[6]
+
 
     }
     if(this.props.id[0]=='你若成风'){
       this.state.video=this.state.videodizhi[7]
+    this.state.indexdata=data.musictimes[7]
+
     }
     fetch('http://49.235.231.110:8800/musicword')
         .then(res => res.json())
@@ -150,6 +193,7 @@ checkvideo(a){
 this.state.music_name=this.state.videoname[a][0]
 this.state.music_author=this.state.videoname[a][1]
 this.state.video=this.state.videodizhi[a]
+this.state.indexdata=data.musictimes[a]
 this.setState({
   video:this.state.video
 })
@@ -315,9 +359,9 @@ changeSelected() {
                                             opacity:this.state.opacityvideo
                                             }}>
                                               <View  style={{marginLeft:0.8*this.state.videowidth,marginTop:-0.2*this.state.videowidth,height:0.15*this.state.videowidth}}>
-                                              <TouchableWithoutFeedback onPress={()=>Actions.pop()}>
+                                              <TouchableOpacity onPress={()=>Actions.pop()}>
                                                 <Image style={{width:0.05*this.state.videowidth,height:0.05*this.state.videowidth}} source={require('../images/x.png')} />
-                                            </TouchableWithoutFeedback>
+                                            </TouchableOpacity>
                                                 </View>
 
                                           
@@ -408,7 +452,7 @@ changeSelected() {
                               <Text style={{fontSize:20}}>{this.state.music_name}</Text>
                               </View>
                               <Text style={{color:'#888'}}>{this.state.music_author}</Text>
-                              <Text style={{color:'#888'}}>56.8万次播放    2008-01-05</Text>
+                              <Text style={{color:'#888'}}>56.8万次播放    {this.state.indexdata}</Text>
                               <Text style={{color:'#888'}}>总得分：214.697</Text>
                               <View style={{flexDirection:'row',width:this.state.videowidth}}>
                               <TouchableOpacity style={{justifyContent:'center',alignItems:'center',flexDirection:'row'}} onPress={()=>Actions.report({music_name:this.props.id[2]})}>
@@ -496,13 +540,19 @@ changeSelected() {
                     <FlatList
                         data={this.state.data}
                         refreshing={this.state.isAdd}
+                        extraData={this.state.data}
                         onRefresh={() => {
                             fetch('http://49.235.231.110:8800/musicword')
                                 .then(res => res.json())
                                 .then(res => {
+                                    console.log(res.data)
                                     this.setState({
                                         data: res.data//将评论数据赋值给worddata
                                     })
+                                })
+                           
+                                this.setState({
+                                    isAdd:false
                                 })
                         }}
                         renderItem={({ item, index }, key = { index }) =>
@@ -589,13 +639,14 @@ changeSelected() {
                                         </TouchableOpacity>
                                 }
                                 <TouchableOpacity
+                                   disabled={item.user_id==this.state.userId?false:true}
                                     onPress={() => {
-                                        console.log(index)
                                         fetch(`http://49.235.231.110:8800/deleteWord/${this.state.data[index].word_id}`)
                                             .then(() => {
                                                 fetch('http://49.235.231.110:8800/musicword')
                                                     .then(res => res.json())
                                                     .then(res => {
+
                                                         this.setState({
                                                             data: res.data//将评论数据赋值给worddata
                                                         })
@@ -607,7 +658,8 @@ changeSelected() {
                                     <Image style={
                                         {
                                             width: width * 0.06,
-                                            height: width * 0.06
+                                            height: width * 0.06,
+                                            opacity:item.user_id==this.state.userId?1:0
                                         }
 
                                     }
@@ -615,8 +667,62 @@ changeSelected() {
                                     />
                                 </TouchableOpacity>
                             </View>
+                            
                         }
                     />
+                                            <View style={
+                            {
+                                justifyContent:'center',
+                                alignItems:'center',
+                                flexDirection:'row'
+                            }
+                        }>
+                            <TextInput
+                                style={{
+                                    width: width * 0.6,
+                                    height: height * 0.05,
+                                    borderColor: 'gray',
+                                    borderWidth: 1,
+                                    borderRadius: 25,
+                                    opacity: 0.8,
+                                    backgroundColor: '#eeeaaa',
+                                    marginTop: 20
+                                }}
+                                placeholder="请输入评论内容"
+                                keyboardType='default'
+                                placeholderTextColor="grey"
+                                onChangeText={
+                                    (value) => {
+                                        this.setState(
+                                            { wordValue: value + '' }
+                                        )
+                                    }
+                                }
+                            />
+                            <TouchableOpacity
+                                onPress={this.add}
+                                style={
+                                    {
+                                        width: height * 0.05,
+                                        height:height * 0.05,
+                                        borderRadius: 100,
+                                        borderWidth: 1,
+                                        backgroundColor: '#A4A4A4',
+                                        borderColor: 'AAAAAA',
+                                        marginTop:0.015*height
+                                       
+                                    }
+                                }
+                            >
+                                <Text style={
+                                    {
+                                        textAlign: 'center',
+                                        fontSize: 30
+                                    }
+                                }>+</Text>
+                            </TouchableOpacity>
+                          
+                        </View>
             </View>
                               
                               </View>
