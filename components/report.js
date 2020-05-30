@@ -25,7 +25,8 @@ class report extends Component {
             ,['如果当时','许嵩'],['未见青山老','以冬'],['如约而至','许嵩']
             ,['风雨彩虹铿锵玫瑰','田震'],['像风一样','薛之谦'],['好几年   ','刘心'],['入    海    ','毛不易']],
             index:0,
-            list:['谩骂','造谣','广告','传销','抄袭','诈骗','色情','暴力']
+            list:['谩骂造谣','广告传销','抄袭','诈骗','色情','暴力','反动'],
+            worddata:'',
         }
     }
 
@@ -51,11 +52,23 @@ for(var i=0;i<8;i++){
 
 this.setState({checkphoto:this.state.checkphoto,
 });
+
+    }
+    componentDidMount() {
+        fetch('http://49.235.231.110:8800/report')
+            .then(res => res.json())
+            .then(res => {
+                this.state.worddata = res.data
+                console.log(this.state.worddata.length)
+                this.setState({
+                    worddata: res.data//将评论数据赋值给worddata
+                })
+            })
     }
     add=()=>{
         ToastAndroid.show('感谢您的反馈',200)
-        console.log('添加成功',this.state.index)
-        fetch(`http://49.235.231.110:8800/addReport/${this.state.index}/${this.props.music_name}/${0}/${this.state.list[this.state.index]}`)
+        console.log('添加成功',this.state.worddata.length+1,this.props.music_name,this.state.list[this.state.index])
+        fetch(`http://49.235.231.110:8800/addReport/${this.state.worddata.length+1}/${this.props.music_name}/${1}/${this.state.list[this.state.index]}`)
         .then(()=>{
          
         })
