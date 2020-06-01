@@ -12,8 +12,10 @@ import {
     ToastAndroid,
     TouchableOpacity,
     TouchableWithoutFeedback,
+    RefreshControl, 
+    Linking
 } from 'react-native';
-
+import Action1 from '../components/Action1'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Video from 'react-native-video';
 import Swiper from 'react-native-swiper';
@@ -27,7 +29,7 @@ export default class FirstOne extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isAdd: false,
+            visible: false,
             rate: 1,
             paused: true,
             playIcon: 'play',
@@ -47,16 +49,16 @@ export default class FirstOne extends Component {
             jingxuan: '精选',
             pinglun: '评论',
             img: require('../images/huitailang.png'),
-            title: '灰太狼一号'
+            title: '灰太狼一号',
+            isloading: false,
+            isAdd1: false,
+            refreshing: false
         }
     }
-    videoError(error) {
-        console.log('videoError', error)
+    open(){
+        let url = 'http://www.baidu.com'
+        Linking.openURL(url)
     }
-    onBuffer(data) {
-        console.log('onBuffer', data)
-    }
-
     tianjiaguanzhu() {
         this.setState({
             isAdd: !this.state.isAdd,
@@ -64,22 +66,22 @@ export default class FirstOne extends Component {
         })
     }
     componentDidMount = () => {
-        fetch('http://49.235.231.110:8800/dynamic')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({
-                    tits: res.data
-                });
-            })
+        if (!this.state.isloading) {
+            return;
+        } else {
+            fetch('http://49.235.231.110:8800/dynamic')
+                .then(res => res.json())
+                .then(res => {
+                    this.setState({
+                        tits: res.data
+                    });
+                })
+        };
     }
-    componentWillMount = () => {
-        fetch('http://49.235.231.110:8800/dynamic')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({
-                    tits: res.data
-                });
-            })
+    componentWillMount() {
+        this.setState({
+            isloading: true
+        })
     }
     render() {
         return (
@@ -140,128 +142,102 @@ export default class FirstOne extends Component {
                             }} source={require('../images/tianjiayonghu.png')} />
                         </TouchableOpacity>
                     </View>
-                    <View style={{ height: height * 0.3 }}>
-                        <Swiper style={
-                            {
-                                alignItems: 'center',
+                    <ScrollView style={{
+                        flex:1
+                    }} refreshControl={
+                        <RefreshControl onRefresh={() => {
+                            this.setState({
+                                refreshing: true
+                            })
+                            fetch('http://49.235.231.110:8800/dynamic')
+                            .then(res => res.json())
+                            .then(res => {
+                                this.setState({
+                                    tits: res.data
+                                });
+                            })
+                            setTimeout(()=>{
+                                this.setState({
+                                    refreshing:false
+                                })
+                            },2000)
+                        }}
+                            refreshing={this.state.refreshing}
+                            colors={['green']}
+                        />
+                    }>
+                        <View style={{ height: height * 0.3 }}>
+                            <Swiper style={
+                                {
+                                    alignItems: 'center',
+                                }
                             }
-                        }
-                            autoplay={true}
-                            autoplayTimeout={3}
-                            showsButtons={true}
-                        >
+                                autoplay={true}
+                                autoplayTimeout={3}
+                                showsButtons={true}
+                            >
 
-                            <View style={
-                                {
+                                <View style={
+                                    {
+                                        width: width * 0.8,
+                                        height: height * 0.3
+                                    }
+                                }>
+                                    <Image style={
+                                        {
+                                            width: width * 0.8,
+                                            height: height * 0.28,
+                                            marginLeft: width * 0.1
+                                        }
+                                    } source={require('../images/meitu9.png')} />
+                                    {
+                                        <TouchableOpacity style={
+                                            {
+                                                width: width * 0.1,
+                                                height: width * 0.1,
+                                                marginTop: -height * 0.056,
+                                                marginLeft: width * 0.8
+                                            }
+                                        } onPress={() => Actions.shipin()}>
+                                            <Image style={
+                                                {
+                                                    width: width * 0.1,
+                                                    height: width * 0.1
+                                                }
+                                            } source={require('../images/broadcast.png')} />
+                                        </TouchableOpacity>
+                                    }
+                                </View>
+                                <View style={{
                                     width: width * 0.8,
-                                    height: height * 0.3,
-                                    marginLeft: width * 0.1
-                                }
-                            }>
-                                <Video source={{ uri: 'https://1533543264.github.io/web/dang.mp4' }}   // Can be a URL or a local file.
-                                    ref={(ref) => {
-                                        this.player = ref
-                                    }}
-                                    rate={this.state.rate}
-                                    muted={this.state.muted}
-                                    repeat={true}
-                                    resizeMode="contain"
-                                    paused={this.state.paused}
-                                    playInBackground={false}
-                                    onError={this.videoError}
-                                    onBuffer={this.onBuffer}
-                                    style={styles.backgroundVideo}
-                                />
-                                {
-                                    <TouchableOpacity onPress={() => Actions.shipin()}>
-                                        <Image style={
-                                            {
-                                                width: width * 0.2,
-                                                height: width * 0.2,
-                                                marginTop: width * 0.15,
-                                                marginLeft: width * 0.3
-                                            }
-                                        } source={require('../images/broadcast.png')} />
-                                    </TouchableOpacity>
-                                }
+                                    marginLeft: width * 0.1,
+                                    marginRight: width * 0.1,
+                                    height: height * 0.3
+                                }}>
+                                    <Image style={
+                                        {
+                                            width: width * 0.8,
+                                            height: height * 0.28
+                                        }
+                                    } source={require('../images/meitu13.png')} />
+                                </View>
+                                <View style={{
+                                    width: width * 0.8,
+                                    marginLeft: width * 0.1,
+                                    marginRight: width * 0.1,
+                                    height: height * 0.3
+                                }}>
+                                    <Image style={
+                                        {
+                                            width: width * 0.8,
+                                            height: height * 0.28
+                                        }
+                                    } source={require('../images/meitu11.png')} />
+                                </View>
+                            </Swiper>
+                        </View>
+                        <View style={styles.touxiangfanwei}>
 
-                            </View>
-                            <View style={{
-                                width: width * 0.8,
-                                marginLeft: width * 0.1,
-                                marginRight: width * 0.1,
-                                height: height * 0.3,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}>
-                                <Video source={{ uri: 'https://1533543264.github.io/web/dang.mp4' }}   // Can be a URL or a local file.
-                                    ref={(ref) => {
-                                        this.player = ref
-                                    }}
-                                    rate={this.state.rate}
-                                    muted={this.state.muted}
-                                    repeat={true}
-                                    resizeMode="contain"
-                                    paused={this.state.paused}
-                                    playInBackground={false}
-                                    onError={this.videoError}
-                                    onBuffer={this.onBuffer}
-                                    style={styles.backgroundVideo}
-                                />
-                                {
-                                    <TouchableOpacity onPress={() => Actions.shipin()}>
-                                        <Image style={
-                                            {
-                                                width: width * 0.2,
-                                                height: width * 0.2,
-                                                marginTop: -width * 0.1
-                                            }
-                                        } source={require('../images/broadcast.png')} />
-                                    </TouchableOpacity>
-                                }
-                            </View>
-                            <View style={{
-                                width: width * 0.8,
-                                marginLeft: width * 0.1,
-                                marginRight: width * 0.1,
-                                height: height * 0.3,
-                                justifyContent: 'center',
-                                alignItems: 'center'
-                            }}>
-                                <Video source={{ uri: 'https://1533543264.github.io/web/dang.mp4' }}   // Can be a URL or a local file.
-                                    ref={(ref) => {
-                                        this.player = ref
-                                    }}
-                                    rate={this.state.rate}
-                                    muted={this.state.muted}
-                                    repeat={true}
-                                    resizeMode="contain"
-                                    paused={this.state.paused}
-                                    playInBackground={false}
-                                    onError={this.videoError}
-                                    onBuffer={this.onBuffer}
-                                    style={styles.backgroundVideo}
-                                />
-                                {
-                                    <TouchableOpacity onPress={() => Actions.shipin()}>
-                                        <Image style={
-                                            {
-                                                width: width * 0.2,
-                                                height: width * 0.2,
-                                                marginTop: -width * 0.1
-                                            }
-                                        } source={require('../images/broadcast.png')} />
-                                    </TouchableOpacity>
-                                }
-                            </View>
-                        </Swiper>
-                    </View>
-                    <View style={styles.touxiangfanwei}>
-                        <ScrollView
-                            pagingEnabled={true}
-                            horizontal={true}
-                            showsHorizontalScrollIndicator={false}
-                        >
                             <View style={styles.slide2}>
                                 <TouchableOpacity onPress={() => Actions.huachenyu()}>
                                     <Image style={styles.touxiang} source={require('../images/huachenyu.png')} />
@@ -281,124 +257,100 @@ export default class FirstOne extends Component {
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.slide2}>
-                                <TouchableOpacity onPress={() => Actions.shipin()}>
+                                <TouchableOpacity  onPress={this.open}>
                                     <Image style={styles.touxiang} source={require('../images/zhangliangyin.png')} />
                                     <Text style={{ textAlign: 'center' }}>张靓颖</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={styles.slide2}>
-                                <Image style={styles.touxiang} source={require('../images/punch.png')} />
-                                <Text>punch</Text>
+                                <TouchableOpacity style={
+                                    {
+                                        marginLeft:width*0.2,
+                                        marginTop:width*0.02
+                                    }
+                                } onPress={() => Actions.adddongtai()}>
+                                    <Image style={styles.touxiang} source={require('../images/tianjia.png')} />
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.slide2}>
-                                <Image style={styles.touxiang} source={require('../images/pikaqiu2.png')} />
-                                <Text>皮卡丘</Text>
-                            </View>
-                            <View style={styles.slide2}>
-                                <Image style={styles.touxiang} source={require('../images/pikaqiu1.png')} />
-                                <Text>皮卡丘</Text>
-                            </View>
-                            <View style={styles.slide2}>
-                                <Image style={styles.touxiang} source={require('../images/pikaqiu3.png')} />
-                                <Text>皮卡丘</Text>
-                            </View>
-                        </ScrollView>
-                    </View>
-
-                    <View>
-                        <FlatList
-                            refreshing={this.state.isAdd}
-                            onRefresh={() => {
-                                fetch('http://49.235.231.110:8800/dynamic')
-                                    .then(res => res.json())
-                                    .then(res => {
-                                        this.setState({
-                                            tits: res.data
+                        </View>
+                        <View>
+                            <FlatList
+                                refreshing={this.state.isAdd1}
+                                onRefresh={() => {
+                                    fetch('http://49.235.231.110:8800/dynamic')
+                                        .then(res => res.json())
+                                        .then(res => {
+                                            this.setState({
+                                                tits: res.data
+                                            })
                                         })
-                                    })
-                            }}
-                            style={{ backgroundColor: '#F4F4F4' }}
-                            data={this.state.tits}
-                            numColumns={1}
-                            //dynamic_id user_id dynamic_value dynamic_img dynamic_goodcounts
-                            renderItem={({ item, index }) => (
-                                <View style={styles.good}>
-                                    <View style={{ width: '100%', height: height * 0.07 }}>
-                                        <Image
-                                            resizeMode="contain"
-                                            source={this.state.img}
-                                            style={styles.touxiang1}
-                                        />
-                                        <Text
-                                            style={styles.mingzi}
-                                        >{this.state.title}</Text>
-                                        <TouchableOpacity style={styles.jiaguanzhu} onPress={() => this.tianjiaguanzhu()}>
-                                            <Text>{this.state.tianjiaguanzhu}</Text>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <Text>{item.dynamic_value}</Text>
-                                    </View>
-                                    <View style={{
-                                        width: '100%',
-                                        height: height * 0.3
-                                    }}>
-                                        <Image style={{
+                                }}
+                                style={{ backgroundColor: '#F4F4F4' }}
+                                data={this.state.tits}
+                                numColumns={1}
+                                //dynamic_id user_id dynamic_value dynamic_img dynamic_goodcounts
+                                renderItem={({ item, index }) => (
+                                    <View style={styles.good}>
+                                        <View style={{ width: '100%', height: height * 0.07 }}>
+                                            <Image
+                                                resizeMode="contain"
+                                                source={this.state.img}
+                                                style={styles.touxiang1}
+                                            />
+                                            <Text
+                                                style={styles.mingzi}
+                                                selectable={true}
+                                            >{this.state.title}</Text>
+                                            <TouchableOpacity style={styles.jiaguanzhu} onPress={() => this.tianjiaguanzhu()}>
+                                                <Text>{this.state.tianjiaguanzhu}</Text>
+                                            </TouchableOpacity>
+                                        </View>
+                                        <View>
+                                            <Text>{item.dynamic_value}</Text>
+                                        </View>
+                                        <View style={{
                                             width: '100%',
                                             height: height * 0.3
-                                        }}
-                                            source={{ uri: item.dynamic_img }} />
-                                    </View>
-                                    <View>
-                                        <Text>
-                                            {this.state.jingxuan}
-                                        </Text>
+                                        }}>
+                                            <Image style={{
+                                                width: '100%',
+                                                height: height * 0.3
+                                            }}
+                                                source={{ uri: item.dynamic_img }} />
+                                        </View>
+                                        <View>
+                                            <Text>
+                                                {this.state.jingxuan}
+                                            </Text>
 
-                                        <TouchableOpacity style={styles.dianzan}
-                                            onPress={() => {
-                                                console.log(index)
-                                                fetch(`http://49.235.231.110:8800/goodDynamic/${this.state.tits[index].dynamic_id}/${Number(this.state.tits[index].dynamic_goodcounts) + 1}`)
-                                                    .then(() => {
-                                                        fetch('http://49.235.231.110:8800/dynamic')
-                                                            .then(res => res.json())
-                                                            .then(res => {
-                                                                this.setState({
-                                                                    tits: res.data//将评论数据赋值给worddata
+                                            <TouchableOpacity style={styles.dianzan}
+                                                onPress={() => {
+                                                    console.log(index)
+                                                    fetch(`http://49.235.231.110:8800/goodDynamic/${this.state.tits[index].dynamic_id}/${Number(this.state.tits[index].dynamic_goodcounts) + 1}`)
+                                                        .then(() => {
+                                                            fetch('http://49.235.231.110:8800/dynamic')
+                                                                .then(res => res.json())
+                                                                .then(res => {
+                                                                    this.setState({
+                                                                        tits: res.data//将评论数据赋值给worddata
+                                                                    })
                                                                 })
-                                                            })
-                                                    })
-                                            }}>
-                                            <Text>{this.state.dianzan}{item.dynamic_goodcounts}</Text>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={styles.dianzan1} onPress={() => Actions.pinglun()}>
-                                            <Text>{this.state.pinglun}{this.state.pinglunshu} </Text>
-                                        </TouchableOpacity>
+                                                        })
+                                                }}>
+                                                <Text>{this.state.dianzan}{item.dynamic_goodcounts}</Text>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.dianzan1} onPress={() => Actions.pinglun()}>
+                                                <Text>{this.state.pinglun}{this.state.pinglunshu} </Text>
+                                            </TouchableOpacity>
+                                        </View>
+
                                     </View>
 
-                                </View>
-
-                            )}
-                        />
-                        <View style={{
-                            width: width * 0.2,
-                            height: width * 0.2,
-                            position: 'absolute',
-                            marginLeft: width * 0.74,
-                            marginTop: height * 0.3
-                        }}>
-                            <TouchableOpacity
-                                onPress={() => Actions.dongTai()}
-                            >
-                                <Image style={
-                                    {
-                                        zIndex: 2,
-                                        width: width * 0.2,
-                                        height: width * 0.2
-                                    }
-                                } source={require('../images/tianjia.png')} />
-                            </TouchableOpacity>
+                                )}
+                            />
+                            
                         </View>
-                    </View>
+                    </ScrollView>
                 </View>
             </>
         )
@@ -437,7 +389,8 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     touxiangfanwei: {
-        height: height * 0.115
+        height: height * 0.115,
+        flexDirection: 'row'
     },
     touxiang: {
         width: width * 0.15,

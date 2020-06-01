@@ -67,8 +67,11 @@ import Huachenyu  from './components/Huachenyu'
 import Weixinyu  from './components/Weixinyu'
 import Weichen  from './components/Weichen'
 import Pinglun  from './components/PingLun'
-import DongTaiList  from './components/DongTaiList'
 import Shipin  from './components/ShiPin'
+import Adddongtai  from './components/Adddongtai'
+import JuBao  from './components/JuBao'
+import Star  from './components/StarScord'
+import JianPan  from './components/JianPan'
 const App = () => {  
   let now = new Date().getTime();
   return (
@@ -126,9 +129,12 @@ const App = () => {
               <Scene key="huachenyu" component={Huachenyu} />
               <Scene key="weixinyu" component={Weixinyu} />
               <Scene key="weichen" component={Weichen} />
-              <Scene key="Dongtailiebiao" component={DongTaiList} />
               <Scene key="pinglun" component={Pinglun} />
               <Scene key="shipin" component={Shipin} />
+              <Scene key="adddongtai" component={Adddongtai} />
+              <Scene key="jubao" component={JuBao} />
+              <Scene key="star" component={Star} />
+              <Scene key="jianpan" component={JianPan} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}

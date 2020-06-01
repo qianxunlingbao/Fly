@@ -19,7 +19,8 @@ import {
   ActivityIndicator, 
   Slider, 
   Image,
-  ImageBackground
+  ImageBackground,
+  Share
 } from "react-native";
 import { Actions } from 'react-native-router-flux';
 import MaterialsIcon from "react-native-vector-icons/MaterialIcons";
@@ -34,6 +35,7 @@ class VideoPlayer extends Component {
     super(props);
 
     this.state = {
+      isloading: false,
       addflex:'flex',
       menu:[1,0],
       isAdd: false,
@@ -59,18 +61,70 @@ class VideoPlayer extends Component {
       iscreen: 0,
       videowidth: width,
       islike:true,
-      shoucang:require('../images/redheart.png')
+      shoucang:require('../images/redheart.png'),
+      result:''
     };
   }
+  //分享
+  _shareMessage(){
+    Share.share({
+      message:'这个是百度的网址',
+      url:'http://www.baidu.com',
+      title:'百度'
+    })
+    .then(this._showResult)
+    .catch((error)=>
+      this.setState({
+        result:'错误提示'+error.message
+      })
+    )
+  }
+  _shareText(){
+    Share.share({
+      message:'这个是百度的网址',
+      url:'http://www.baidu.com',
+      title:'百度'
+    },{
+      dialogTitle:'分享到百度链接'
+    })
+    .then(this._showResult)
+    .catch((error)=>
+      this.setState({
+        result:'错误提示'+error.message
+      })
+    )
+  }
+  _showResult(result){
+    if(result.action === Share.sharedAction){
+      if(result.activityType){
+        this.setState({
+          result:'分享成功'
+        })
+      }else if(result.action === Share.dismissedAction){
+        this.setState({
+          result:'分享拒绝'
+        })
+      }
+    }
+  }
+
+
+  //收藏
   like(){
     if(this.state.islike){
       this.setState({
         islike:false,
       })
+      setTimeout(()=>
+        ToastAndroid.showWithGravity('收藏成功',2000,ToastAndroid.CENTER),0
+      )
     }else{
       this.setState({
         islike:true,
       })
+      setTimeout(()=>
+        ToastAndroid.showWithGravity('取消收藏',2000,ToastAndroid.CENTER),0
+      )
     }
   }
   setDuration(duration) {
@@ -132,6 +186,9 @@ class VideoPlayer extends Component {
     console.log(this.state.videowidth)
   }
   componentDidMount() {
+    if(this.state.isloading){
+      return;
+    }else{
     fetch('http://49.235.231.110:8800/musicword')
         .then(res => res.json())
         .then(res => {
@@ -139,20 +196,25 @@ class VideoPlayer extends Component {
                 data: res.data//将评论数据赋值给worddata
             })
         })
+      }
 
 }
 componentWillMount() {
-    fetch('http://49.235.231.110:8800/musicword')
-        .then(res => res.json())
-        .then(res => {
-            this.setState({
-                data: res.data//将评论数据赋值给worddata
-            })
-        })
+    this.setState({
+      isloading:false
+    })
 }
   render() {
+    if(this.state.isloading){
+      return;
+    }else{
     return (
       <View>
+        <ImageBackground style={
+          {
+            width:width
+          }
+        } source={require('../images/background5.png')}>
         <ScrollView>
         {/*头部*/}
         <View style={{ width: width, height: width * 0.1, backgroundColor: 'white' }}>
@@ -237,10 +299,10 @@ componentWillMount() {
         </ TouchableWithoutFeedback>
         <View style={{ flexDirection: 'row'}}>
           <TouchableOpacity onPress={() => this.setState({ menu: [1, 0], addposition: 'absolute', addflex: 'flex' })}>
-            <Text style={{ fontSize: 20, textAlign: 'center', color: this.state.menu[0] ? 'black' : 'grey' ,marginLeft:width*0.35}}>评论</Text>
+            <Text style={{ fontSize: 20, textAlign: 'center', color: this.state.menu[1] ? 'black' : 'green' ,marginLeft:width*0.35,textDecorationLine:this.state.menu[0] ? 'underline' : 'none'}}>评论</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => this.setState({ menu: [0, 1], addposition: 'relative', addflex: 'none' })} >
-            <Text style={{ fontSize: 20, textAlign: 'center', color: this.state.menu[1] ? 'black' : 'grey', marginLeft: 20}}>视频详情</Text>
+            <Text style={{ fontSize: 20, textAlign: 'center', color: this.state.menu[0] ? 'black' : 'green', marginLeft: 20,textDecorationLine:this.state.menu[1] ? 'underline' : 'none'}}>视频详情</Text>
           </TouchableOpacity>
         </View>
         {
@@ -456,6 +518,13 @@ componentWillMount() {
                       } >收藏</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
+                      onPress={() => Share.share({
+                        message: this.state.result,
+                        url: 'http://www.baidu.com',
+                        title: '百度'
+                      }, {
+                        dialogTitle:'分享和发送'
+                      })}
                     >
                       <Image style={
                         {
@@ -474,6 +543,7 @@ componentWillMount() {
                       } >分享</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
+                     
                     >
                       <Image style={
                         {
@@ -491,7 +561,8 @@ componentWillMount() {
                         }
                       } >下载</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity 
+                    <TouchableOpacity
+                   
                     >
                       <Image style={
                         {
@@ -626,8 +697,10 @@ componentWillMount() {
         
       </View>
       </ScrollView>
+      </ImageBackground>
       </View>
     );
+      }
   }
 }
 const styles = StyleSheet.create({

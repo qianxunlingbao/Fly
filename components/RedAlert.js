@@ -124,38 +124,11 @@ export default class RedAlert extends Component {
         }
     }
     componentDidMount() {
-        fetch('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({
-                    brr: res.data
-                });
-                console.log(this.state.brr)
-            })
     }
     dianzan() {
         this.setState({
             dianzanshu: this.state.dianzanshu + 1
         })
-    }
-    pinglun() {
-        this.setState({
-            pinglunshu: this.state.pinglunshu + 1
-        })
-    }
-    play() {
-        this.setState({
-            paused: !this.state.paused,
-            playIcon: this.state.paused ? 'pause' : 'play',
-            muted: !this.state.muted
-        })
-    }
-    videoError(error) {
-        console.log('videoError', error)
-    }
-
-    onBuffer(data) {
-        console.log('onBuffer', data)
     }
 
     tianjiaguanzhu() {
@@ -322,12 +295,10 @@ export default class RedAlert extends Component {
                                                 source={item.images} />
                                         </View>
                                         <View>
-
-
                                             <TouchableOpacity style={styles.dianzan} onPress={() => this.dianzan()}>
                                                 <Text>{item.dianzan}{this.state.dianzanshu}</Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={styles.dianzan1} onPress={() => Actions.CustomScrollView()}>
+                                            <TouchableOpacity style={styles.dianzan1} >
                                                 <Text>{item.pinglun}{this.state.pinglunshu} </Text>
                                             </TouchableOpacity>
                                         </View>
