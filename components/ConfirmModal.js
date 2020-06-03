@@ -7,7 +7,9 @@ import {
     Dimensions,
     Image,
     FlatList,
-    Share
+    Share,
+    Alert,
+    ToastAndroid
 } from "react-native";
 
 const { width, scale, height } = Dimensions.get('window');
@@ -60,7 +62,12 @@ export default class confirmModal extends Component {
                 transparent={true}
                 visible={this.props.modalVisible}
                 onRequestClose={() => {
-                    alert("分享还未取消.");
+                    Alert.alert("温馨提示","分享还未取消.",
+                    [
+                        {text:'了解，谢谢！！！',onPress:()=>{
+                            
+                        }}
+                    ]);
                 }}
             >
                 <View style={

@@ -44,7 +44,8 @@ class ActionSheetComp extends Component {
                 animationType="slide"
                 visible={this.state.modalVisible}
                 transparent={true}
-                onRequestClose={() => this.setState({ modalVisible: true })}
+                onRequestClose={() => this.setState({ modalVisible: true })
+            }
             >
                 <View style={styles.modalStyle}>
                     <View style={styles.subView}>

@@ -51,7 +51,6 @@ import Login from './components/Login'
 import Register from './components/Register'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
-import OverLike  from './components/OverLike'
 import UserInfo  from './components/UserInfo'
 import ModifyNetName  from './components/ModifyNetName'
 import timestop  from './components/timestop'
@@ -72,6 +71,7 @@ import Adddongtai  from './components/Adddongtai'
 import JuBao  from './components/JuBao'
 import Star  from './components/StarScord'
 import JianPan  from './components/JianPan'
+import Geshou  from './components/Geshou'
 const App = () => {  
   let now = new Date().getTime();
   return (
@@ -125,7 +125,6 @@ const App = () => {
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
               <Scene key="Addpinglun" component={Addpinglun} />
               <Scene key="RedAlert" component={RedAlert} />
-              <Scene key="OverLike" component={OverLike} />
               <Scene key="huachenyu" component={Huachenyu} />
               <Scene key="weixinyu" component={Weixinyu} />
               <Scene key="weichen" component={Weichen} />
@@ -135,6 +134,7 @@ const App = () => {
               <Scene key="jubao" component={JuBao} />
               <Scene key="star" component={Star} />
               <Scene key="jianpan" component={JianPan} />
+              <Scene key="geshou" component={Geshou} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}

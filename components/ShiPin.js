@@ -210,11 +210,11 @@ componentWillMount() {
     }else{
     return (
       <View>
-        <ImageBackground style={
+        {/*<ImageBackground style={
           {
             width:width
           }
-        } source={require('../images/background5.png')}>
+        } source={require('../images/background5.png')}>*/}
         <ScrollView>
         {/*头部*/}
         <View style={{ width: width, height: width * 0.1, backgroundColor: 'white' }}>
@@ -697,7 +697,7 @@ componentWillMount() {
         
       </View>
       </ScrollView>
-      </ImageBackground>
+      {/*</ImageBackground>*/}
       </View>
     );
       }

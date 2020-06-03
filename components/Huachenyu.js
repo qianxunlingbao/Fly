@@ -476,7 +476,9 @@ export default class Huachenyu extends Component {
                                                 marginLeft: width * 0.07
                                             }
                                         } selectable={true}> 歌手资料 </Text>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity 
+                                            onPress={()=>Actions.geshou()}
+                                        > 
                                             <Text style={
                                                 {
                                                     marginTop: width * 0.055,
@@ -811,6 +813,12 @@ export default class Huachenyu extends Component {
                                                     }
                                                 }> > </Text>
                                             </TouchableOpacity>
+                                        </View>
+                                        <View style={
+                                            {
+                                                height:width*0.3
+                                            }
+                                        }>
                                         </View>
                                     </View>
                                 </View>
