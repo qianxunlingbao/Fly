@@ -87,7 +87,7 @@ export default class Huachenyu extends Component {
                 }}>
                     <View style={{width:width*0.1}}>
                         <TouchableOpacity 
-                            onPress={()=>Actions.Condition()}
+                            onPress={()=>Actions.pop()}
                         >
                             <Text style={{
                                 textAlign:"center",

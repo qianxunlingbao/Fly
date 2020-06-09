@@ -7,8 +7,6 @@ import {
     View,
     TouchableOpacity,
     Modal,
-    ToastAndroid,
-
 } from 'react-native';
 let {width, height} = Dimensions.get('window');
 import {Actions} from 'react-native-router-flux';
@@ -20,25 +18,18 @@ class report extends Component {
         this.state = {
 
             checkphoto:[false,false,false,false,false,false,false,false],
-            textlist:[['你若成风','许嵩'],['当你老了','赵照']
-            ,['你一生的故事','以冬'],['谢你过我平庸一生','池年'],['老    街    ','李荣浩']
-            ,['如果当时','许嵩'],['未见青山老','以冬'],['如约而至','许嵩']
-            ,['风雨彩虹铿锵玫瑰','田震'],['像风一样','薛之谦'],['好几年   ','刘心'],['入    海    ','毛不易']],
-            index:0,
-            list:['谩骂造谣','广告传销','抄袭','诈骗','色情','暴力','反动'],
-            worddata:'',
         }
     }
 
     check(a){
-        console.log(a)
+        console.log(this.state.checkphoto[a])
 for(var i=0;i<8;i++){
     if(a!=undefined&&a==i){
    
 
         if(this.state.checkphoto[a]==false){
             this.state.checkphoto[a]=true
-            this.state.index=a
+    
         }
         else{
             this.state.checkphoto[a]=false
@@ -52,26 +43,6 @@ for(var i=0;i<8;i++){
 
 this.setState({checkphoto:this.state.checkphoto,
 });
-
-    }
-    componentDidMount() {
-        fetch('http://49.235.231.110:8800/report')
-            .then(res => res.json())
-            .then(res => {
-                this.state.worddata = res.data
-                console.log(this.state.worddata.length)
-                this.setState({
-                    worddata: res.data//将评论数据赋值给worddata
-                })
-            })
-    }
-    add=()=>{
-        ToastAndroid.show('感谢您的反馈',200)
-        console.log('添加成功',this.state.worddata.length+1,this.props.music_name,this.state.list[this.state.index])
-        fetch(`http://49.235.231.110:8800/addReport/${this.state.worddata.length+1}/${this.props.music_name}/${1}/${this.state.list[this.state.index]}`)
-        .then(()=>{
-         
-        })
     }
     render() {
         return (
@@ -101,10 +72,10 @@ this.setState({checkphoto:this.state.checkphoto,
                                                     opacity:1,alignItems: 'center',justifyContent:'center',flexDirection:'row'
                                                     
                                                 }}>
-                                                <TouchableOpacity style={{marginLeft:-0.25*width}} onPress={()=>Actions.pop()}>
+                                                <TouchableOpacity style={{marginLeft:-0.3*width}} onPress={()=>Actions.pop()}>
                                                 <Image style={{width:0.05*width,height:0.05*width}} source={require('../images/fanhui.png')} />
                                             </TouchableOpacity>
-                                            <Text style={{fontSize:18,color:'#000',marginLeft:0.3*width}}>举报-{this.state.textlist[this.props.music_name][0]}</Text>
+                                            <Text style={{fontSize:18,color:'#000',marginLeft:0.3*width}}>举报-{this.props.music_name}</Text>
                                             </View>
                                                                                 
 
@@ -146,8 +117,11 @@ this.setState({checkphoto:this.state.checkphoto,
                                                     <Image style={{width:0.05*width,height:0.05*width}} source={this.state.checkphoto[6]?require('../images/checktrue.png'):require('../images/checkno.png')} />
                                                     <Text style={{fontSize:18,color:'#000',marginLeft:0.01*width}}>反动</Text>
                                                 </TouchableOpacity>
-
-                                                <TouchableOpacity style={{flexDirection:'row',alignItems: 'center',justifyContent:'center',height:0.08*height,marginLeft:-0.05*width}} onPress={()=>this.add()}>
+                                                <TouchableOpacity style={{flexDirection:'row',alignItems: 'center',height:0.08*height}} onPress={()=>this.check(7)}>
+                                                    <Image style={{width:0.05*width,height:0.05*width}} source={this.state.checkphoto[7]?require('../images/checktrue.png'):require('../images/checkno.png')} />
+                                                    <Text style={{fontSize:18,color:'#000',marginLeft:0.01*width}}>其他</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity style={{flexDirection:'row',alignItems: 'center',justifyContent:'center',height:0.08*height,marginLeft:-0.05*width}}>
                                                     <Text style={{fontSize:18,color:'#000',marginLeft:0.01*width}}>提交</Text>
                                                 </TouchableOpacity>
                                             </View>

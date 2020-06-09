@@ -11,7 +11,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-
+import Icon from 'react-native-vector-icons/AntDesign'
 const { width, scale, height } = Dimensions.get('window');
 
 const s = width / 640;
@@ -124,38 +124,11 @@ export default class RedAlert extends Component {
         }
     }
     componentDidMount() {
-        fetch('https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg')
-            .then(res => res.json())
-            .then(res => {
-                this.setState({
-                    brr: res.data
-                });
-                console.log(this.state.brr)
-            })
     }
     dianzan() {
         this.setState({
             dianzanshu: this.state.dianzanshu + 1
         })
-    }
-    pinglun() {
-        this.setState({
-            pinglunshu: this.state.pinglunshu + 1
-        })
-    }
-    play() {
-        this.setState({
-            paused: !this.state.paused,
-            playIcon: this.state.paused ? 'pause' : 'play',
-            muted: !this.state.muted
-        })
-    }
-    videoError(error) {
-        console.log('videoError', error)
-    }
-
-    onBuffer(data) {
-        console.log('onBuffer', data)
     }
 
     tianjiaguanzhu() {
@@ -188,7 +161,7 @@ export default class RedAlert extends Component {
                                 width: width * 0.3,
                                 marginTop: -height * 0.03
                             }}
-                                onPress={() => Actions.Condition()
+                                onPress={() => Actions.pop()
                                 }>
                                 <Text style={{
                                     position: 'absolute',
@@ -262,15 +235,13 @@ export default class RedAlert extends Component {
                                         }
                                     }>关注可能喜欢的歌手，新歌消息不再错过！</Text>
                                 </View>
-                                <TouchableOpacity>
-                                    <Image style={
-                                        {
-                                            width: width * 0.08,
-                                            height: height * 0.05,
-                                            marginLeft: width * 0.7,
-                                            marginTop: -height * 0.06
-                                        }
-                                    } source={require('../images/youcejiantou.png')} />
+                                <TouchableOpacity style={
+                                    {
+                                        marginTop:-width*0.1,
+                                        marginLeft:width*0.5
+                                    }
+                                }>
+                                    <Icon name="right" size={20} color="gray" style={{marginLeft:'70%'}} />
                                 </TouchableOpacity>
                             </View>
                             <View style={
@@ -322,12 +293,10 @@ export default class RedAlert extends Component {
                                                 source={item.images} />
                                         </View>
                                         <View>
-
-
                                             <TouchableOpacity style={styles.dianzan} onPress={() => this.dianzan()}>
                                                 <Text>{item.dianzan}{this.state.dianzanshu}</Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={styles.dianzan1} onPress={() => Actions.CustomScrollView()}>
+                                            <TouchableOpacity style={styles.dianzan1} >
                                                 <Text>{item.pinglun}{this.state.pinglunshu} </Text>
                                             </TouchableOpacity>
                                         </View>

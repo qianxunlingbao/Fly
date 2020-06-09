@@ -121,7 +121,7 @@ export default class Home extends Component {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: width * 0.4, height: width * 0.1, marginLeft: width * 0.37, marginTop: -width * 0.09 }}>
-                            <TouchableOpacity onPress={() => Actions.dongTaiLike()}>
+                            <TouchableOpacity>
                                 <Text style={{ fontSize: 30, color: '#AAAAAA' }}>发布动态 </Text>
                             </TouchableOpacity>
                         </View>

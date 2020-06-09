@@ -45,13 +45,13 @@ import DongTaiLike from './components/Like'
 import Music from './components/MusicHall'
 import Search from './components/Search'
 import CustomScrollView from './components/CustomScrollView'
+import Addpinglun from './components/Addpinglun'
 import SongList from './components/SongList'
 import Publish from './components/Publish'
 import Login from './components/Login'
 import Register from './components/Register'
 import AddSong from './components/AddSong'
 import RedAlert from './components/RedAlert'
-import OverLike  from './components/OverLike'
 import UserInfo  from './components/UserInfo'
 import ModifyNetName  from './components/ModifyNetName'
 import timestop  from './components/timestop'
@@ -66,11 +66,16 @@ import ListenTogether from './components/ListenTogether';
 import Huachenyu  from './components/Huachenyu'
 import Weixinyu  from './components/Weixinyu'
 import Weichen  from './components/Weichen'
-import DongTaiList  from './components/DongTaiList'
 import report from './components/report';
 import PingLun from './components/PingLun';
-import Addpinglun from './components/Addpinglun';
 import reportss from './components/reportss';
+import Pinglun  from './components/PingLun'
+import Shipin  from './components/ShiPin'
+import Adddongtai  from './components/Adddongtai'
+import JuBao  from './components/JuBao'
+import Star  from './components/StarScord'
+import JianPan  from './components/JianPan'
+import Geshou  from './components/Geshou'
 const App = () => {  
   let now = new Date().getTime();
   return (
@@ -128,13 +133,19 @@ const App = () => {
               <Scene key = "Condition" component={Condition}/>
               <Scene key = "dongTai" component={Dongtai}/>
               <Scene key = "dongTaiLike" component={DongTaiLike}/>
-              <Scene key="CustomScrollView" component={CustomScrollView} />
+              <Scene key="Addpinglun" component={Addpinglun} />
               <Scene key="RedAlert" component={RedAlert} />
-              <Scene key="OverLike" component={OverLike} />
               <Scene key="huachenyu" component={Huachenyu} />
               <Scene key="weixinyu" component={Weixinyu} />
               <Scene key="weichen" component={Weichen} />
               <Scene key="Dongtailiebiao" component={DongTaiList} />
+              <Scene key="pinglun" component={Pinglun} />
+              <Scene key="shipin" component={Shipin} />
+              <Scene key="adddongtai" component={Adddongtai} />
+              <Scene key="jubao" component={JuBao} />
+              <Scene key="star" component={Star} />
+              <Scene key="jianpan" component={JianPan} />
+              <Scene key="geshou" component={Geshou} />
             </Scene>
             <Scene key="my" title="我的"  
             icon={()=><Icon name = 'user' size = {30}/>}
