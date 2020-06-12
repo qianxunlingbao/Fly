@@ -321,6 +321,16 @@ export default class Doc extends Component{
     }
     componentDidMount() {
         var that = this;
+        function check(ele){
+            if(ele.music_name == that.props.data.music_name){
+                return true;
+            }
+        }
+        if(likelist.items.some(check)){
+            this.setState({
+                collect:true
+            })
+        }
         AsyncStorage.getItem('playlist').then(
             (value) => {
                 that.setState({
@@ -1119,7 +1129,7 @@ qiehuan(){
                                                         </TouchableOpacity>
                                                     </View>
                                                     <View style={{width:0.2*width,}}>
-                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} >
+                                                        <TouchableOpacity style={{justifyContent:'center', alignItems: 'center'}} onPress={()=>Actions.gedanlist({song:this.props.data})}>
                                                             <View style={styles.box}>
                                                                 <Image style={{width:0.08*width,height:0.08*width}} source={require('../images/addlist.png')} />
                                                             </View>
@@ -1335,7 +1345,7 @@ qiehuan(){
                                 onLoad={(data) => {this.setDuration(data);ToastAndroid.show('加载完成',200);this.play()}}
                                 onLoadStart = {()=>ToastAndroid.show('加载中',200)}
                                 volume={this.state.volume}
-                                playInBackground={true}
+                                playInBackground={false}
                                 playWhenInactive ={true}
                                 onProgress={e => this.setTime(e)}
                                 />

@@ -58,9 +58,11 @@ class PlayGroup extends Component {
 const styles = StyleSheet.create({
     container: {
         width:'100%',
-        height:'100%',
-        backgroundColor:'white'
-      
+        height:height * 0.1,
+        backgroundColor:'white',
+        position:"absolute",
+        bottom:height*0.06,
+        zIndex:1
     }
 })
 

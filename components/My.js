@@ -15,7 +15,6 @@ const {width,height} = Dimensions.get('window');
 import Devider from './Devide'
 import { Actions} from 'react-native-router-flux';
 import Prompt from './Prompt'
-import PlayGroup from './PlayGroup'
 import PlayList from './PlayList';
 import {likelist, recentplay} from './DS'
 
@@ -267,7 +266,7 @@ class My extends Component {
                                     alignItems:"center"
                                 }
                             }>
-                                <Text  style={{fontSize:16,textAlign:'center'}}>古风</Text>
+                                <Text  style={{fontSize:16,textAlign:'center'}}>赵照</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={
                                 {
@@ -281,7 +280,7 @@ class My extends Component {
                                     alignItems:"center"
                                 }
                             }>
-                                <Text  style={{fontSize:16,textAlign:'center'}}>ACG歌曲</Text>
+                                <Text  style={{fontSize:16,textAlign:'center'}}>许嵩</Text>
                             </TouchableOpacity>
                             <TouchableOpacity style={
                                 {
@@ -317,7 +316,7 @@ class My extends Component {
                         source={require('../images/createSong.png')} 
                         />
                         </TouchableOpacity>
-                        <TouchableOpacity style={{width:'7%',position:'absolute',left:'90%'}}   onPress={()=>Actions.manage()}>
+                        <TouchableOpacity style={{width:'7%',position:'absolute',left:'90%'}}  >
                         <Image 
                         source={require('../images/manage.png')}                       
                         />
@@ -382,7 +381,6 @@ class My extends Component {
                 </ScrollView>
                 <View style={{position:'absolute',width:'100%',height:'10%',top:'90%',zIndex
             :2}}>
-                        <PlayGroup/>
                     </View> 
             </View>
             

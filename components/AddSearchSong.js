@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, Text ,Image,TextInput,Dimensions,DeviceEventEmitter, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text ,Image,TextInput,Dimensions,DeviceEventEmitter, FlatList, TouchableOpacity, ToastAndroid } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 const {width,height} = Dimensions.get('window');
 import {addmenusong} from './DS'
@@ -41,7 +41,6 @@ class AddSearchSong extends Component {
                     this.setState({
                         value:arr
                     })
-                    console.log(arr);
                 }}/>  
                 </View>
                 <FlatList
@@ -50,7 +49,7 @@ class AddSearchSong extends Component {
                 <View style={{paddingLeft:15,width:width,height:height * 0.05,borderBottomWidth:1,borderBottomColor:'grey'}}>
                     <Text >{item.music_name}</Text>
                     <Text >{item.music_author}</Text>
-                    <TouchableOpacity style={{position:"absolute",left:width * 0.9,top:10}} onPress = {()=>{addmenusong.push(item)}}>
+                    <TouchableOpacity style={{position:"absolute",left:width * 0.9,top:10}} onPress = {()=>{addmenusong.push(item);ToastAndroid.show('已添加',100)}}>
                         <Text style={{fontSize:20}}>+</Text>
                     </TouchableOpacity>
                 </View>}

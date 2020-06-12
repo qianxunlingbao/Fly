@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Text ,Image, TouchableOpacity,FlatList } from 'react-native'
 import {Router, Scene} from "react-native-router-flux";
 import {likelist} from './DS'
+import { Actions } from 'react-native-router-flux';
 
 class MyLike extends Component {
     constructor(){
@@ -13,26 +14,16 @@ class MyLike extends Component {
     render() {
         return (
                 <View style={styles.container}>
-                <View style = {styles.threeHead}>
-                    <TouchableOpacity onPress={()=>this.setState({threeColor:[1,0,0]})}>
-                        <Text style={{color:this.state.threeColor[0]?'green':'black'}}>歌曲</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>this.setState({threeColor:[0,1,0]})}>
-                        <Text style={{color:this.state.threeColor[1]?'green':'black'}}>专辑</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>this.setState({threeColor:[0,0,1]})}>
-                        <Text style={{color:this.state.threeColor[2]?'green':'black'}}>歌单</Text>
-                    </TouchableOpacity>
-                </View>
                 <FlatList
                                 data = {likelist.items}
                                 style = {{width:'100%',height:'100%'}}
                                 renderItem = {
-                                    ({item,index}) => 
+                                    ({item,index}) => <TouchableOpacity onPress={()=>Actions.publish({data:item})}>
                                     <View   style = {{paddingLeft:15,marginTop:10,borderBottomWidth:0.5}}>
                                         <Text>{item.music_name}</Text>
                                         <Text>{item.music_author}</Text>
                                     </View>
+                                    </TouchableOpacity>
                                 }
                                 />
             </View>

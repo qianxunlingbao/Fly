@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { View, Text, Image, TouchableOpacity, SafeAreaView, StatusBar, ScrollView, RefreshControl } from 'react-native'
+import { View, Text, Image, TouchableOpacity, SafeAreaView, Dimensions,StatusBar, ScrollView, RefreshControl } from 'react-native'
 import Icon from 'react-native-vector-icons/Feather'
 import Swiper from 'react-native-swiper'
 import { Actions } from 'react-native-router-flux';
+import PlayGroup from './PlayGroup'
+let {width, height} = Dimensions.get('window');
 
 console.disableYellowBox = true;
-import PlayGroup from './PlayGroup'
 
 export default class MusicHall extends Component {
     constructor() {
@@ -32,12 +33,14 @@ export default class MusicHall extends Component {
                 })
             })
     }
+    
     render() {
         return (
             <>
                 
                 <StatusBar barStyle="dark-content" />
                 <SafeAreaView>
+                    <View style={{height:height * 0.84,width:width}}>
                     <ScrollView refreshControl={
                         <RefreshControl onRefresh={() => {
                             this.setState({
@@ -184,9 +187,8 @@ export default class MusicHall extends Component {
                             }
                         </View>
                     </ScrollView>
-                    <View style={{position:'absolute',width:'100%',height:'10%',top:'90%'}}>
-                        <PlayGroup/>
-                    </View> 
+                    </View>
+                    
                 </SafeAreaView>
             </>
         )

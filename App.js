@@ -17,7 +17,7 @@ import {
   Dimensions,
   TextInput,
   BackHandler,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 
 import {
@@ -27,9 +27,10 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+let {width, height} = Dimensions.get('window');
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Router, Scene, Tabs, Lightbox, Modal, Actions} from "react-native-router-flux";
-import Recommend from './components/Recommend'
 import Songwordpost from './components/songwordpost'
 import Condition from './components/Condition'
 import My from './components/My'
@@ -76,11 +77,12 @@ import JuBao  from './components/JuBao'
 import Star  from './components/StarScord'
 import JianPan  from './components/JianPan'
 import Geshou  from './components/Geshou'
+import gedanlist from './components/gedanlist'
 const App = () => {  
   let now = new Date().getTime();
   return (
     <>
-      <Router
+              <Router
       backAndroidHandler={()=>{
           if(Actions.currentScene == 'home'){
             if(new Date().getTime() - now < 2000){
@@ -89,23 +91,20 @@ const App = () => {
               ToastAndroid.show('确定要退出吗',50);
               now = new Date().getTime();
               return true;
-    
             }
           }
-          
-          
         }
-        
       }
       >
         <Scene key = 'root' >
         <Tabs key='tabbar'
+            lazy = {true}
+            tabBarStyle={{height:height * 0.06}}
             hideNavBar
-          >
+            >
             <Scene key="music" 
             title="音乐馆" 
             icon={()=><Icon name = 'home' size = {30}/>}
-            
            >
               <Scene key = "Music" component={Music} hideNavBar/>
               <Scene key = "search" component={Search} hideNavBar hideTabBar/>
@@ -124,6 +123,12 @@ const App = () => {
               
               <Scene key = "PingLun" component={PingLun}  hideNavBar hideTabBar/>
               <Scene key = "Addpinglun" component={Addpinglun}  hideNavBar hideTabBar/>
+              <Scene key = "gedanlist" component={gedanlist}   hideTabBar title='已选定一首添加到'
+              renderLeftButton = {()=><Text></Text>}
+              rightTitle = '取消'
+              onRight = {()=>Actions.pop()}
+              titleStyle={{flex:1,textAlign:'center'}}
+              />
 
             </Scene>
             <Scene key="condition" title="动态" 
@@ -138,7 +143,6 @@ const App = () => {
               <Scene key="huachenyu" component={Huachenyu} />
               <Scene key="weixinyu" component={Weixinyu} />
               <Scene key="weichen" component={Weichen} />
-              <Scene key="Dongtailiebiao" component={DongTaiList} />
               <Scene key="pinglun" component={Pinglun} />
               <Scene key="shipin" component={Shipin} />
               <Scene key="adddongtai" component={Adddongtai} />
@@ -173,6 +177,7 @@ const App = () => {
           </Tabs>    
           </Scene>
       </Router>
+      
     </>
   );
 };
